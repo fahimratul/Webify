@@ -3,26 +3,95 @@
     --primary-color: #00D4FE;
     --dark-background-color: #0B1432;
     --foreground-color: #414040;
-    --font-family: 'Arial, sans-serif';
+    --font-family: 'Times New Roman', Times, serif;
 }
-
+.body{
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(114deg, var(--background-color) 10%, var(--primary-color) 90%);
+    max-width: 100vw;
+    overflow-x: hidden;
+}
 .navbar{
     background-color: #f9f8f8af;
     color: var(--foreground-color);
     font-family: var(--font-family);
     padding: 10px;
-    width: 60vw;
-    height: 50px;
+    width: 50vw;
+    height: 40px;
     margin: auto;
     border-radius: 24px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 20px -9px rgba(0,0,0,0.7);
     position: fixed;
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-
-
+    justify-content: space-evenly;
+    z-index: 1000;
 }
+
+.navbar a{
+    text-decoration: none;
+    color: var(--foreground-color);
+    font-weight: bold;
+    font-size: 20px;
+    font-family: var(--font-family);
+    padding: 8px 16px;
+    border-radius: 12px;
+    transition: background-color 0.3s, color 0.3s;
+}
+.navbar a:hover{
+    color: var(--primary-color);
+    transform: translateY(-4px);
+}
+.nav-login{
+    background: linear-gradient(114deg,#FE6EB6 10%, #3dcbfaa4 90%);
+    border-radius: 24px;
+    padding: 8px 20px;
+    width: 6rem;
+    text-align: center;
+    transition: all 0.5s ease;
+}
+
+.nav-login:hover{
+    background: linear-gradient(114deg,#3dcbfa 10%, #FE6EB6 90%);
+    color: white !important;
+    transform: translateY(-4px);
+}
+
+.welcome{
+    margin-top: 0px;
+    text-align: center;
+    font-family: var(--font-family);
+    color: var(--foreground-color);
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+.speaker-image{
+    position: relative;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background-image: url(images/speaker.jpg);
+    background-size: cover;
+    background-position: center;
+    width: 400px;
+    height: 400px;
+    z-index: -1;
+}
+.fadeout{
+    animation: speakeranimantion;
+    animation-timeline: view();
+    animation-range: entry 150% exit 150%;
+}
+
+
+@keyframes speakeranimantion {
+    0% { transform:translateX(-50%) translateY(-20%)  scale(1); }
+    100% { transform: translateX(-50%) translateY(-20%) scale(0); }
+    
+}
+
