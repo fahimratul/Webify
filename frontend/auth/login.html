@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEBIFY - Login & Sign Up</title>
+    <link rel="stylesheet" href="auth.css">
+</head>
+
+<body>
+    <!-- Notification Toast -->
+    <div id="notification-toast" class="notification-toast"></div>
+
+    <div class="container">
+        <!-- Animated Background Elements -->
+        <div class="background-effects">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="blob blob-3"></div>
+            <div class="geometric-shape shape-1"></div>
+            <div class="geometric-shape shape-2"></div>
+            <div class="geometric-shape shape-3"></div>
+        </div>
+
+        <!-- Noise Texture Overlay -->
+        <div class="noise-overlay"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-grid">
+                <!-- Left Side - Branding -->
+                <div class="branding-section">
+                    <div class="branding-content">
+                        <!-- Logo -->
+                        <div class="logo-container">
+                            <div class="logo-icon">
+                                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 8 L10 32 L18 24 L10 32" stroke="white" stroke-width="4"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M22 8 L22 20 L30 12 L22 20" stroke="white" stroke-width="4"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <h1 class="logo-text">WEBIFY</h1>
+                        </div>
+
+                        <!-- Title -->
+                        <div class="branding-title">
+                            <h2 class="main-title">
+                                Welcome to<br>
+                                <span class="gradient-text">Digital World</span>
+                            </h2>
+                            <p class="subtitle">Create stunning websites without code. Join thousands of creators
+                                building their dreams.</p>
+                        </div>
+
+                        <!-- Feature List -->
+                        <div class="feature-list">
+                            <div class="feature-item" style="animation-delay: 0s;">
+                                <span class="feature-icon">✨</span>
+                                <span class="feature-text">No coding required</span>
+                            </div>
+                            <div class="feature-item" style="animation-delay: 0.1s;">
+                                <span class="feature-icon">🚀</span>
+                                <span class="feature-text">Launch in minutes</span>
+                            </div>
+                            <div class="feature-item" style="animation-delay: 0.2s;">
+                                <span class="feature-icon">💎</span>
+                                <span class="feature-text">Premium templates</span>
+                            </div>
+                            <div class="feature-item" style="animation-delay: 0.3s;">
+                                <span class="feature-icon">🎨</span>
+                                <span class="feature-text">Fully customizable</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Form -->
+                <div class="form-section">
+                    <!-- Mobile Logo -->
+                    <div class="mobile-logo">
+                        <div class="mobile-logo-container">
+                            <div class="logo-icon-mobile">
+                                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 8 L10 32 L18 24 L10 32" stroke="white" stroke-width="4"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M22 8 L22 20 L30 12 L22 20" stroke="white" stroke-width="4"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <h1 class="logo-text-mobile">WEBIFY</h1>
+                        </div>
+                        <p class="mobile-tagline">Create your website in easy way</p>
+                    </div>
+
+                    <!-- Glassmorphic Form Card -->
+                    <div class="glass-card">
+                        <!-- Tab Switcher -->
+                        <div class="tab-switcher">
+                            <button class="tab-btn active" id="loginTab">Sign In</button>
+                            <button class="tab-btn" id="signupTab">Sign Up</button>
+                        </div>
+
+                        <!-- Login Form -->
+                        <form id="loginForm" class="auth-form">
+                            <!-- Welcome Text -->
+                            <div class="form-header">
+                                <h2 class="form-title">Welcome back</h2>
+                                <p class="form-subtitle">Enter your credentials to access your account</p>
+                            </div>
+
+                            <!-- Email Field -->
+                            <div class="form-group">
+                                <label for="login-email" class="form-label">Email Address</label>
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                        </path>
+                                        <polyline points="22,6 12,13 2,6"></polyline>
+                                    </svg>
+                                    <input type="email" id="login-email" class="form-input"
+                                        placeholder="your.email@example.com" required>
+                                </div>
+                                <span class="error-message" id="login-email-error"></span>
+                            </div>
+
+                            <!-- Password Field -->
+                            <div class="form-group">
+                                <label for="login-password" class="form-label">Password</label>
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                    <input type="password" id="login-password" class="form-input"
+                                        placeholder="Enter your password" required>
+                                    <button type="button" class="password-toggle"
+                                        onclick="togglePassword('login-password')">
+                                        <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <span class="error-message" id="login-password-error"></span>
+                            </div>
+
+                            <!-- Remember Me & Forgot Password -->
+                            <div class="form-options">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="remember-me">
+                                    <span>Remember me</span>
+                                </label>
+                                <a href="#" class="forgot-link">Forgot password?</a>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="submit-btn login-btn">
+                                <span>Sign In</span>
+                                <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </button>
+                        </form>
+
+                        <!-- Signup Form -->
+                        <form id="signupForm" class="auth-form" style="display: none;">
+                            <!-- Welcome Text -->
+                            <div class="form-header">
+                                <h2 class="form-title">Create Account</h2>
+                                <p class="form-subtitle">Join us and start building today</p>
+                            </div>
+
+                            <!-- Name Field -->
+                            <div class="form-group">
+                                <label for="signup-name" class="form-label">Full Name</label>
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    <input type="text" id="signup-name" class="form-input" placeholder="John Doe"
+                                        required>
+                                </div>
+                                <span class="error-message" id="signup-name-error"></span>
+                            </div>
+
+                            <!-- Email Field -->
+                            <div class="form-group">
+                                <label for="signup-email" class="form-label">Email Address</label>
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                        </path>
+                                        <polyline points="22,6 12,13 2,6"></polyline>
+                                    </svg>
+                                    <input type="email" id="signup-email" class="form-input"
+                                        placeholder="your.email@example.com" required>
+                                </div>
+                                <span class="error-message" id="signup-email-error"></span>
+                            </div>
+
+                            <!-- Password Field -->
+                            <div class="form-group">
+                                <label for="signup-password" class="form-label">Password</label>
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                    <input type="password" id="signup-password" class="form-input"
+                                        placeholder="Create a strong password" required>
+                                    <button type="button" class="password-toggle"
+                                        onclick="togglePassword('signup-password')">
+                                        <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <!-- Password Strength Indicator -->
+                                <div class="password-strength" id="password-strength" style="display: none;">
+                                    <div class="strength-info">
+                                        <span class="strength-label">Password Strength</span>
+                                        <span class="strength-text" id="strength-text"></span>
+                                    </div>
+                                    <div class="strength-bar">
+                                        <div class="strength-fill" id="strength-fill"></div>
+                                    </div>
+                                </div>
+                                <span class="error-message" id="signup-password-error"></span>
+                            </div>
+
+                            <!-- Confirm Password Field -->
+                            <div class="form-group">
+                                <label for="signup-confirm-password" class="form-label">Confirm Password</label>
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                    <input type="password" id="signup-confirm-password" class="form-input"
+                                        placeholder="Confirm your password" required>
+                                    <button type="button" class="password-toggle"
+                                        onclick="togglePassword('signup-confirm-password')">
+                                        <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <span class="error-message" id="signup-confirm-password-error"></span>
+                            </div>
+
+                            <!-- Terms Checkbox -->
+                            <div class="terms-checkbox">
+                                <div class="custom-checkbox" id="terms-checkbox">
+                                    <input type="checkbox" id="terms-agree">
+                                    <div class="checkbox-box">
+                                        <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="white" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <label for="terms-agree" class="terms-label">
+                                    I agree to the <a href="#">Terms and Conditions</a> and <a href="#">Privacy
+                                        Policy</a>
+                                </label>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="submit-btn signup-btn">
+                                <span>Create Account</span>
+                                <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Footer Text -->
+                    <p class="footer-text">A no-code platform for everyone ✨</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+
+</html>
