@@ -230,7 +230,12 @@ body {
     gap: 12px;
     margin-bottom: 48px;
 }
-
+.logo-link{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 .logo-icon {
     width: 48px;
     height: 48px;
@@ -242,15 +247,15 @@ body {
     box-shadow: 0 25px 50px -12px rgba(236, 72, 153, 0.5);
 }
 
-.logo-icon svg {
-    width: 32px;
-    height: 32px;
+.logo-icon img {
+    width: 40px;
+    height: 40px;
 }
 
 .logo-text {
     font-size: 48px;
     font-weight: 900;
-    background: linear-gradient(90deg, #ffffff 0%, #a5f3fc 50%, #fbcfe8 100%);
+    background:  linear-gradient(114deg, #FA13F2 10%, #00D4FE 90%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -284,6 +289,7 @@ body {
 
 .feature-list {
     padding-top: 32px;
+    padding-left: 24px;
 }
 
 .feature-item {

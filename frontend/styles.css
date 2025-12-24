@@ -134,7 +134,7 @@ body{
 .welcome-text h1{
     font-size: 190px;
     margin: 0;
-    background: linear-gradient(114deg, var(--background-color) 10%, var(--primary-color) 90%);;
+    background: linear-gradient(114deg, var(--background-color) 10%, var(--primary-color) 90%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     transform: translateY(40px);
@@ -260,6 +260,16 @@ body{
     justify-content: center;
     height: 50vw;
 }
+
+.pushdown{
+    animation: pushdownanimation;
+    animation-timeline: view();
+    animation-range: entry 100% exit 150%;
+}
+@keyframes pushdownanimation {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(50vh); }
+}
 .coder h1{
     font-size: 64px;
     margin: 0;
@@ -299,7 +309,8 @@ body{
     background: #ffffff91;
     border-radius: 2em;
     border: white 4px solid;
-    transform: translateY(45vw);
+    transform: translateY(30vw) translateX(-5vw);
+    z-index: 11;
 }
 .movedown{
     animation: movedownanimation;
@@ -307,9 +318,9 @@ body{
     animation-range: entry -10% exit 150%;
 }
 @keyframes movedownanimation {
-    0% { transform: translateY(-100px); }
-    50% { transform: translateY(100px); }
-    100% { transform: translateY(45vw); }
+    0% { transform: translateY(-100px) translateX(-5vw); }
+    30% { transform: translateY(100px) translateX(-5vw); }
+    90% { transform: translateY(30vw) translateX(-5vw); }
 }
 
 .f-info-text{
@@ -366,17 +377,18 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    height: 50vw;
-    width: 40vw;
+    height: fit-content;
+    width: 35vw;
+    min-width: 100px;
     margin-left: 10vw;
-    margin-right: 10vw;
     border-radius: 1.5rem;
     background: #ffffff;
     transform: translateY(-15vh);
+    font-size: 1rem;
 }
 
 .join_now_card h1{
-    font-size: 90px;
+    font-size: 4em;
     margin: 0;
     background: linear-gradient(114deg, var(--background-color) 10%, var(--primary-color) 90%);;
     -webkit-background-clip: text;
@@ -390,7 +402,7 @@ body{
     color: var(--foreground-color);
     text-align: center;
     margin-top: 3rem;
-    padding: 2rem;
+    padding: 4rem;
 }
 .join_now_card .button{
     margin: 1em;
@@ -402,6 +414,8 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 4rem;
+    transition: all 0.3s ease;
 }
 .join_now_card .button a{
     text-decoration: none;
@@ -458,8 +472,12 @@ body{
 
 .love_code img{
     width: 200px;
+    transition: all 0.3s ease;   
 }
-
+.love_code img:hover{
+    filter: drop-shadow(0 0 20px var(--primary-color)) drop-shadow(0 0 40px var(--primary-color)) drop-shadow(0 0 60px var(--primary-color));
+    transform: scale(1.1);
+}
 
 .feature_card{
     display: flex;
@@ -482,31 +500,230 @@ body{
     text-align: center;
 }
 .feature_cards_container{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    
     justify-content: center;
     width: 90vw;
     margin: 4rem 4rem 0rem 4rem;
-    gap: 4rem;
-
+    gap: 2rem;
 }
 .feature_card_item{
     background: #1C4262;
     background: linear-gradient(180deg, rgba(28, 66, 98, 0.83) 0%, rgba(12, 12, 33, 1) 100%);
     border-radius: 2rem;
     width: 17rem;
-    height: 20rem;
+    min-height: 20rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: 2rem;
     box-shadow: 0px 4px 20px -9px rgba(0,0,0,0.7);
+    transition: all 0.3s ease;
+    filter: blur(0px);
+    overflow: hidden;
 }
+.feature_card_item:hover{
+    transform: translateY(-8px);
+    box-shadow: 11px 10px 20px 10px rgba(255,255,255,0.75) , -11px -10px 20px 10px rgba(255, 255, 255, 0.75);
+    scale: 1.05;
+}
+.feature_card_item:hover .feature_icon{
+    filter: drop-shadow(0 0 20px var(--primary-color)) drop-shadow(0 0 40px var(--primary-color)) drop-shadow(0 0 60px var(--primary-color));
+    transform: scale(1.2);
+}
+
+ .feature_card_item:hover+.feature_card_item{
+    filter: blur(2px);
+    transform: perspective(800px) rotateY(45deg) scale(.9);
+ }
+ .feature_card_item:has(+.feature_card_item:hover){
+    filter: blur(2px);
+    transform: perspective(1000px) rotateY(-40deg)  scale(.9);
+}
+ .feature_card_item:hover+.feature_card_item+.feature_card_item{
+    filter: blur(2px);
+    transform: perspective(800px) rotateY(30deg) scale(.7) translateX(-20%);
+ }
+
+.feature_card_item:has(+.feature_card_item+.feature_card_item:hover){
+    filter: blur(2px);
+    transform: perspective(800px) rotateY(-30deg) scale(.7) translateX(20%);
+}
+ 
+
+
 .feature_card_item h2{
     font-size: 2rem;
     margin: 1rem 0rem 0.5rem 0rem;
     color: white;
     text-align: center;
+}
+.feature_card_item p{
+    font-size: 1.2rem;
+    margin: 0;
+    color: white;
+    text-align: center;
+    margin: 2em;
+}
+.feature_icon{
+    width: 10em;
+    height: 10em;
+    margin-bottom: 1rem;
+}
+.feature_icon1{
+    background-image: url(images/siri_logo.png);
+    background-size: cover;
+    background-position: center;
+}
+.feature_icon2{
+    background-image: url(images/side_view.png);
+    background-size: cover;
+    background-position: top;
+    margin-bottom: 0;
+    height: 15em;
+    padding: 0;
+    z-index: -1;
+}
+.feature_icon3{
+    background-image: url(images/siri_logo2.png);
+    background-size: cover;
+    background-position: center;
+}
+footer {
+  display: flex;
+  justify-content: space-around;
+  background: #ffffff;
+  color: #1b1919;
+  padding: 2rem;
+}
+
+footer h4 {
+  margin-bottom: 0.5rem;
+}
+
+footer ul {
+  list-style: none;
+  padding: 0;
+}
+
+footer li {
+  margin-bottom: 0.3rem;
+}
+.footer-logo{
+    width: 150px;
+    height: 150px;
+}
+.conduct-me{
+    color: var(--secondary-color);
+    font-size: 16px;
+    line-height: 1.6em;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+.connect-me{
+    color: var(--foreground-color);
+    font-size: 48px;
+    margin-bottom: 10px;
+    text-align: center;
+    position: relative;
+    width: max-content;
+}
+.connect-me::after{
+    position: absolute;
+    content: '';
+    display: block;
+    width: 80px;
+    height: 50px;
+    background-color:#dfd0b86b;
+    top:0;
+    left:0;
+}
+
+.conncet-ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 50px;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+.conncet-ul li{
+    position: relative;
+    list-style: none;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.6s;
+    cursor: pointer;
+}
+
+.conncet-ul li:before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    inset: 30px;
+    box-shadow: 0 0 0 10px var(--foreground-color),
+               0 0 0 20px var(--primary-color),
+               0 0 0 22px var(--foreground-color);
+    box-sizing: border-box;
+    transition: all 0.6s;
+}
+.conncet-ul li:hover:before{
+    inset: 15px;
+}
+.conncet-ul li:after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #ffffff;
+    transform: rotate(45deg); 
+    transition: all 0.6s;
+}
+.conncet-ul li:hover:after{
+    transform: rotate(0deg);
+}
+
+.conncet-ul li a{
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+.conncet-ul li a i{
+    font-size: 2.5em;
+    transition: all 0.6s;
+    opacity: 1;
+    color: var(--foreground-color);
+}
+.conncet-ul li:hover a i{
+    transform: translateY(-40%);
+}
+.conncet-ul li a span{
+    position: absolute;
+    font-family: sans-serif;
+    color: var(--foreground-color);
+    font-size: 16px;
+    opacity: 0;
+    transition: all 0.6s;
+    transform: scale(0) translateY(200%);
+}
+
+.conncet-ul li:hover a span{
+    opacity: 1;
+    transform: scale(1) translateY(100%);
 }
