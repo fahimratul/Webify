@@ -540,7 +540,7 @@ body{
  }
  .feature_card_item:has(+.feature_card_item:hover){
     filter: blur(2px);
-    transform: perspective(1000px) rotateY(-40deg)  scale(.9);
+    transform: perspective(800px) rotateY(-40deg)  scale(.9);
 }
  .feature_card_item:hover+.feature_card_item+.feature_card_item{
     filter: blur(2px);

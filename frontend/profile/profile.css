@@ -101,7 +101,6 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: linear-gradient(135deg, #f3e7ff 0%, #fce7f3 50%, #dbeafe 100%);
     min-height: 100vh;
     color: #1f2937;
 }
@@ -121,7 +120,6 @@ button {
     width: 96px;
     height: 100vh;
     background: white;
-    border-right: 1px solid #e5e7eb;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -332,7 +330,11 @@ button {
 /* Main Content */
 .main-content {
     margin-left: 96px;
+    margin-top: 2rem;
+    margin-right: 2rem;
     padding: 48px;
+    border-radius: 2rem;
+    background: linear-gradient(135deg, #f3e7ff 0%, #fce7f3 50%, #dbeafe 100%);
 }
 
 .container {
@@ -525,12 +527,25 @@ button {
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    transition: box-shadow 0.3s ease;
+    transition: all 0.3s ease;
     cursor: pointer;
 }
 
 .create-card:hover {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease  ;
+
+}
+.create-card:hover .create-icon {
+    border-radius: 90px;
+    transform: scale(1.5) rotateZ(180deg);
+    transition: all 0.3s ease ;;
+}
+.create-card:hover .create-content p {
+    color: #7c3aed;
+    font-weight: 600;
+    transform: translateY(8px);
+    transition: all 0.3s ease ;
 }
 
 .create-content {
