@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEBIFY - Edit Profile</title>
+    <link rel="stylesheet" href="../profile/profile.css">
+    <link rel="icon" type="image/png" href="../images/logo.png"/>
+    <link rel="stylesheet" href="editprofile.css">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div id="notification-toast" class="notification-toast"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <!-- Logo -->
+        <div class="sidebar-logo">
+            <h1>WEBIFY</h1>
+        </div>
+
+        <!-- Navigation Items -->
+        <nav class="sidebar-nav">
+            <button class="nav-item active" data-nav="create">
+                <div class="nav-icon">
+                    <i data-lucide="plus"></i>
+                </div>
+                <span class="nav-label">Create</span>
+            </button>
+
+            <button class="nav-item" data-nav="market">
+                <div class="nav-icon">
+                    <i data-lucide="store"></i>
+                </div>
+                <span class="nav-label">Market</span>
+            </button>
+
+            <button class="nav-item" data-nav="notification">
+                <div class="nav-icon">
+                    <i data-lucide="bell"></i>
+                </div>
+                <span class="nav-label">Notification</span>
+            </button>
+
+            <button class="nav-item" data-nav="template">
+                <div class="nav-icon">
+                    <i data-lucide="layers"></i>
+                </div>
+                <span class="nav-label">Template</span>
+            </button>
+
+            <button class="nav-item" data-nav="project">
+                <div class="nav-icon">
+                    <i data-lucide="folder-kanban"></i>
+                </div>
+                <span class="nav-label">Project</span>
+            </button>
+        </nav>
+
+        <!-- User Avatar -->
+        <div class="sidebar-avatar" id="userAvatar">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" alt="User">
+        </div>
+    </aside>
+
+    <!-- Profile Dropdown Menu -->
+    <div class="profile-dropdown" id="profileDropdown">
+        <div class="dropdown-header">
+            <h3>Accounts</h3>
+        </div>
+
+        <!-- User Info -->
+        <div class="dropdown-user-info">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" alt="User">
+            <div class="user-details">
+                <h4>Tanvir Jakaria</h4>
+                <p>tanvirjakaria@gmail.com</p>
+            </div>
+        </div>
+
+        <!-- Menu Options -->
+        <div class="dropdown-menu">
+            <button class="dropdown-item" onclick="openCommunity()">
+                <i data-lucide="users"></i>
+                <span>Open Community</span>
+            </button>
+
+            <button class="dropdown-item" onclick="openHelp()">
+                <i data-lucide="help-circle"></i>
+                <span>Help</span>
+            </button>
+
+            <button class="dropdown-item" onclick="editProfile()">
+                <i data-lucide="user-cog"></i>
+                <span>Edit profile</span>
+            </button>
+
+            <div class="dropdown-divider"></div>
+
+            <button class="dropdown-item logout" onclick="logout()">
+                <i data-lucide="log-out"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <h1 class="editprofile_title">Edit Profile Page</h1>
+        <div class="profile_pic">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" alt="User" id="profilePic">
+            <button class="change_pic_btn" onclick="changeProfilePic()">Change Profile Picture</button>
+            <input type="file" id="picInput" style="display:none" accept="image/*">
+        </div>
+        <button type="submit" form="profileForm" class="save_changes_btn">Save</button>
+        <div class="edit-info">
+            <form id="profileForm" class="profile-form">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" value="Tanvir Jakariah" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" value="tanvirjakaria@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" rows="4" placeholder="Tell us about yourself...">Web Developer passionate about modern web technologies.</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="password">New Password</label>
+                    <input type="password" id="password" placeholder="Leave blank to keep current">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" value="+880 1234 567890">
+                </div>
+            </form>
+
+
+        </div>
+        <div>
+
+        </div>
+    </main>
+
+    <script src="../profile/profile.js"></script>
+    <script src="editprofile.js"></script>
+</body>
+
+</html>

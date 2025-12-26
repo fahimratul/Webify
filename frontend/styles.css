@@ -528,6 +528,7 @@ body{
     transform: translateY(-8px);
     box-shadow: 11px 10px 20px 10px rgba(255,255,255,0.75) , -11px -10px 20px 10px rgba(255, 255, 255, 0.75);
     scale: 1.05;
+    cursor: pointer;
 }
 .feature_card_item:hover .feature_icon{
     filter: drop-shadow(0 0 20px var(--primary-color)) drop-shadow(0 0 40px var(--primary-color)) drop-shadow(0 0 60px var(--primary-color));

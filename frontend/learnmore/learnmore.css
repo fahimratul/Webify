@@ -1,0 +1,212 @@
+:root {
+    --background-color: #FA13F2;
+    --primary-color: #00D4FE;
+    --howto-bg: radial-gradient(circle at top left, #fef1ff 0%, #f3f7ff 45%, #fef5f0 90%);
+    --howto-card-bg: rgba(255, 255, 255, 0.9);
+    --howto-border: rgba(148, 163, 184, 0.25);
+    --howto-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+    --howto-radius-lg: 24px;
+    --howto-radius-sm: 14px;
+}
+
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    background: var(--howto-bg);
+    color: #111827;
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin:0;
+}
+.title:hover {
+    cursor: pointer;
+}
+.title:hover img{
+    filter: drop-shadow(0 0 20px var(--primary-color)) drop-shadow(0 0 40px var(--primary-color)) drop-shadow(0 0 60px var(--primary-color));
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+    z-index: -1;
+}
+
+.title h2 {
+    margin: 0;
+    font-size: 2.5rem;
+    background: linear-gradient(114deg, var(--background-color) 10%, var(--primary-color) 90%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transform: translateY(-50%);
+
+}
+.hero-logo {
+  width: 90px;
+  height: 90px;
+}
+.howto-wrapper {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* Hero */
+.howto-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.75rem;
+}
+
+.eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 0.25rem;
+}
+
+.howto-hero h1 {
+  font-size: 2.1rem;
+  margin: 0;
+}
+
+.hero-subtitle {
+  margin-top: 0.4rem;
+  max-width: 520px;
+  color: #4b5563;
+}
+
+.hero-pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.hero-pill {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(209, 213, 219, 0.7);
+  font-size: 0.78rem;
+  color: #4b5563;
+  backdrop-filter: blur(10px);
+}
+
+/* Card base */
+.howto-card {
+  background: var(--howto-card-bg);
+  border-radius: var(--howto-radius-lg);
+  border: 1px solid var(--howto-border);
+  box-shadow: var(--howto-shadow);
+  padding: 1.6rem 1.8rem;
+  backdrop-filter: blur(16px);
+}
+
+.steps-overview h2 {
+  margin-top: 0;
+}
+
+.steps-list {
+  margin: 0.6rem 0 0;
+  padding-left: 1.4rem;
+  color: #4b5563;
+}
+
+.steps-list li + li {
+  margin-top: 0.25rem;
+}
+
+/* Grid sections */
+.howto-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.25rem;
+}
+
+.howto-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.6rem;
+}
+
+.howto-card p {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  color: #4b5563;
+}
+
+.bullet-list {
+  margin: 0.25rem 0 0;
+  padding-left: 1.2rem;
+  color: #4b5563;
+}
+
+.bullet-list li + li {
+  margin-top: 0.25rem;
+}
+
+/* CTA */
+.howto-cta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.25rem;
+  background: linear-gradient(135deg, #fdf2ff, #e0f2fe);
+}
+
+.cta-button {
+  border-radius: 999px;
+  border: none;
+  padding: 0.7rem 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: linear-gradient(135deg, #f973c9, #8b5cf6);
+  color: #ffffff;
+  font-size: 0.92rem;
+  cursor: pointer;
+  box-shadow: 0 16px 40px rgba(147, 51, 234, 0.45);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.cta-button i {
+  width: 18px;
+  height: 18px;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 55px rgba(147, 51, 234, 0.55);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .howto-hero {
+    flex-direction: column;
+  }
+
+  .howto-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .howto-cta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .howto-wrapper {
+    padding: 1.75rem 1.1rem 2.25rem;
+  }
+
+  .howto-hero h1 {
+    font-size: 1.7rem;
+  }
+}

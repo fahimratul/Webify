@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WEBIFY Marketplace & Community Guide</title>
+    <link rel="icon" type="image/png" href="../images/logo.png"/>
+    <link rel="stylesheet" href="learnmore.css" />
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <main class="howto-wrapper">
+    <header class="howto-hero">
+        <div class="title" onclick="homepage()">
+          <img src="../images/logo.png" alt="WEBIFY Logo" class="hero-logo" />
+          <h2>WEBIFY</h2>
+        </div>
+      <div>
+        <p class="eyebrow">Developer Guide</p>
+        <h1>How to Sell on the WEBIFY Marketplace</h1>
+        <p class="hero-subtitle">
+          Learn how to package your components or templates, publish them to the WEBIFY marketplace,
+          and build a healthy community around your work.
+        </p>
+      </div>
+      <div class="hero-pill-group">
+        <span class="hero-pill">Open-source friendly</span>
+        <span class="hero-pill">Community‑driven marketplace</span>
+      </div>
+    </header>
+
+    <section class="howto-card steps-overview">
+      <h2>Workflow in 6 Simple Steps</h2>
+      <ol class="steps-list">
+        <li>Create a WEBIFY‑compatible component or template</li>
+        <li>Prepare clean files and documentation</li>
+        <li>Submit your item to the marketplace</li>
+        <li>Set pricing and licensing</li>
+        <li>Support buyers and ship updates</li>
+        <li>Engage with the WEBIFY community</li>
+      </ol>
+    </section>
+
+    <section class="howto-grid">
+      <article class="howto-card">
+        <h3>1. Build a WEBIFY‑Ready Template or Component</h3>
+        <p>
+          Start by creating a reusable template or UI component that works well inside WEBIFY’s static export workflow.
+          Use clean, semantic HTML, modular CSS, and minimal JavaScript so users can easily customize your work.
+        </p>
+        <p>
+          Make sure your design solves a real problem: portfolio sections, pricing tables, hero headers,
+          contact forms, or full one‑page sites tend to perform well with creators.
+        </p>
+      </article>
+
+      <article class="howto-card">
+        <h3>2. Prepare Files and Documentation</h3>
+        <p>
+          Organize your code into a clear folder structure, including HTML, CSS, JavaScript, and any assets such as images
+          or icons. Keep file names simple and consistent.
+        </p>
+        <p>
+          Add a short <code>README.md</code> or <code>README.txt</code> that explains how to use the template,
+          which sections can be edited, and any configuration options, so buyers can get started quickly.
+        </p>
+      </article>
+    </section>
+
+    <section class="howto-grid">
+      <article class="howto-card">
+        <h3>3. Submit Your Item to the Marketplace</h3>
+        <p>
+          Go to the <strong>Market</strong> section inside WEBIFY and click
+          <strong>Add New Item</strong> (or a similar upload button) to start the submission process.
+        </p>
+        <p>
+          Upload your zipped project, provide a clear title, description, feature list,
+          and a few screenshots or a live preview link so users can evaluate the quality before buying or downloading.
+        </p>
+      </article>
+
+      <article class="howto-card">
+        <h3>4. Choose Pricing and License</h3>
+        <p>
+          Decide whether your item will be <strong>free</strong>, <strong>pay‑what‑you‑want</strong>,
+          or a <strong>fixed price</strong>. Free items help you gain visibility; paid items help sustain your work.
+        </p>
+        <p>
+          Select a license that matches your goals (for example, allowing personal use, commercial use,
+          or open‑source reuse). Clearly mention any limits, so expectations are transparent for buyers.
+        </p>
+      </article>
+    </section>
+
+    <section class="howto-grid">
+      <article class="howto-card">
+        <h3>5. Support Users and Ship Updates</h3>
+        <p>
+          After publishing, keep an eye on feedback, questions, and bug reports coming from marketplace comments
+          or issue trackers linked from your item page.
+        </p>
+        <p>
+          When you fix bugs or add improvements, upload a new version and include a short changelog.
+          This builds trust and encourages repeat customers across your templates. [web:8][web:12]
+        </p>
+      </article>
+
+      <article class="howto-card">
+        <h3>6. Grow and Maintain the Community</h3>
+        <p>
+          Join the WEBIFY community spaces (forums, chat, or Git repository) to answer questions, share best practices,
+          and help new users learn how to build with your components.
+        </p>
+        <p>
+          Contribute example projects, write short tutorials, and collaborate with other developers.
+          A friendly, active presence makes your marketplace profile stronger over time. [web:8][web:12]
+        </p>
+      </article>
+    </section>
+
+    <!-- Tips & FAQ mini section -->
+    <section class="howto-grid">
+      <article class="howto-card">
+        <h3>Tips for Successful Marketplace Items</h3>
+        <ul class="bullet-list">
+          <li>Focus on clean, well‑commented code that users can extend easily.</li>
+          <li>Offer consistent naming for classes, colors, and components across your templates.</li>
+          <li>Include screenshots and a short demo video or GIF whenever possible.</li>
+          <li>Bundle small utilities (e.g., buttons, cards) into themed packs creators will reuse often.</li>
+        </ul>
+      </article>
+
+      <article class="howto-card">
+        <h3>Community & Collaboration FAQ</h3>
+        <ul class="bullet-list">
+          <li><strong>How do I report bugs or request features?</strong> Use the community forum or the project repository’s issue tracker linked from the WEBIFY docs.</li>
+          <li><strong>Can I accept contributions?</strong> Yes. Encourage pull requests, code reviews, and translations to keep your templates improving over time.</li>
+          <li><strong>How do I build a reputation?</strong> Maintain good documentation, respond politely, fix issues quickly, and share knowledge in community discussions. [web:8][web:12]</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- Bottom CTA -->
+    <section class="howto-card howto-cta">
+      <div>
+        <h3>Ready to Publish Your First Template?</h3>
+        <p>
+          Package one of your favorite layouts, write a clear description, and list it in the WEBIFY marketplace to
+          help other creators build faster while supporting your own work.
+        </p>
+      </div>
+      <button class="cta-button" onclick="goToMarket()">
+        <i data-lucide="store"></i>
+        <span>Open Marketplace</span>
+      </button>
+    </section>
+  </main>
+
+  <script>
+    lucide.createIcons();
+    function homepage() {
+        window.location.href = "../index.html";
+    }
+    function goToMarket() {
+        // send developer to login or directly to market page, similar to your previous button
+        window.location.href = "../market/market.html";
+    }
+  </script>
+</body>
+</html>

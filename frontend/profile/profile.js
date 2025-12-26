@@ -211,15 +211,11 @@ function openCommunity() {
 }
 
 function openHelp() {
-  console.log("Opening help...");
-  alert("Opening Help Center! Get assistance and learn how to use WEBIFY.");
-  // Here you can add logic to open help documentation
+  window.location.href = "../help/help.html";
 }
 
 function editProfile() {
-  console.log("Editing profile...");
-  alert("Opening Profile Editor! Update your information and preferences.");
-  // Here you can add logic to open profile edit page
+  window.location.href = "../editprofile/editprofile.html"; 
 }
 
 function logout() {

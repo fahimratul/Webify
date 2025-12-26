@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WEBIFY – Help & Guide</title>
+  <link rel="stylesheet" href="../profile/profile.css" />
+  <link rel="stylesheet" href="help.css" />
+  <link rel="icon" type="image/png" href="../images/logo.png"/>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+        <!-- Sidebar -->
+    <aside class="sidebar">
+        <!-- Logo -->
+        <div class="sidebar-logo">
+            <h1>WEBIFY</h1>
+        </div>
+
+        <!-- Navigation Items -->
+        <nav class="sidebar-nav">
+            <button class="nav-item active" data-nav="create">
+                <div class="nav-icon">
+                    <i data-lucide="plus"></i>
+                </div>
+                <span class="nav-label">Create</span>
+            </button>
+
+            <button class="nav-item" data-nav="market">
+                <div class="nav-icon">
+                    <i data-lucide="store"></i>
+                </div>
+                <span class="nav-label">Market</span>
+            </button>
+
+            <button class="nav-item" data-nav="notification">
+                <div class="nav-icon">
+                    <i data-lucide="bell"></i>
+                </div>
+                <span class="nav-label">Notification</span>
+            </button>
+
+            <button class="nav-item" data-nav="template">
+                <div class="nav-icon">
+                    <i data-lucide="layers"></i>
+                </div>
+                <span class="nav-label">Template</span>
+            </button>
+
+            <button class="nav-item" data-nav="project">
+                <div class="nav-icon">
+                    <i data-lucide="folder-kanban"></i>
+                </div>
+                <span class="nav-label">Project</span>
+            </button>
+        </nav>
+
+        <!-- User Avatar -->
+        <div class="sidebar-avatar" id="userAvatar">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" alt="User">
+        </div>
+    </aside>
+
+    <!-- Profile Dropdown Menu -->
+    <div class="profile-dropdown" id="profileDropdown">
+        <div class="dropdown-header">
+            <h3>Accounts</h3>
+        </div>
+
+        <!-- User Info -->
+        <div class="dropdown-user-info">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" alt="User">
+            <div class="user-details">
+                <h4>Tanvir Jakaria</h4>
+                <p>tanvirjakaria@gmail.com</p>
+            </div>
+        </div>
+
+        <!-- Menu Options -->
+        <div class="dropdown-menu">
+            <button class="dropdown-item" onclick="openCommunity()">
+                <i data-lucide="users"></i>
+                <span>Open Community</span>
+            </button>
+
+            <button class="dropdown-item" onclick="openHelp()">
+                <i data-lucide="help-circle"></i>
+                <span>Help</span>
+            </button>
+
+            <button class="dropdown-item" onclick="editProfile()">
+                <i data-lucide="user-cog"></i>
+                <span>Edit profile</span>
+            </button>
+
+            <div class="dropdown-divider"></div>
+
+            <button class="dropdown-item logout" onclick="logout()">
+                <i data-lucide="log-out"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+  <div class="help-layout">
+
+    <!-- Main Help Content -->
+    <main class="help-main">
+      <header class="help-header">
+        <div>
+          <h1>Help & Guide</h1>
+          <p>Understand what WEBIFY is, why it exists, and how to use it effectively.</p>
+        </div>
+        <div class="help-badge">
+          <span class="badge-pill">Local-First</span>
+          <span class="badge-pill">Open Source</span>
+          <span class="badge-pill">No-Code</span>
+        </div>
+      </header>
+
+      <!-- Intro / Summary -->
+      <section class="help-card hero-card">
+        <h2>What is WEBIFY?</h2>
+        <p>
+          WEBIFY is a local-first, open-source static website builder that runs entirely in your browser, 
+          letting you create clean personal websites without logins, servers, or subscriptions.
+        </p>
+        <p>
+          The tool focuses on students, freelancers, and creators who want simple portfolio or resume sites with full privacy and control over their content.
+        </p>
+      </section>
+
+      <!-- Problem + Motivation -->
+      <section class="help-grid">
+        <article class="help-card">
+          <h3>Problem WEBIFY Solves</h3>
+          <ul>
+            <li>Most builders are subscription-based, bloated, or locked behind cloud accounts.</li>
+            <li>Static site generators often require coding knowledge and complex setups.</li>
+            <li>Privacy-friendly, no-code tools for simple personal sites are rare.</li>
+          </ul>
+        </article>
+
+        <article class="help-card">
+          <h3>Background & Motivation</h3>
+          <ul>
+            <li>Personal sites remain important for portfolios, resumes, and self-branding.</li>
+            <li>Many users want to avoid monthly payments and vendor lock‑in.</li>
+            <li>
+              WEBIFY follows a “free forever, support when you can” philosophy, with an optional community marketplace for paid templates and assets.
+            </li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- Objectives & Key Features -->
+      <section class="help-grid">
+        <article class="help-card">
+          <h3>Project Objectives</h3>
+          <ul>
+            <li>Provide a simple, no-code visual editor that runs fully in the browser.</li>
+            <li>Export clean static HTML, CSS, and JS ready for any static host.</li>
+            <li>Offer optional local AI assistance for writing and layout suggestions.</li>
+            <li>Respect user privacy with a local-first, offline-friendly design.</li>
+          </ul>
+        </article>
+
+        <article class="help-card">
+          <h3>Key Features (MVP)</h3>
+          <ul>
+            <li>
+              <strong>Drag-and-drop editor:</strong> Add text, images, buttons, headers, footers, and containers with live preview.
+            </li>
+            <li>
+              <strong>Local-first storage:</strong> Projects saved in your browser (IndexedDB / LocalStorage) with offline editing.
+            </li>
+            <li>
+              <strong>Static export:</strong> Generate ready-to-deploy HTML/CSS/JS for GitHub Pages, Netlify, and more.
+            </li>
+            <li>
+              <strong>Starter templates:</strong> Portfolio, resume, and landing-page layouts you can customize easily.
+            </li>
+            <li>
+              <strong>Community marketplace:</strong> Optional marketplace for sharing or purchasing templates and UI components.
+            </li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- Target Users & Quick How-To -->
+      <section class="help-grid">
+        <article class="help-card">
+          <h3>Who Is WEBIFY For?</h3>
+          <ul>
+            <li>Students and job seekers who need a quick, clean personal site.</li>
+            <li>Freelancers and designers who want lightweight, static portfolios.</li>
+            <li>Developers who prefer open-source tools and static outputs.</li>
+            <li>Privacy-conscious users avoiding cloud-only site builders.</li>
+            <li>Educators teaching web fundamentals with visual tools.</li>
+          </ul>
+        </article>
+
+        <article class="help-card">
+          <h3>Getting Started (Quick Steps)</h3>
+          <ol>
+            <li>Click <strong>Create New Project</strong> on the dashboard.</li>
+            <li>Drag text, images, buttons, and layout blocks into your canvas.</li>
+            <li>Customize colors, fonts, and spacing in the side panel.</li>
+            <li>Use the optional assistant for copywriting or layout suggestions.</li>
+            <li>Export static files and upload them to your preferred hosting provider.</li>
+          </ol>
+        </article>
+      </section>
+
+      <!-- Help CTA -->
+      <section class="help-card cta-card">
+        <div>
+          <h3>Need More Help?</h3>
+          <p>
+            Check the FAQ, join the community discussion, or open an issue in the repository 
+            to share feedback, report bugs, or request new features.
+          </p>
+        </div>
+        <div class="cta-actions">
+          <button class="cta-btn primary" onclick="openCommunity()">
+            <i data-lucide="users"></i>
+            <span>Open Community</span>
+          </button>
+          <button class="cta-btn ghost" onclick="openDocs()">
+            <i data-lucide="book-open-text"></i>
+            <span>View Docs</span>
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="../profile/profile.js"></script>
+  <script>
+    lucide.createIcons();
+
+    function openCommunity() {
+    
+    }
+
+    function openDocs() {
+    }
+  </script>
+</body>
+</html>

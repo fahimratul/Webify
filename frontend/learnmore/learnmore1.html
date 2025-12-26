@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How to Use WEBIFY</title>
+    <link rel="icon" type="image/png" href="../images/logo.png"/>
+    <link rel="stylesheet" href="learnmore.css" />
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <main class="howto-wrapper">
+    <header class="howto-hero">
+        <div class="title" onclick="homepage()">
+        <img src="../images/logo.png" alt="WEBIFY Logo" class="hero-logo" />
+        <h2>WEBIFY</h2>
+        </div>
+      <div>
+        <p class="eyebrow">Quick Start Guide</p>
+        <h1>How to Use WEBIFY</h1>
+        <p class="hero-subtitle">
+          Learn, step by step, how to go from an empty canvas to a live static website using WEBIFY’s
+          local-first, no-code editor.
+        </p>
+      </div>
+      <div class="hero-pill-group">
+        <span class="hero-pill">Local-only editing</span>
+        <span class="hero-pill">Static export ready</span>
+      </div>
+    </header>
+
+    <section class="howto-card steps-overview">
+      <h2>Workflow in 6 Simple Steps</h2>
+      <ol class="steps-list">
+        <li>Log in to WEBIFY</li>
+        <li>Create or open a project</li>
+        <li>Design your page with drag-and-drop blocks</li>
+        <li>Write and refine your content</li>
+        <li>Preview and fine‑tune the layout</li>
+        <li>Export static files and publish</li>
+      </ol>
+    </section>
+
+    <section class="howto-grid">
+      <article class="howto-card">
+        <h3>1. Create or Open a Project</h3>
+        <p>
+          From the dashboard, click <strong>Create New Project</strong> to start a fresh website, or choose an existing
+          project card to continue where you left off.
+        </p>
+        <p>
+          WEBIFY stores projects directly in your browser, so there is no login and no server-side account to manage.
+        </p>
+      </article>
+
+      <article class="howto-card">
+        <h3>2. Pick a Template or Start Blank</h3>
+        <p>
+          Choose a starter template such as a portfolio, resume, or landing page if you want a ready-made layout to tweak.
+        </p>
+        <p>
+          You can also start from a blank canvas for full control and build every section yourself using layout blocks.
+        </p>
+      </article>
+    </section>
+
+    <section class="howto-grid">
+      <article class="howto-card">
+        <h3>3. Design with Drag-and-Drop</h3>
+        <p>
+          Use the visual editor to drag text, images, buttons, headers, footers, and containers onto your canvas, then move
+          and resize them to shape your page.
+        </p>
+        <p>
+          Styling options let you adjust colors, fonts, spacing, and alignment without writing any HTML or CSS.
+        </p>
+      </article>
+
+      <article class="howto-card">
+        <h3>4. Write Content (Optionally with AI Help)</h3>
+        <p>
+          Click on any text block to edit headings, paragraphs, and buttons directly on the page, keeping everything in
+          context.
+        </p>
+        <p>
+          If enabled, the local LLM assistant can suggest copy, section ideas, or layout improvements while keeping all data
+          on your device.
+        </p>
+      </article>
+    </section>
+
+    <section class="howto-grid">
+      <article class="howto-card">
+        <h3>5. Preview Your Site</h3>
+        <p>
+          Use the preview mode to see the site without editor controls and quickly check how it feels as a real web page.
+        </p>
+        <p>
+          Switch between desktop and mobile breakpoints to make sure your layout and typography look good on different screen
+          sizes. [web:4]
+        </p>
+      </article>
+
+      <article class="howto-card">
+        <h3>6. Export Static Files</h3>
+        <p>
+          When you are satisfied, click <strong>Export</strong> to download a bundle of static HTML, CSS, and JavaScript files
+          that contain your site.
+        </p>
+        <p>
+          These files can be uploaded to any static hosting provider such as GitHub Pages or Netlify, making your site fast,
+          secure, and easy to host. [web:10]
+        </p>
+      </article>
+    </section>
+
+    <!-- Tips & FAQ mini section -->
+    <section class="howto-grid">
+      <article class="howto-card">
+        <h3>Tips for Effective Use</h3>
+        <ul class="bullet-list">
+          <li>Work in small sections: finish your hero, then portfolio, then contact.</li>
+          <li>Reuse blocks and styles to keep pages visually consistent.</li>
+          <li>Preview often and adjust spacing for clean, breathable layouts.</li>
+        </ul>
+      </article>
+
+      <article class="howto-card">
+        <h3>Common Questions</h3>
+        <ul class="bullet-list">
+          <li><strong>Do I need the internet?</strong> No, editing works offline; you only need it to download WEBIFY and upload your final site.</li>
+          <li><strong>Where is my data stored?</strong> All projects are stored locally in your browser storage until you export them.</li>
+          <li><strong>Can I edit the code?</strong> Yes, exported files are plain static assets you can open and tweak in any code editor. [web:4][web:10]</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- Bottom CTA -->
+    <section class="howto-card howto-cta">
+      <div>
+        <h3>Ready to Build Your First Page?</h3>
+        <p>
+          Open WEBIFY, create a new project, drag a few blocks, and publish a simple “Hello, world” site in under ten minutes.
+        </p>
+      </div>
+      <button class="cta-button" onclick="goToCreate()">
+        <i data-lucide="sparkles"></i>
+        <span>Start a New Project</span>
+      </button>
+    </section>
+  </main>
+
+  <script>
+    lucide.createIcons();
+    function homepage() {
+        window.location.href = "../index.html";
+    }
+    function goToCreate() {
+        window.location.href = "../auth/login.html";
+    }
+  </script>
+</body>
+</html>
