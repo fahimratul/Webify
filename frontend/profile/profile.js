@@ -217,7 +217,7 @@ function openHelp() {
 }
 
 function editProfile() {
-  window.location.href = "../profile/editprofile.html"; 
+  window.location.href = "../editprofile/editprofile.html"; 
 }
 
 function logout() {
