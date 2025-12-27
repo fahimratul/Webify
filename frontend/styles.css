@@ -30,6 +30,7 @@ body{
     align-items: center;
     justify-content: space-evenly;
     z-index: 1000;
+    backdrop-filter: blur(3px);
 }
 
 .navbar a {
@@ -904,4 +905,95 @@ footer li {
 .conncet-ul li:hover a span{
     opacity: 1;
     transform: scale(1) translateY(100%);
+}
+
+.ourteam{
+    width: 100vw;
+    height: auto;
+    margin-top: 10rem;
+    margin-bottom: 5rem;
+    text-align: center;
+}
+.ourteam h1{
+    font-size: 4.5rem;
+    margin: 0;
+    background: linear-gradient(114deg, var(--background-color) 10%, var(--primary-color) 90%);;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+}
+.teammember{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 4rem;
+}
+.member{
+    width: 250px;
+    height: 250px;
+    padding: 10px;
+    background-color: var(--dark-background-color);
+    border-radius: 18px;
+    position: relative; 
+    transition: all 0.3s ease;
+}
+
+.member img{
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    object-position: center;
+    transition: all 0.3s ease;
+    border-radius: 18px;
+    overflow: hidden;
+}
+.member h2{
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    margin: 0;
+    font-size: 2rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 4px 8px;
+    border-radius: 8px;
+    width: 240px;
+}
+.connectteam{
+    margin-top: 1rem;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.member i{
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    color: #0CA678;
+    font-size: 40px;
+    cursor: pointer;
+}
+.member:hover img{
+    height: 320px;
+}
+.member:hover h2{
+    bottom: 80px;
+    transition: all 0.3s ease;
+}   
+.member:hover .connectteam{
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+.member:hover{
+    height: 320px;
 }
