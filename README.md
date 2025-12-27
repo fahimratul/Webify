@@ -1,4 +1,5 @@
 ### Probable Architecture
+```
 /Webify
 /backend
 ├── /middleware
@@ -24,6 +25,7 @@
 │   └── package.json      <-- SolidJS dependencies
 │
 └── package.json          <-- Root settings to glue it all together
+```
 
 ### Storage Optimization Plan
 - Store images, videos somewhere else, not in mongo. Otherwise we will hit storage limit soon.
