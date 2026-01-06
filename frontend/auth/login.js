@@ -1,4 +1,10 @@
-// Notification Toast Function
+/**
+ * Notification Toast System
+ * Displays beautiful toast notifications with different types
+ * @param {string} message - The message to display
+ * @param {string} type - Type of notification: 'success', 'error', or 'warning'
+ * @param {string} title - Optional title for the notification
+ */
 function showNotification(message, type = "success", title = "") {
   const toast = document.getElementById("notification-toast");
 
@@ -54,7 +60,10 @@ function hideNotification() {
   toast.classList.remove("show");
 }
 
-// Tab Switching
+/**
+ * Tab Switching System
+ * Handles switching between login and signup forms
+ */
 const loginTab = document.getElementById("loginTab");
 const signupTab = document.getElementById("signupTab");
 const loginForm = document.getElementById("loginForm");

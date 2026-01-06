@@ -1,4 +1,10 @@
-// Notification Toast Function
+/**
+ * Dashboard Notification System
+ * Manages all dashboard notifications and alerts
+ * @param {string} message - Notification message
+ * @param {string} type - Type: 'success', 'error', 'warning'
+ * @param {string} title - Notification title
+ */
 function showNotification(message, type = "success", title = "") {
   const toast = document.getElementById("notification-toast");
 

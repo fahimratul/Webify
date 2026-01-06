@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Nico+Moji&family=Noto+Sans&family=Roboto:wght@500&display=swap");
 
+
 /* Reset and Base Styles */
 * {
     margin: 0;
@@ -61,6 +62,48 @@ body {
     }
 }
 
+@keyframes blob {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% center;
+    }
+
+    100% {
+        background-position: 200% center;
+    }
+}
+
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(236, 72, 153, 0.3),
+            0 0 40px rgba(236, 72, 153, 0.2),
+            0 0 60px rgba(236, 72, 153, 0.1);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(236, 72, 153, 0.5),
+            0 0 60px rgba(236, 72, 153, 0.3),
+            0 0 90px rgba(236, 72, 153, 0.2);
+    }
+}
+
 /* Main Container */
 .container {
     position: relative;
@@ -70,17 +113,43 @@ body {
     align-items: center;
     justify-content: center;
     padding: 2rem;
-    background-image: url('back.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: linear-gradient(135deg, #1e1b4b 0%, #581c87 50%, #9f1239 100%);
+    overflow: hidden;
 }
 
-/* Overlay */
+/* Overlay with animated blobs - matching auth style */
 .overlay {
     position: absolute;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.overlay::before,
+.overlay::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.7;
+    animation: blob 7s infinite ease-in-out;
+}
+
+.overlay::before {
+    top: -160px;
+    left: -160px;
+    width: 384px;
+    height: 384px;
+    background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+}
+
+.overlay::after {
+    bottom: -128px;
+    right: -80px;
+    width: 384px;
+    height: 384px;
+    background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%);
+    animation-delay: 2s;
 }
 
 /* Cards Container */
@@ -122,12 +191,13 @@ body {
 .left-card {
     width: 520px;
     height: 680px;
-    border-radius: 30px;
+    border-radius: 24px;
     overflow: hidden;
     background-image: url('https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=800&fit=crop');
     background-size: cover;
     background-position: center;
-    box-shadow: 20px 4px 8.9px 5px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     animation: slideInFromLeft 0.7s ease-out;
     position: relative;
     z-index: 2;
@@ -139,7 +209,7 @@ body {
     left: 3rem;
     top: 50%;
     transform: translateY(-50%);
-    background: linear-gradient(90deg, #FF1B8D 0%, #00D9FF 100%);
+    background: linear-gradient(90deg, #f472b6 0%, #c084fc 50%, #67e8f9 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -154,14 +224,17 @@ body {
 .right-card {
     width: 720px;
     height: 620px;
-    border-radius: 30px;
+    border-radius: 24px;
     margin-left: -180px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to bottom, #183b5d, #210e28);
-    box-shadow: 19px 1px 16.2px 7px rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     animation: slideInFromRight 0.7s ease-out 0.15s both;
     z-index: 1;
 }
@@ -215,48 +288,88 @@ body {
     color: white;
     font-size: 32px;
     font-family: 'Roboto', sans-serif;
-    font-weight: 500;
-    letter-spacing: 0.1px;
-    border: 2px solid white;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border: none;
     cursor: pointer;
     transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .login-btn {
-    background: rgba(155, 192, 234, 0.15);
+    background: linear-gradient(90deg, #ec4899 0%, #a855f7 50%, #9333ea 100%);
+    box-shadow: 0 10px 20px rgba(236, 72, 153, 0.3);
 }
 
 .login-btn:hover {
     transform: scale(1.05);
-    background: rgba(155, 192, 234, 0.30);
+    box-shadow: 0 15px 30px rgba(236, 72, 153, 0.4);
+}
+
+.login-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent);
+    animation: shimmer 3s infinite;
 }
 
 .join-btn {
-    background: transparent;
+    background: linear-gradient(90deg, #a855f7 0%, #22d3ee 50%, #06b6d4 100%);
+    box-shadow: 0 10px 20px rgba(34, 211, 238, 0.3);
 }
 
 .join-btn:hover {
     transform: scale(1.05);
-    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 30px rgba(34, 211, 238, 0.4);
+}
+
+.join-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent);
+    animation: shimmer 3s infinite;
+    animation-delay: 0.5s;
 }
 
 .btn:active {
-    transform: scale(0.95);
+    transform: scale(0.98);
 }
 
-/* Button Glow */
+/* Button Glow - Enhanced with auth colors */
 .button-glow {
     position: absolute;
-    inset: 0;
+    inset: -2px;
     border-radius: 62px;
     pointer-events: none;
-    box-shadow:
-        0px 0px 250px 0px #f5e58f,
-        0px 0px 250px 0px #f5e58f,
-        0px 0px 250px 0px #f5e58f,
-        0px 0px 147.638px 0px #f5e58f,
-        0px 0px 42.182px 0px #f5e58f,
-        0px 0px 21.091px 0px #f5e58f;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.login-btn .button-glow {
+    animation: pulseGlow 2s infinite;
+}
+
+.join-btn .button-glow {
+    animation: pulseGlow 2s infinite;
+    animation-delay: 1s;
+}
+
+.btn:hover .button-glow {
+    opacity: 1;
 }
 
 /* Button Text */
