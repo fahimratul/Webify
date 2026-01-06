@@ -186,7 +186,7 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
 const answerModal = document.getElementById("answerModal");
 const answerTitleEl = document.getElementById("answerQuestionTitle");
 const answerInputEl = document.getElementById("answerInput");
-const submitAnswerBtn = document.getElementById("submitAnswer");
+const submitQuestionBtn = document.getElementById("submitQuestion");
 
 let activeQuestionId = null;
 
@@ -203,19 +203,41 @@ function openAnswerModal(question) {
   answerModal.removeAttribute("hidden");
 }
 
-function closeAnswerModal() {
+function closeQuestionModal() {
   answerModal.setAttribute("hidden", "");
   activeQuestionId = null;
   showNotification("Answer submission cancelled.", "warning light", "Cancelled");
 }
 
 
-const isLoggedIn = sessionStorage.getItem("userEmail") !== null;
+const isLoggedIn = localStorage.getItem("isLoggedIn") === "true" ? true : false;
+  const currentUser = localStorage.getItem("currentUser");
+  const userData = JSON.parse(currentUser);
 
-function submitAnswer() {
+function submitQuestion() {
   if (isLoggedIn) {
-    closeAnswerModal();
-    showNotification("Your answer has been submitted successfully!", "success light", "Answer Submitted");
+    closeQuestionModal();
+    const questiontitile = document.getElementById("questionTitleInput").value;
+    const questiondetails = document.getElementById("questionInput").value;
+    const questiontags = tags;
+    if (!questiontitile || !questiondetails) {
+      showNotification("Please fill in all required fields.", "error light", "Submission Failed");
+      return;
+    }
+    questions.push({
+      id: questions.length + 1,
+      title: questiontitile,
+      excerpt: questiondetails.substring(0, 100) + "...",
+      tags: questiontags,
+      votes: 0,
+      answers: 0,
+      views: 0,
+      author: userData ? userData.name : "Anonymous",
+      askedAgo: "just now",
+      createdAt: Date.now() - 3 * 60 * 1000,
+    });
+    showNotification("Your question has been submitted successfully!", "success light", "Question Submitted");
+    render();
   } else {
     window.location.href = '../auth/login.html';
   }
@@ -223,7 +245,7 @@ function submitAnswer() {
 
 
 function isUserLoggedIn() {
-const userName = "John Doe"; // Replace with actual user name
+const userName = userData ? userData.name : ""; // Replace with actual user name
 
   if (isLoggedIn) {
     document.getElementById('loginLink').style.display = 'none';

@@ -347,6 +347,19 @@ signupForm.addEventListener("submit", (e) => {
     // Store email and name in sessionStorage for use across pages
     sessionStorage.setItem("userEmail", email);
     sessionStorage.setItem("userName", name);
+    demoUsers.push({
+      username: name,
+      password: password,
+      userData: {
+        name: name,
+        email: email,
+        avatar: "",
+        bio: "",
+        projects: 0,
+        templates: 0,
+        followers: 0,
+      },
+    });
 
     showNotification(
       "A new journey begins! Welcome to the community.",
