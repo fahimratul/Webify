@@ -9,8 +9,26 @@ import video_icon from '../assets/icons/video_icon.svg';
 import audio_icon from '../assets/icons/audio_icon.svg';
 import { PatternContent } from './PatternContent';
 import { createSignal } from 'solid-js';
+import { createDraggable } from "@thisbeyond/solid-dnd";
 
 const [activeTab, setActiveTab] = createSignal('block');
+
+const DraggableButton = (props) => {
+    const draggable = createDraggable(props.id);
+    return (
+        <button
+            ref={draggable.ref}
+            {...draggable.dragActivators}
+            class={props.class}
+            style={{
+                "touch-action": "none",
+                ...(draggable.isActive ? { opacity: 0.5 } : {})
+            }}
+        >
+            {props.children}
+        </button>
+    );
+};
 
 export function BlockContent(props) {
     return (
@@ -32,44 +50,44 @@ export function BlockContent(props) {
                 <div>
                     <span class={styles.label_span}>TEXT</span>
                     <div class={styles.text_items}>
-                        <button>
+                        <DraggableButton id="paragraph">
                             <img src={paragraph_icon} alt="paragraph" />
                             <span>Paragraph</span>
-                        </button>
+                        </DraggableButton>
 
-                        <button>
+                        <DraggableButton id="heading">
                             <img src={heading_icon} alt="heading" />
                             <span>Heading</span>
-                        </button>
+                        </DraggableButton>
 
-                        <button>
+                        <DraggableButton id="list">
                             <img src={list_icon} alt="list" />
                             <span>List </span>
-                        </button>
+                        </DraggableButton>
 
-                        <button>
+                        <DraggableButton id="table">
                             <img src={table_icon} alt="table" />
                             <span>Table</span>
-                        </button>
+                        </DraggableButton>
                     </div>
 
 
                     <span class={styles.label_span}>MEDIA</span>
                     <div class={styles.media_items}>
-                        <button>
+                        <DraggableButton id="image">
                             <img src={image_icon} alt="image" />
                             <span>Image</span>
-                        </button>
+                        </DraggableButton>
 
-                        <button>
+                        <DraggableButton id="audio">
                             <img src={audio_icon} alt="audio" />
                             <span>Audio</span>
-                        </button>
+                        </DraggableButton>
 
-                        <button>
+                        <DraggableButton id="video">
                             <img src={video_icon} alt="video" />
                             <span>Video</span>
-                        </button>
+                        </DraggableButton>
                     </div>
                 </div>
             )}
