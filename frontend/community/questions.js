@@ -10,9 +10,10 @@ const questions = [
     votes: 10,
     answers: 2,
     views: 310,
-    author: "Jakaria",
+    author: "Rahim",
     askedAgo: "3 min ago",
     createdAt: Date.now() - 3 * 60 * 1000,
+    avatar: "https://example.com/avatar1.png",
   },
   {
     id: 2,
@@ -24,9 +25,10 @@ const questions = [
     votes: 25,
     answers: 0,
     views: 860,
-    author: "Jakaria",
+    author: "Fahim",
     askedAgo: "18 min ago",
     createdAt: Date.now() - 18 * 60 * 1000,
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
   },
   {
     id: 3,
@@ -38,9 +40,10 @@ const questions = [
     votes: 7,
     answers: 1,
     views: 210,
-    author: "Jakaria",
+    author: "Abdullah",
     askedAgo: "1 hr ago",
     createdAt: Date.now() - 60 * 60 * 1000,
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
   },
   {
     id: 4,
@@ -55,6 +58,7 @@ const questions = [
     author: "Jakaria",
     askedAgo: "Yesterday",
     createdAt: Date.now() - 24 * 60 * 60 * 1000,
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
   },
 ];
 
@@ -89,14 +93,13 @@ function questionCard(q) {
         <p class="excerpt">${q.excerpt}</p>
         <div class="tags">${tags}</div>
         <div class="actions-row">
-          <span><i class="fa-regular fa-thumbs-up"></i> Vote</span>
-          <span><i class="fa-regular fa-eye"></i> Following</span>
-          <span><i class="fa-regular fa-thumbs-down"></i> Dislike</span>
-          <span><i class="fa-regular fa-comment"></i> Answer</span>
+          <span><i class="fa-regular fa-thumbs-up" id="vote-up-${q.id}" onclick="voteQuestion(${q.id}, 'up')"></i> Vote</span>
+          <span><i class="fa-regular fa-thumbs-down" id="vote-down-${q.id}" onclick="voteQuestion(${q.id}, 'down')"></i> Dislike</span>
+          <span><i class="fa-regular fa-comment" onclick="openAnswerModal(${q.id})"></i> Answer</span>
         </div>
       </div>
       <div class="user">
-        <div class="avatar">J</div>
+        <div class="avatar"><img src="${q.avatar}" alt="${q.author}'s avatar" /></div>
         <div>
           <div class="name">${q.author}</div>
           <div class="time">asked ${q.askedAgo}</div>
@@ -105,6 +108,43 @@ function questionCard(q) {
     </article>
   `;
 }
+
+function voteQuestion(id, type) {
+  const question = questions.find((q) => q.id === id);
+  if (question) {
+    if (type === "up") {
+      question.votes += 1;
+      render();
+      voteUpEl = document.getElementById(`vote-up-${id}`);
+      voteUpEl.classList.add("voted");
+      voteUpEl.setAttribute("disabled", "true");
+      voteUpEl.style.color = "green";
+    } else if (type === "down") {
+      question.votes -= 1;
+      render();
+      voteDownEl = document.getElementById(`vote-down-${id}`);
+      voteDownEl.classList.add("voted");
+      voteDownEl.setAttribute("disabled", "true");
+      voteDownEl.style.color = "red";
+    }
+    showNotification(
+      `You have ${type === "up" ? "upvoted" : "downvoted"} the question: "${question.title}"`,
+      "success light",
+      "Vote Recorded"
+    );
+  }
+}
+
+function openAnswerModal(id) {
+  const question = questions.find((q) => q.id === id);
+  if (question) {
+    activeQuestionId = question.id;
+    answerTitleEl.textContent = question.title;
+    answerInputEl.value = "";
+    answerModal.removeAttribute("hidden");
+  } 
+}
+
 
 function applyFilters(data) {
   let rows = [...data];
@@ -235,6 +275,7 @@ function submitQuestion() {
       author: userData ? userData.name : "Anonymous",
       askedAgo: "just now",
       createdAt: Date.now() - 3 * 60 * 1000,
+      avatar: userData ? userData.avatar : "https://example.com/default-avatar.png",
     });
     showNotification("Your question has been submitted successfully!", "success light", "Question Submitted");
     render();
@@ -251,7 +292,7 @@ const userName = userData ? userData.name : ""; // Replace with actual user name
     document.getElementById('loginLink').style.display = 'none';
     const userNameDiv = document.getElementById('userName');
     userNameDiv.style.display = 'flex';
-    userNameDiv.innerHTML = `<i class="fa-regular fa-user"></i> ${userName}`;
+    userNameDiv.innerHTML = `<img src="${userData.avatar}" alt="User Avatar" /> ${userName}`;
     return true;  
     }
   else {
