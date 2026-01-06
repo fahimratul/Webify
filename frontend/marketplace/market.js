@@ -34,12 +34,48 @@ const products = [
         type: 'paid',
         category: 'dashboard',
         image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop'
+    },
+    // ADDED: More products for better search testing
+    {
+        id: 4,
+        title: 'E-commerce Dashboard',
+        author: 'Design Pro',
+        rating: 4.6,
+        downloads: 1890,
+        likes: 432,
+        price: '$55',
+        type: 'paid',
+        category: 'dashboard',
+        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop'
+    },
+    {
+        id: 5,
+        title: 'Portfolio Template',
+        author: 'Creative Minds',
+        rating: 4.9,
+        downloads: 2567,
+        likes: 789,
+        type: 'free',
+        category: 'portfolio',
+        image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop'
+    },
+    {
+        id: 6,
+        title: 'Landing Page Kit',
+        author: 'Web Wizards',
+        rating: 4.8,
+        downloads: 3210,
+        likes: 921,
+        type: 'free',
+        category: 'webpage',
+        image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop'
     }
 ];
 
 // State
 let currentCategory = 'all';
 let currentType = 'all';
+let searchQuery = ''; // ADDED: New state variable for search
 
 // Render products function
 function renderProducts() {
@@ -52,8 +88,20 @@ function renderProducts() {
         
         const typeMatch = currentType === 'all' || product.category === currentType;
         
-        return categoryMatch && typeMatch;
+        // ADDED: Search filter logic
+        const searchMatch = searchQuery === '' || 
+            product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            product.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            product.category.toLowerCase().includes(searchQuery.toLowerCase());
+        
+        return categoryMatch && typeMatch && searchMatch; // CHANGED: Added searchMatch
     });
+
+    // ADDED: Show "no results" message if nothing found
+    if (filteredProducts.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #6b7280; font-size: 1.25rem;">No products found matching your criteria</div>';
+        return;
+    }
 
     grid.innerHTML = filteredProducts.map(function(product) {
         return '<div class="product-card">' +
@@ -109,6 +157,13 @@ function renderProducts() {
         '</div>';
     }).join('');
 }
+
+// ADDED: Search functionality - listens for input in search bar
+const searchInput = document.querySelector('.search-input');
+searchInput.addEventListener('input', function(e) {
+    searchQuery = e.target.value;
+    renderProducts();
+});
 
 // Category filter event listeners
 document.querySelectorAll('.filter-btn').forEach(function(btn) {
