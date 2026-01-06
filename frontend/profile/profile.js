@@ -234,6 +234,50 @@ function handleNavigation(section) {
   }
 }
 
+const sampleComponents = [
+    {
+        id: 1,
+        name: 'Modern Navbar',
+        category: 'navbar',
+        description: 'Clean navigation bar with logo',
+        html: '<nav class="navbar">\n  <div class="logo">MyBrand</div>\n  <ul class="nav-links">\n    <li><a href="#home">Home</a></li>\n    <li><a href="#about">About</a></li>\n    <li><a href="#projects">Projects</a></li>\n    <li><a href="#contact">Contact</a></li>\n  </ul>\n</nav>',
+        css: '.navbar {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 1rem 2rem;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  color: white;\n}\n\n.logo {\n  font-size: 1.5rem;\n  font-weight: bold;\n}\n\n.nav-links {\n  display: flex;\n  gap: 2rem;\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n\n.nav-links a {\n  color: white;\n  text-decoration: none;\n  transition: opacity 0.3s;\n}\n\n.nav-links a:hover {\n  opacity: 0.8;\n}'
+    },
+    {
+        id: 2,
+        name: 'Hero Section',
+        category: 'hero',
+        description: 'Eye-catching hero with CTA',
+        html: '<section class="hero">\n  <h1>Welcome to My Portfolio</h1>\n  <p>I create amazing web experiences</p>\n  <button class="cta-btn">View My Work</button>\n</section>',
+        css: '.hero {\n  text-align: center;\n  padding: 6rem 2rem;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  color: white;\n}\n\n.hero h1 {\n  font-size: 3rem;\n  margin-bottom: 1rem;\n  animation: fadeInUp 1s;\n}\n\n.hero p {\n  font-size: 1.5rem;\n  margin-bottom: 2rem;\n  opacity: 0.9;\n}\n\n.cta-btn {\n  padding: 1rem 2rem;\n  font-size: 1.1rem;\n  background: white;\n  color: #667eea;\n  border: none;\n  border-radius: 50px;\n  cursor: pointer;\n  transition: transform 0.3s;\n}\n\n.cta-btn:hover {\n  transform: scale(1.05);\n}\n\n@keyframes fadeInUp {\n  from {\n    opacity: 0;\n    transform: translateY(30px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}'
+    },
+    {
+        id: 3,
+        name: 'About Me Card',
+        category: 'about',
+        description: 'Profile card with bio',
+        html: '<section class="about">\n  <div class="about-card">\n    <div class="avatar">JD</div>\n    <h2>About Me</h2>\n    <p>Hi! I\'m a passionate developer who loves creating beautiful and functional websites. With expertise in modern web technologies, I turn ideas into reality.</p>\n  </div>\n</section>',
+        css: '.about {\n  padding: 4rem 2rem;\n  background: #f7fafc;\n  display: flex;\n  justify-content: center;\n}\n\n.about-card {\n  max-width: 600px;\n  background: white;\n  padding: 3rem;\n  border-radius: 15px;\n  box-shadow: 0 10px 30px rgba(0,0,0,0.1);\n  text-align: center;\n}\n\n.avatar {\n  width: 100px;\n  height: 100px;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  color: white;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 2rem;\n  font-weight: bold;\n  margin: 0 auto 2rem;\n}\n\n.about-card h2 {\n  margin-bottom: 1rem;\n  color: #2d3748;\n}\n\n.about-card p {\n  color: #4a5568;\n  line-height: 1.6;\n}'
+    },
+    {
+        id: 4,
+        name: 'Project Grid',
+        category: 'projects',
+        description: 'Grid layout for projects',
+        html: '<section class="projects">\n  <h2>My Projects</h2>\n  <div class="project-grid">\n    <div class="project-card">\n      <div class="project-img">🎨</div>\n      <h3>Project 1</h3>\n      <p>Amazing web application</p>\n    </div>\n    <div class="project-card">\n      <div class="project-img">🚀</div>\n      <h3>Project 2</h3>\n      <p>Mobile-first design</p>\n    </div>\n    <div class="project-card">\n      <div class="project-img">💡</div>\n      <h3>Project 3</h3>\n      <p>Innovative solution</p>\n    </div>\n  </div>\n</section>',
+        css: '.projects {\n  padding: 4rem 2rem;\n  max-width: 1200px;\n  margin: 0 auto;\n}\n\n.projects h2 {\n  text-align: center;\n  margin-bottom: 3rem;\n  font-size: 2.5rem;\n  color: #2d3748;\n}\n\n.project-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));\n  gap: 2rem;\n}\n\n.project-card {\n  background: white;\n  padding: 2rem;\n  border-radius: 15px;\n  box-shadow: 0 5px 15px rgba(0,0,0,0.1);\n  transition: transform 0.3s;\n  text-align: center;\n}\n\n.project-card:hover {\n  transform: translateY(-10px);\n}\n\n.project-img {\n  font-size: 4rem;\n  margin-bottom: 1rem;\n}\n\n.project-card h3 {\n  margin-bottom: 0.5rem;\n  color: #2d3748;\n}\n\n.project-card p {\n  color: #718096;\n}'
+    },
+    {
+        id: 5,
+        name: 'Contact Footer',
+        category: 'footer',
+        description: 'Footer with contact info',
+        html: '<footer class="footer">\n  <div class="footer-content">\n    <h3>Get In Touch</h3>\n    <p>email@example.com</p>\n    <div class="social-links">\n      <a href="#">LinkedIn</a>\n      <a href="#">GitHub</a>\n      <a href="#">Twitter</a>\n    </div>\n    <p class="copyright">© 2024 My Portfolio. All rights reserved.</p>\n  </div>\n</footer>',
+        css: '.footer {\n  background: #2d3748;\n  color: white;\n  padding: 3rem 2rem;\n  text-align: center;\n}\n\n.footer-content {\n  max-width: 600px;\n  margin: 0 auto;\n}\n\n.footer h3 {\n  margin-bottom: 1rem;\n  font-size: 1.8rem;\n}\n\n.footer p {\n  margin-bottom: 1rem;\n  opacity: 0.9;\n}\n\n.social-links {\n  display: flex;\n  gap: 2rem;\n  justify-content: center;\n  margin: 2rem 0;\n}\n\n.social-links a {\n  color: white;\n  text-decoration: none;\n  padding: 0.5rem 1rem;\n  border: 2px solid white;\n  border-radius: 5px;\n  transition: all 0.3s;\n}\n\n.social-links a:hover {\n  background: white;\n  color: #2d3748;\n}\n\n.copyright {\n  margin-top: 2rem;\n  font-size: 0.9rem;\n  opacity: 0.7;\n}'
+    }
+];
+
+let components = sampleComponents; // Initialize with sample components
 // User-specific notifications data
 const userNotifications = {
   "tamim@webify.com": [
@@ -341,6 +385,115 @@ const userNotifications = {
     },
   ],
 };
+
+// Library state
+let currentLibraryCategory = 'all';
+let librarySearchQuery = '';
+
+function renderLibrary() {
+    const grid = document.getElementById('componentGrid');
+    if (!grid) return;
+    
+    // Filter components
+    const filteredComponents = components.filter(component => {
+        const categoryMatch = currentLibraryCategory === 'all' || component.category === currentLibraryCategory;
+        const searchMatch = !librarySearchQuery || 
+            component.name.toLowerCase().includes(librarySearchQuery.toLowerCase()) ||
+            component.description.toLowerCase().includes(librarySearchQuery.toLowerCase()) ||
+            component.category.toLowerCase().includes(librarySearchQuery.toLowerCase());
+        
+        return categoryMatch && searchMatch;
+    });
+    
+    // Clear grid
+    grid.innerHTML = '';
+    
+    // Show no results message if needed
+    if (filteredComponents.length === 0) {
+        grid.innerHTML = `
+            <div class="no-results">
+                <svg class="no-results-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <h3>No components found</h3>
+                <p>Try searching with different keywords or browse our categories</p>
+                <button class="btn-clear-library" onclick="clearLibrarySearch()">Clear Search</button>
+            </div>
+        `;
+        return;
+    }
+    
+    // Render filtered components
+    filteredComponents.forEach(component => {
+        const card = document.createElement('div');
+        card.className = 'component-card';
+        
+        const previewHTML = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    * { margin: 0; padding: 0; box-sizing: border-box; }
+                    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+                    ${component.css}
+                </style>
+            </head>
+            <body>${component.html}</body>
+            </html>
+        `;
+        
+        card.innerHTML = `
+            <div class="component-preview">
+                <div class="preview-overlay">
+                    <button class="preview-btn" onclick="previewComponent(${component.id})">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </button>
+                </div>
+                <iframe srcdoc="${previewHTML.replace(/"/g, '&quot;')}" sandbox="allow-same-origin"></iframe>
+            </div>
+            <div class="component-info">
+                <div class="component-header">
+                    <div class="component-name">${component.name}</div>
+                    <span class="component-category">${component.category}</span>
+                </div>
+                <p class="component-description">${component.description}</p>
+            </div>
+        `;
+        
+        grid.appendChild(card);
+    });
+}
+
+function clearLibrarySearch() {
+    const searchInput = document.getElementById('librarySearch');
+    if (searchInput) {
+        searchInput.value = '';
+        librarySearchQuery = '';
+    }
+    currentLibraryCategory = 'all';
+    
+    // Reset active filter button
+    document.querySelectorAll('.library-filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.category === 'all') {
+            btn.classList.add('active');
+        }
+    });
+    
+    renderLibrary();
+}
+
+function previewComponent(componentId) {
+    const component = components.find(c => c.id === componentId);
+    if (!component) return;
+    
+    showNotification(`Previewing: ${component.name}`, 'success', 'Component Preview');
+    localStorage.setItem('previewComponent', JSON.stringify(component));
+    location.href = '../demo/preview.html';
+}
 
 // Default notifications for users not in the system
 const defaultNotifications = [
@@ -634,26 +787,6 @@ const mockProjects = [
   },
 ];
 
-const mockTemplates = [
-  {
-    id: 1,
-    name: "Scrolling Effect",
-    description: "getAnimations() demo",
-    category: "Animation",
-  },
-  {
-    id: 2,
-    name: "Scrolling Effect",
-    description: "getAnimations() demo",
-    category: "Animation",
-  },
-  {
-    id: 3,
-    name: "Scrolling Effect",
-    description: "getAnimations() demo",
-    category: "Animation",
-  },
-];
 
 // Function to dynamically load projects (can be connected to IndexedDB)
 function loadProjects() {
@@ -684,6 +817,36 @@ console.log("Ready to build amazing websites! 🚀");
 
 document.addEventListener("DOMContentLoaded", () => {
   const userEmail = sessionStorage.getItem("userEmail");
+  renderLibrary();
+  
+  // Setup library search
+  const librarySearchInput = document.getElementById('librarySearch');
+  if (librarySearchInput) {
+    librarySearchInput.addEventListener('input', (e) => {
+      librarySearchQuery = e.target.value.trim();
+      renderLibrary();
+    });
+    
+    // Clear search on Escape key
+    librarySearchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        clearLibrarySearch();
+      }
+    });
+  }
+  
+  // Setup library filter buttons
+  document.querySelectorAll('.library-filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.library-filter-btn').forEach(b => {
+        b.classList.remove('active');
+      });
+      this.classList.add('active');
+      currentLibraryCategory = this.dataset.category;
+      renderLibrary();
+    });
+  });
+  
   if (userEmail) {
     console.log("User is logged in with email:", userEmail);
     // Use the email to display user info, load profile data, etc.
@@ -700,3 +863,26 @@ function userdetails() {
 }
 
 userdetails();
+
+
+function showtemplate(){
+  const templateDiv = document.getElementById("template");
+  templateDiv.style.display = "block";
+  const lastSavedSection = document.getElementById("lastSavedSection");
+  lastSavedSection.style.display = "none";
+  const templateBtn = document.getElementById("templateTab");
+  templateBtn.classList.add("active");
+  const lastSavedBtn = document.getElementById("designTab");
+  lastSavedBtn.classList.remove("active");
+}
+
+function showdesign(){
+  const templateDiv = document.getElementById("template");
+  templateDiv.style.display = "none";
+  const lastSavedSection = document.getElementById("lastSavedSection");
+  lastSavedSection.style.display = "block";
+  const templateBtn = document.getElementById("templateTab");
+  templateBtn.classList.remove("active");
+  const lastSavedBtn = document.getElementById("designTab");
+  lastSavedBtn.classList.add("active");
+}

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEBIFY - Code Editor</title>
+    <link rel="stylesheet" href="editor.css">
+    <!-- CodeMirror for Code Editing -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="editor-header">
+        <div class="header-left">
+            <div class="editor-logo">
+                <span class="logo-icon"><img src="../images/logo.png" alt=""></span>
+                <span class="logo-text">WEBIFY CODE EDITOR</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="header-btn" onclick="saveCode()" title="Save Code">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                </svg>
+                Save
+            </button>
+            <button class="header-btn" onclick="resetCode()" title="Reset Code">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Reset
+            </button>
+            <button class="header-btn info-toggle" onclick="toggleInfo()" title="Toggle Info">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Info
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="editor-container">
+        <!-- Editor Section -->
+        <div class="editor-section">
+            <!-- Tabs -->
+            <div class="editor-tabs">
+                <button class="tab-btn active" data-tab="html">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                        <text x="2" y="18" font-size="16" font-weight="bold">HTML</text>
+                    </svg>
+                    HTML
+                </button>
+                <button class="tab-btn" data-tab="css">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                        <text x="2" y="18" font-size="16" font-weight="bold">CSS</text>
+                    </svg>
+                    CSS
+                </button>
+            </div>
+
+            <!-- Editor Panes -->
+            <div class="editor-panes">
+                <!-- HTML Editor -->
+                <div class="editor-pane active" data-tab="html">
+                    <div class="pane-header">
+                        <span class="pane-title">HTML</span>
+                        <button class="pane-btn" onclick="expandPane('html')" title="Expand">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6v12h12v-6m0-6h6v6m0-6l-6 6"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <textarea id="htmlEditor"></textarea>
+                </div>
+
+                <!-- CSS Editor -->
+                <div class="editor-pane" data-tab="css">
+                    <div class="pane-header">
+                        <span class="pane-title">CSS</span>
+                        <button class="pane-btn" onclick="expandPane('css')" title="Expand">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6v12h12v-6m0-6h6v6m0-6l-6 6"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <textarea id="cssEditor"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview Section -->
+        <div class="preview-section">
+            <div class="preview-header">
+                <span class="preview-title">Live Preview</span>
+                <button class="preview-refresh-btn" onclick="refreshPreview()" title="Refresh Preview">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                </button>
+            </div>
+            <iframe id="previewFrame" class="preview-frame"></iframe>
+        </div>
+    </div>
+
+    <!-- Info Panel (Hidden by default) -->
+    <div class="info-panel" id="infoPanel">
+        <div class="info-header">
+            <h3>Editor Information</h3>
+            <button class="info-close" onclick="toggleInfo()">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div class="info-content">
+            <section class="info-section">
+                <h4>📝 How to Use</h4>
+                <ul>
+                    <li>Write your HTML code in the HTML tab</li>
+                    <li>Add CSS styling in the CSS tab</li>
+                    <li>See live preview on the right side</li>
+                    <li>Changes update instantly</li>
+                </ul>
+            </section>
+            <section class="info-section">
+                <h4>⌨️ Keyboard Shortcuts</h4>
+                <ul>
+                    <li><code>Ctrl/Cmd + S</code> - Save Code</li>
+                    <li><code>Tab</code> - Indent Code</li>
+                    <li><code>Ctrl/Cmd + /</code> - Comment/Uncomment</li>
+                </ul>
+            </section>
+            <section class="info-section">
+                <h4>📚 Features</h4>
+                <ul>
+                    <li>Syntax Highlighting</li>
+                    <li>Auto-indentation</li>
+                    <li>Live Preview</li>
+                    <li>Code Formatting</li>
+                    <li>Save to LocalStorage</li>
+                </ul>
+            </section>
+            <section class="info-section">
+                <h4>💡 Tips</h4>
+                <ul>
+                    <li>Your code is auto-saved to browser storage</li>
+                    <li>Press Refresh button to reload preview</li>
+                    <li>Use Expand button for fullscreen editing</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification-toast" class="notification-toast"></div>
+
+    <script src="editor.js"></script>
+</body>
+
+</html>
