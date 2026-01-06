@@ -557,7 +557,7 @@ function editProfile() {
 }
 
 function openMarketplace() {
-  window.location.href = "../marketplace/marketplace.html";
+  window.location.href = "../marketplace/market.html";
 }
 function openNotification() {
   console.log("Opening notifications...");
