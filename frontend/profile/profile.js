@@ -212,8 +212,7 @@ function handleNavigation(section) {
   // Handle Create button - redirect to builder
   if (section === "create") {
     console.log("Opening website builder...");
-    // TODO: Update this URL when builder is ready
-    window.location.href = "https://grapesjs.com/demo.html"; // Placeholder demo builder
+    location.href = "../demo/builder.html";
     return;
   }
 
@@ -659,7 +658,7 @@ function createNewProject() {
   console.log("Creating new project...");
   showNotification("Creating a new project. Wait to be redirected...", "success", "New Project");
   setTimeout(() => {
-    window.location.href = "../demo/builder.html";
+    location.href = "../demo/builder.html";
   }, 1500); 
 }
 
@@ -693,7 +692,7 @@ function viewTemplate(templateId) {
   // or open it in the editor
 }
 function openBuilder() {
-  window.location.href = "../demo/builder.html";
+  location.href = "../demo/builder.html";
 }
 // Profile dropdown menu actions
 function openCommunity() {

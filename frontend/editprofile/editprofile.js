@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (section === "create") {
         console.log("Opening website builder...");
         // TODO: Update this URL when builder is ready
-        window.location.href = "https://grapesjs.com/demo.html"; // Placeholder demo builder
+        window.location.href = "../demo/builder.html";
         return;
       }
 
