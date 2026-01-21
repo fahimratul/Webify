@@ -37,7 +37,7 @@ p {
 };
 
 
-
+let defaultEditorState = { ...editorState };
 
 // Initialize CodeMirror Editors
 let htmlEditor, cssEditor;
@@ -172,9 +172,30 @@ function saveCode() {
     editorState.css = cssEditor.getValue();
 
     // Save to localStorage
-    localStorage.setItem('webifyEditorCode', JSON.stringify(editorState));
-
-    // Show notification
+    const htmlContent = `<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Templete</title>
+            <style>
+                ${editorState.css}
+            </style>
+        </head>
+        <body>
+            ${editorState.html}
+        </body>
+        </html>`;
+    
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'template.html';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
     showNotification('Code saved to browser storage!', 'success');
 }
 
@@ -192,40 +213,7 @@ function loadSavedCode() {
 
 function resetCode() {
     if (confirm('Are you sure you want to reset all code? This cannot be undone.')) {
-        editorState.html = '<h1>Welcome to WEBIFY Code Editor!</h1>\n<p>Start editing your HTML code here.</p>\n<button class="btn">Click Me</button>';
-        editorState.css = `h1 {
-  color: #667eea;
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-p {
-  color: #666;
-  font-size: 1.1rem;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.btn {
-  display: block;
-  margin: 0 auto;
-  padding: 0.75rem 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-}`;
-
+        editorState = { ...defaultEditorState };
         htmlEditor.setValue(editorState.html);
         cssEditor.setValue(editorState.css);
         updatePreview();

@@ -594,7 +594,11 @@ function downloadPreview() {
 
 function buyNow() {
     if (!currentPreviewProduct) return;
-    
+    if(!isLoggedIn) {
+        showNotification('Please log in to proceed with the purchase.', 'error');
+        location.href ='../login2/index.html';
+        return;
+    }
     const product = currentPreviewProduct;
     closePreviewModal();
     openPaymentModal(product);
