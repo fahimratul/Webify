@@ -14,10 +14,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(__dirname, ".env") });
 const app = express();
 
-console.log('🚀 Starting Webify server...');
-console.log('📁 __dirname:', __dirname);
-console.log('🔑 SESSION_SECRET exists:', !!process.env.SESSION_SECRET);
-console.log('🗄️ MONGODB_URI exists:', !!process.env.MONGODB_URI);
+console.log("🚀 Starting Webify server...");
+console.log("📁 __dirname:", __dirname);
+console.log("🔑 SESSION_SECRET exists:", !!process.env.SESSION_SECRET);
+console.log("🗄️ MONGODB_URI exists:", !!process.env.MONGODB_URI);
 
 // 1. Connect to MongoDB Atlas
 connectDB();
@@ -71,7 +71,9 @@ const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.status(401).json({ error: "You must be logged in to perform this action" });
+  res
+    .status(401)
+    .json({ error: "You must be logged in to perform this action" });
 };
 
 // Use Community Routes
@@ -81,8 +83,8 @@ app.use("/api", communityRoutes);
 app.use("/api/marketplace", marketplaceRoutes);
 
 // Import community routes
-import questionRoutes from './routes/questions.js';
-import answerRoutes from './routes/answers.js';
+import questionRoutes from "./routes/questions.js";
+import answerRoutes from "./routes/answers.js";
 
 // Signup Route
 app.post("/api/signup", async (req, res) => {
@@ -99,12 +101,14 @@ app.post("/api/signup", async (req, res) => {
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ error: "Please enter a valid email address" });
+      return res
+        .status(400)
+        .json({ error: "Please enter a valid email address" });
     }
 
     // Check if user already exists (username or email)
     const existingUser = await User.findOne({
-      $or: [{ username }, { email: email.toLowerCase() }]
+      $or: [{ username }, { email: email.toLowerCase() }],
     });
     if (existingUser) {
       if (existingUser.username === username) {
@@ -119,7 +123,7 @@ app.post("/api/signup", async (req, res) => {
       username,
       email: email.toLowerCase(),
       password,
-      emailVerified: false
+      emailVerified: false,
     };
 
     const newUser = new User(userData);
@@ -135,8 +139,8 @@ app.post("/api/signup", async (req, res) => {
 
     const mailOptions = {
       to: newUser.email,
-      from: process.env.EMAIL_USER || 'noreply@webify.com',
-      subject: 'Verify Your Email - Welcome to Webify!',
+      from: process.env.EMAIL_USER || "noreply@webify.com",
+      subject: "Verify Your Email - Welcome to Webify!",
       text: `Welcome to Webify!\n\nPlease verify your email address by clicking the following link:\n\n${verificationURL}\n\nThis verification link will expire in 24 hours.\n\nIf you didn't create an account on Webify, please ignore this email.`,
       html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">Welcome to Webify!</h2>
@@ -150,12 +154,15 @@ app.post("/api/signup", async (req, res) => {
           <p style="color: #888;">This verification link will expire in 24 hours.</p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
           <p style="color: #888; font-size: 12px;">If you didn't create an account on Webify, please ignore this email.</p>
-        </div>`
+        </div>`,
     };
 
     try {
       const result = await transporter.sendMail(mailOptions);
-      console.log("📧 Email verification email sent successfully:", result.messageId);
+      console.log(
+        "📧 Email verification email sent successfully:",
+        result.messageId,
+      );
     } catch (emailError) {
       console.error("❌ Email sending failed:", emailError);
       console.error("Error code:", emailError.code);
@@ -165,12 +172,13 @@ app.post("/api/signup", async (req, res) => {
     // Return success without auto-login
     res.json({
       success: true,
-      message: "Account created successfully! Please check your email and click the verification link before logging in.",
+      message:
+        "Account created successfully! Please check your email and click the verification link before logging in.",
       user: {
         username: newUser.username,
         email: newUser.email,
-        emailVerified: false
-      }
+        emailVerified: false,
+      },
     });
   } catch (error) {
     console.error("Signup error:", error);
@@ -193,8 +201,9 @@ app.post("/api/login", (req, res, next) => {
     // Check if email is verified
     if (!user.emailVerified) {
       return res.status(403).json({
-        error: "Please verify your email address before logging in. Check your inbox for the verification link.",
-        emailVerificationRequired: true
+        error:
+          "Please verify your email address before logging in. Check your inbox for the verification link.",
+        emailVerificationRequired: true,
       });
     }
 
@@ -224,9 +233,13 @@ app.get("/api/check-auth", (req, res) => {
 
 // Email transporter configuration
 const createEmailTransporter = () => {
-  if (process.env.EMAIL_SERVICE && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+  if (
+    process.env.EMAIL_SERVICE &&
+    process.env.EMAIL_USER &&
+    process.env.EMAIL_PASS
+  ) {
     const config = {
-      host: 'smtp.gmail.com',
+      host: "smtp.gmail.com",
       port: 465,
       secure: true, // true for 465, false for other ports
       // requireTLS: true,
@@ -238,14 +251,16 @@ const createEmailTransporter = () => {
       debug: true,
     };
 
-    console.log('🔧 Email transporter configured for Gmail');
-    console.log('📧 Email user:', process.env.EMAIL_USER);
+    console.log("🔧 Email transporter configured for Gmail");
+    console.log("📧 Email user:", process.env.EMAIL_USER);
 
     return nodemailer.createTransport(config);
   }
 
   // Fallback to console logging if email not configured
-  console.warn('⚠️ Email not configured! EMAIL_SERVICE, EMAIL_USER, or EMAIL_PASS is missing.');
+  console.warn(
+    "⚠️ Email not configured! EMAIL_SERVICE, EMAIL_USER, or EMAIL_PASS is missing.",
+  );
   return {
     sendMail: (options) => {
       console.log("📧 Email would be sent with the following details:");
@@ -253,8 +268,8 @@ const createEmailTransporter = () => {
       console.log("Subject:", options.subject);
       console.log("Text:", options.text);
       console.log("HTML:", options.html);
-      return Promise.resolve({ messageId: 'console-log-id' });
-    }
+      return Promise.resolve({ messageId: "console-log-id" });
+    },
   };
 };
 
@@ -276,7 +291,8 @@ app.post("/api/forgot-password", async (req, res) => {
       // Don't reveal if user exists or not for security
       return res.json({
         success: true,
-        message: "If an account with that email exists, a password reset link has been sent."
+        message:
+          "If an account with that email exists, a password reset link has been sent.",
       });
     }
 
@@ -292,9 +308,10 @@ app.post("/api/forgot-password", async (req, res) => {
     // Email content
     const mailOptions = {
       to: user.email,
-      from: process.env.EMAIL_USER || 'noreply@webify.com',
-      subject: 'Password Reset Request - Webify',
-      text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+      from: process.env.EMAIL_USER || "noreply@webify.com",
+      subject: "Password Reset Request - Webify",
+      text:
+        `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
         `Please click on the following link, or paste this into your browser to complete the process within 10 minutes:\n\n` +
         `${resetURL}\n\n` +
         `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
@@ -310,12 +327,15 @@ app.post("/api/forgot-password", async (req, res) => {
           <p>If you did not request this, please ignore this email.</p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;"> 
           <p style="color: #888; font-size: 12px;">This is an automated message from Webify.</p>
-        </div>`
+        </div>`,
     };
 
     try {
       const result = await transporter.sendMail(mailOptions);
-      console.log("📧 Password reset email sent successfully:", result.messageId);
+      console.log(
+        "📧 Password reset email sent successfully:",
+        result.messageId,
+      );
     } catch (emailError) {
       console.error("❌ Password reset email failed:", emailError);
       console.error("Error code:", emailError.code);
@@ -325,16 +345,18 @@ app.post("/api/forgot-password", async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "If an account with that email exists, a password reset link has been sent."
+      message:
+        "If an account with that email exists, a password reset link has been sent.",
     });
-
   } catch (error) {
     console.error("Forgot password error:", error);
 
     // Provide more specific error messages for debugging
-    if (error.code === 'EAUTH') {
-      console.error("❌ Gmail authentication failed. Check EMAIL_USER and EMAIL_PASS in .env file");
-    } else if (error.code === 'ESOCKET') {
+    if (error.code === "EAUTH") {
+      console.error(
+        "❌ Gmail authentication failed. Check EMAIL_USER and EMAIL_PASS in .env file",
+      );
+    } else if (error.code === "ESOCKET") {
       console.error("❌ Network error. Check internet connection");
     } else {
       console.error("❌ Unexpected error:", error.message);
@@ -354,14 +376,18 @@ app.post("/api/reset-password", async (req, res) => {
     }
 
     if (password.length < 6) {
-      return res.status(400).json({ error: "Password must be at least 6 characters long" });
+      return res
+        .status(400)
+        .json({ error: "Password must be at least 6 characters long" });
     }
 
     // Find user by valid reset token
     const user = await User.findByPasswordResetToken(token);
 
     if (!user) {
-      return res.status(400).json({ error: "Password reset token is invalid or has expired" });
+      return res
+        .status(400)
+        .json({ error: "Password reset token is invalid or has expired" });
     }
 
     // Set new password
@@ -373,9 +399,9 @@ app.post("/api/reset-password", async (req, res) => {
 
     res.json({
       success: true,
-      message: "Your password has been reset successfully! You can now login with your new password."
+      message:
+        "Your password has been reset successfully! You can now login with your new password.",
     });
-
   } catch (error) {
     console.error("Reset password error:", error);
     res.status(500).json({ error: "Failed to reset password" });
@@ -397,7 +423,9 @@ app.post("/api/verify-email", async (req, res) => {
     const user = await User.findByEmailVerificationToken(token);
 
     if (!user) {
-      return res.status(400).json({ error: "Email verification token is invalid or has expired" });
+      return res
+        .status(400)
+        .json({ error: "Email verification token is invalid or has expired" });
     }
 
     // Mark email as verified
@@ -409,9 +437,9 @@ app.post("/api/verify-email", async (req, res) => {
 
     res.json({
       success: true,
-      message: "Your email has been verified successfully! You can now login to your account."
+      message:
+        "Your email has been verified successfully! You can now login to your account.",
     });
-
   } catch (error) {
     console.error("Email verification error:", error);
     res.status(500).json({ error: "Failed to verify email" });
@@ -434,7 +462,8 @@ app.post("/api/resend-verification", async (req, res) => {
       // Don't reveal if user exists or not for security
       return res.json({
         success: true,
-        message: "If an account with that email exists and is unverified, a new verification email has been sent."
+        message:
+          "If an account with that email exists and is unverified, a new verification email has been sent.",
       });
     }
 
@@ -453,8 +482,8 @@ app.post("/api/resend-verification", async (req, res) => {
 
     const mailOptions = {
       to: user.email,
-      from: process.env.EMAIL_USER || 'noreply@webify.com',
-      subject: 'Verify Your Email - Webify',
+      from: process.env.EMAIL_USER || "noreply@webify.com",
+      subject: "Verify Your Email - Webify",
       text: `Please verify your email address by clicking the following link:\n\n${verificationURL}\n\nThis verification link will expire in 24 hours.`,
       html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">Email Verification</h2>
@@ -465,12 +494,15 @@ app.post("/api/resend-verification", async (req, res) => {
           <p>Or copy and paste this link into your browser:</p>
           <p style="word-break: break-all; color: #666;">${verificationURL}</p>
           <p style="color: #888;">This verification link will expire in 24 hours.</p>
-        </div>`
+        </div>`,
     };
 
     try {
       const result = await transporter.sendMail(mailOptions);
-      console.log("📧 Email verification resent successfully:", result.messageId);
+      console.log(
+        "📧 Email verification resent successfully:",
+        result.messageId,
+      );
     } catch (emailError) {
       console.error("❌ Verification email resend failed:", emailError);
       console.error("Error code:", emailError.code);
@@ -480,9 +512,9 @@ app.post("/api/resend-verification", async (req, res) => {
 
     res.json({
       success: true,
-      message: "If an account with that email exists and is unverified, a new verification email has been sent."
+      message:
+        "If an account with that email exists and is unverified, a new verification email has been sent.",
     });
-
   } catch (error) {
     console.error("Resend verification error:", error);
     res.status(500).json({ error: "Failed to resend verification email" });
@@ -501,14 +533,14 @@ app.put("/api/profile", isAuthenticated, async (req, res) => {
     if (email !== undefined) updateData.email = email;
     if (bio !== undefined) updateData.bio = bio;
     if (phone !== undefined) updateData.phoneNumber = phone;
-    if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
+    if (profilePicture !== undefined)
+      updateData.profilePicture = profilePicture;
 
     // Update user in database
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      updateData,
-      { new: true, runValidators: true }
-    ).select('-password');
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true,
+    }).select("-password");
 
     if (!updatedUser) {
       return res.status(404).json({ error: "User not found" });
@@ -517,7 +549,7 @@ app.put("/api/profile", isAuthenticated, async (req, res) => {
     res.json({
       success: true,
       message: "Profile updated successfully",
-      user: updatedUser
+      user: updatedUser,
     });
   } catch (error) {
     console.error("Profile update error:", error);
@@ -528,7 +560,7 @@ app.put("/api/profile", isAuthenticated, async (req, res) => {
 // Get current user profile
 app.get("/api/profile", isAuthenticated, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).select('-password');
+    const user = await User.findById(req.user._id).select("-password");
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -544,13 +576,13 @@ app.get("/api/test", (req, res) => {
   res.json({
     message: "Server is running updated code!",
     timestamp: new Date().toISOString(),
-    version: "v2.0"
+    version: "v2.0",
   });
 });
 
 // Community Routes
-app.use('/api/questions', questionRoutes);
-app.use('/api/answers', answerRoutes);
+app.use("/api/questions", questionRoutes);
+app.use("/api/answers", answerRoutes);
 
 // Builder SPA Routing
 app.get(/^\/builder(\/.*)?$/, (req, res) => {
@@ -566,5 +598,5 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`✅ Server running on: http://localhost:${PORT}`);
-  console.log('🌐 Ready to accept connections!');
+  console.log("🌐 Ready to accept connections!");
 });

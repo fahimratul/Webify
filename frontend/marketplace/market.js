@@ -4,18 +4,19 @@
 
 // Fallback product data (used when backend has no templates)
 const fallbackProducts = [
-    {
-        id: 1,
-        title: 'Modern Dashboard UI Kit',
-        author: 'Sarah Design',
-        rating: 4.8,
-        downloads: 1234,
-        likes: 523,
-        price: '41',
-        type: 'paid',
-        category: 'dashboard',
-        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
-        html: `
+  {
+    id: 1,
+    title: "Modern Dashboard UI Kit",
+    author: "Sarah Design",
+    rating: 4.8,
+    downloads: 1234,
+    likes: 523,
+    price: "41",
+    type: "paid",
+    category: "dashboard",
+    image:
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
+    html: `
             <div class="dashboard">
                 <header class="dashboard-header">
                     <h1>Dashboard</h1>
@@ -51,7 +52,7 @@ const fallbackProducts = [
                 </div>
             </div>
         `,
-        css: `
+    css: `
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; }
             .dashboard { height: 100vh; display: flex; flex-direction: column; }
@@ -68,19 +69,20 @@ const fallbackProducts = [
             .card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
             .card h3 { color: #666; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 0.5rem; }
             .stat-number { font-size: 2rem; font-weight: bold; color: #667eea; }
-        `
-    },
-    {
-        id: 2,
-        title: 'Website Template Pack',
-        author: 'UX Masters',
-        rating: 4.9,
-        downloads: 3421,
-        likes: 892,
-        type: 'free',
-        category: 'webpage',
-        image: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=400&h=300&fit=crop',
-        html: `
+        `,
+  },
+  {
+    id: 2,
+    title: "Website Template Pack",
+    author: "UX Masters",
+    rating: 4.9,
+    downloads: 3421,
+    likes: 892,
+    type: "free",
+    category: "webpage",
+    image:
+      "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=400&h=300&fit=crop",
+    html: `
             <div class="landing-page">
                 <header class="header">
                     <nav class="navbar">
@@ -117,7 +119,7 @@ const fallbackProducts = [
                 </section>
             </div>
         `,
-        css: `
+    css: `
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
             .header { background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
@@ -135,20 +137,21 @@ const fallbackProducts = [
             .feature-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
             .feature { background: #f9f9f9; padding: 1.5rem; border-radius: 8px; text-align: center; }
             .feature h3 { color: #667eea; margin-bottom: 0.5rem; }
-        `
-    },
-    {
-        id: 3,
-        title: 'Mobile App Interface',
-        author: 'AppCraft Studio',
-        rating: 4.7,
-        downloads: 2103,
-        likes: 651,
-        price: '79',
-        type: 'paid',
-        category: 'dashboard',
-        image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop',
-        html: `
+        `,
+  },
+  {
+    id: 3,
+    title: "Mobile App Interface",
+    author: "AppCraft Studio",
+    rating: 4.7,
+    downloads: 2103,
+    likes: 651,
+    price: "79",
+    type: "paid",
+    category: "dashboard",
+    image:
+      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop",
+    html: `
             <div class="mobile-interface">
                 <div class="phone-frame">
                     <div class="phone-header">
@@ -176,7 +179,7 @@ const fallbackProducts = [
                 </div>
             </div>
         `,
-        css: `
+    css: `
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body { background: #f0f0f0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
             .mobile-interface { padding: 2rem; }
@@ -189,20 +192,21 @@ const fallbackProducts = [
             .avatar { width: 50px; height: 50px; border-radius: 50%; background: #667eea; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
             .message-preview h4 { margin-bottom: 0.25rem; }
             .message-preview p { color: #999; font-size: 0.9rem; }
-        `
-    },
-    {
-        id: 4,
-        title: 'E-commerce Platform Kit',
-        author: 'DesignHub Pro',
-        rating: 4.6,
-        downloads: 1876,
-        likes: 445,
-        price: '59',
-        type: 'paid',
-        category: 'portfolio',
-        image: 'https://images.unsplash.com/photo-1460925895917-afdab684c3c7?w=400&h=300&fit=crop',
-        html: `
+        `,
+  },
+  {
+    id: 4,
+    title: "E-commerce Platform Kit",
+    author: "DesignHub Pro",
+    rating: 4.6,
+    downloads: 1876,
+    likes: 445,
+    price: "59",
+    type: "paid",
+    category: "portfolio",
+    image:
+      "https://images.unsplash.com/photo-1460925895917-afdab684c3c7?w=400&h=300&fit=crop",
+    html: `
             <div class="ecommerce">
                 <div class="product-showcase">
                     <div class="product-image">
@@ -221,7 +225,7 @@ const fallbackProducts = [
                 </div>
             </div>
         `,
-        css: `
+    css: `
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body { font-family: 'Segoe UI', sans-serif; background: white; }
             .ecommerce { padding: 2rem; max-width: 1000px; margin: 0 auto; }
@@ -236,19 +240,20 @@ const fallbackProducts = [
             .description { color: #666; margin-bottom: 1.5rem; line-height: 1.6; }
             .add-to-cart { background: #667eea; color: white; border: none; padding: 0.75rem 2rem; border-radius: 4px; font-size: 1rem; cursor: pointer; }
             .add-to-cart:hover { background: #764ba2; }
-        `
-    },
-    {
-        id: 5,
-        title: 'Icon Library Collection',
-        author: 'Icon Masters',
-        rating: 4.9,
-        downloads: 5234,
-        likes: 1203,
-        type: 'free',
-        category: 'dashboard',
-        image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=300&fit=crop',
-        html: `
+        `,
+  },
+  {
+    id: 5,
+    title: "Icon Library Collection",
+    author: "Icon Masters",
+    rating: 4.9,
+    downloads: 5234,
+    likes: 1203,
+    type: "free",
+    category: "dashboard",
+    image:
+      "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=300&fit=crop",
+    html: `
             <div class="icon-library">
                 <h1>Icon Library</h1>
                 <div class="icons-grid">
@@ -271,7 +276,7 @@ const fallbackProducts = [
                 </div>
             </div>
         `,
-        css: `
+    css: `
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body { font-family: Arial, sans-serif; background: white; }
             .icon-library { padding: 2rem; text-align: center; }
@@ -280,20 +285,21 @@ const fallbackProducts = [
             .icon-item { padding: 1.5rem; }
             .icon { font-size: 3rem; margin-bottom: 1rem; }
             .icon-item p { color: #666; margin-top: 0.5rem; }
-        `
-    },
-    {
-        id: 6,
-        title: 'Analytics Dashboard Pro',
-        author: 'DataViz Studio',
-        rating: 4.8,
-        downloads: 2567,
-        likes: 734,
-        price: '89',
-        type: 'paid',
-        category: 'portfolio',
-        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
-        html: `
+        `,
+  },
+  {
+    id: 6,
+    title: "Analytics Dashboard Pro",
+    author: "DataViz Studio",
+    rating: 4.8,
+    downloads: 2567,
+    likes: 734,
+    price: "89",
+    type: "paid",
+    category: "portfolio",
+    image:
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
+    html: `
             <div class="analytics-dashboard">
                 <div class="header">
                     <h1>Analytics Dashboard</h1>
@@ -320,7 +326,7 @@ const fallbackProducts = [
                 </div>
             </div>
         `,
-        css: `
+    css: `
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; }
             .analytics-dashboard { padding: 2rem; max-width: 1200px; margin: 0 auto; }
@@ -332,8 +338,8 @@ const fallbackProducts = [
             .metric-label { color: #999; font-size: 0.9rem; margin-bottom: 0.5rem; }
             .metric-value { font-size: 2rem; font-weight: bold; color: #333; }
             .metric-change { color: #4caf50; margin-top: 0.5rem; font-size: 0.9rem; }
-        `
-    }
+        `,
+  },
 ];
 
 // Active products array - will be populated from API or fallback
@@ -347,8 +353,10 @@ let products = [...fallbackProducts];
 async function fetchTemplatesFromAPI() {
   try {
     const params = new URLSearchParams();
-    if (currentCategory && currentCategory !== "all") params.append("type", currentCategory);
-    if (currentType && currentType !== "all") params.append("category", currentType);
+    if (currentCategory && currentCategory !== "all")
+      params.append("type", currentCategory);
+    if (currentType && currentType !== "all")
+      params.append("category", currentType);
     if (searchQuery) params.append("search", searchQuery);
 
     const response = await fetch(`/api/marketplace/templates?${params}`, {
@@ -374,7 +382,9 @@ async function fetchTemplatesFromAPI() {
         price: t.price ? String(t.price) : "0",
         type: t.type || "free",
         category: t.category || "webpage",
-        image: t.image || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
+        image:
+          t.image ||
+          "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
         html: t.html || "",
         css: t.css || "",
         description: t.description || "",
@@ -401,20 +411,28 @@ async function likeTemplate(templateId) {
   }
 
   try {
-    const response = await fetch(`/api/marketplace/templates/${templateId}/like`, {
-      method: "POST",
-      credentials: "include",
-    });
+    const response = await fetch(
+      `/api/marketplace/templates/${templateId}/like`,
+      {
+        method: "POST",
+        credentials: "include",
+      },
+    );
 
     const data = await response.json();
 
     if (data.success) {
       // Update local state
-      const product = products.find((p) => p.id === templateId || p._id === templateId);
+      const product = products.find(
+        (p) => p.id === templateId || p._id === templateId,
+      );
       if (product) {
         product.likes = data.likes;
       }
-      showNotification(data.liked ? "Template liked!" : "Like removed", "success light");
+      showNotification(
+        data.liked ? "Template liked!" : "Like removed",
+        "success light",
+      );
       renderProducts();
     }
   } catch (error) {
@@ -425,10 +443,13 @@ async function likeTemplate(templateId) {
 // Download template via API
 async function downloadTemplateFromAPI(templateId) {
   try {
-    const response = await fetch(`/api/marketplace/templates/${templateId}/download`, {
-      method: "POST",
-      credentials: "include",
-    });
+    const response = await fetch(
+      `/api/marketplace/templates/${templateId}/download`,
+      {
+        method: "POST",
+        credentials: "include",
+      },
+    );
 
     const data = await response.json();
 
@@ -453,7 +474,8 @@ async function downloadTemplateFromAPI(templateId) {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = data.template.title.replace(/\s+/g, "-").toLowerCase() + ".html";
+      a.download =
+        data.template.title.replace(/\s+/g, "-").toLowerCase() + ".html";
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
@@ -478,11 +500,14 @@ async function purchaseTemplateFromAPI(templateId) {
   }
 
   try {
-    const response = await fetch(`/api/marketplace/templates/${templateId}/purchase`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    });
+    const response = await fetch(
+      `/api/marketplace/templates/${templateId}/purchase`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      },
+    );
 
     const data = await response.json();
 
@@ -504,170 +529,202 @@ const userData = currentUser ? JSON.parse(currentUser) : null;
 console.log("isLoggedIn:", currentUser);
 
 function isUserLoggedIn() {
-const userName = userData ? userData.name : ""; // Replace with actual user name
+  const userName = userData ? userData.name : ""; // Replace with actual user name
 
   if (isLoggedIn) {
-    document.getElementById('loginLink').style.display = 'none';
-    const userNameDiv = document.getElementById('userName');
-    userNameDiv.style.display = 'flex';
+    document.getElementById("loginLink").style.display = "none";
+    const userNameDiv = document.getElementById("userName");
+    userNameDiv.style.display = "flex";
     userNameDiv.innerHTML = `<img src="${userData.profilePicture}" alt="User Avatar" /> ${userName}`;
-    return true;  
-    }
-  else {
+    return true;
+  } else {
     return false;
-  } 
+  }
 }
 
 isUserLoggedIn();
 // State
-let currentCategory = 'all';
-let currentType = 'all';
-let searchQuery = '';
+let currentCategory = "all";
+let currentType = "all";
+let searchQuery = "";
 
 // Render products function
 function renderProducts() {
-    const grid = document.getElementById('productsGrid');
-    
-    const filteredProducts = products.filter(function(product) {
-        const categoryMatch = currentCategory === 'all' || 
-            (currentCategory === 'free' && product.type === 'free') ||
-            (currentCategory === 'premium' && product.type === 'paid');
-        
-        const typeMatch = currentType === 'all' || product.category === currentType;
-        
-        // Search filter - search in title, author, and category
-        const searchMatch = !searchQuery || 
-            product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            product.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            product.category.toLowerCase().includes(searchQuery.toLowerCase());
-        
-        return categoryMatch && typeMatch && searchMatch;
-    });
+  const grid = document.getElementById("productsGrid");
 
-    grid.innerHTML = filteredProducts.map(function(product) {
-        return '<div class="product-card">' +
-            '<div class="product-image">' +
-                '<img src="' + product.image + '" alt="' + product.title + '">' +
-                '<div class="product-tag ' + product.type + '">' +
-                    (product.type === 'free' ? 'Free' : 'Tk ' + product.price) +
-                '</div>' +
-                '<div class="product-overlay">' +
-                    '<button class="overlay-btn preview" onclick="openPreviewModal(' + product.id + ')">' +
-                        '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-                            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>' +
-                            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>' +
-                        '</svg>' +
-                        'Preview' +
-                    '</button>' +
-                    (product.type === 'paid' ? '<button class="overlay-btn buy" onclick="openPaymentModal(products.find(p => p.id === ' + product.id + '))">Buy</button>' : '') +
-                '</div>' +
-            '</div>' +
-            '<div class="product-info">' +
-                '<div class="product-header">' +
-                    '<div>' +
-                        '<div class="product-title">' + product.title + '</div>' +
-                        '<div class="product-author">by ' + product.author + '</div>' +
-                    '</div>' +
-                    '<button class="heart-btn" data-id="' + (product._id || product.id) + '" onclick="likeTemplate(\'' + (product._id || product.id) + '\')">' +
-                        '<svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-                            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>' +
-                        '</svg>' +
-                    '</button>' +
-                '</div>' +
-                '<div class="product-stats">' +
-                    '<div class="stat">' +
-                        '<svg class="icon star-icon" fill="currentColor" viewBox="0 0 20 20">' +
-                            '<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>' +
-                        '</svg>' +
-                        '<span>' + product.rating + '</span>' +
-                    '</div>' +
-                    '<div class="stat">' +
-                        '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-                            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>' +
-                        '</svg>' +
-                        '<span>' + product.downloads.toLocaleString() + '</span>' +
-                    '</div>' +
-                    '<div class="stat">' +
-                        '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-                            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>' +
-                        '</svg>' +
-                        '<span>' + product.likes + '</span>' +
-                    '</div>' +
-                '</div>' +
-            '</div>' +
-        '</div>';
-    }).join('');
+  const filteredProducts = products.filter(function (product) {
+    const categoryMatch =
+      currentCategory === "all" ||
+      (currentCategory === "free" && product.type === "free") ||
+      (currentCategory === "premium" && product.type === "paid");
 
-    // Add event listeners to heart buttons
-    document.querySelectorAll('.heart-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            this.classList.toggle('liked');
-        });
+    const typeMatch = currentType === "all" || product.category === currentType;
+
+    // Search filter - search in title, author, and category
+    const searchMatch =
+      !searchQuery ||
+      product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.category.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return categoryMatch && typeMatch && searchMatch;
+  });
+
+  grid.innerHTML = filteredProducts
+    .map(function (product) {
+      return (
+        '<div class="product-card">' +
+        '<div class="product-image">' +
+        '<img src="' +
+        product.image +
+        '" alt="' +
+        product.title +
+        '">' +
+        '<div class="product-tag ' +
+        product.type +
+        '">' +
+        (product.type === "free" ? "Free" : "Tk " + product.price) +
+        "</div>" +
+        '<div class="product-overlay">' +
+        '<button class="overlay-btn preview" onclick="openPreviewModal(' +
+        product.id +
+        ')">' +
+        '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>' +
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>' +
+        "</svg>" +
+        "Preview" +
+        "</button>" +
+        (product.type === "paid"
+          ? '<button class="overlay-btn buy" onclick="openPaymentModal(products.find(p => p.id === ' +
+            product.id +
+            '))">Buy</button>'
+          : "") +
+        "</div>" +
+        "</div>" +
+        '<div class="product-info">' +
+        '<div class="product-header">' +
+        "<div>" +
+        '<div class="product-title">' +
+        product.title +
+        "</div>" +
+        '<div class="product-author">by ' +
+        product.author +
+        "</div>" +
+        "</div>" +
+        '<button class="heart-btn" data-id="' +
+        (product._id || product.id) +
+        '" onclick="likeTemplate(\'' +
+        (product._id || product.id) +
+        "')\">" +
+        '<svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>' +
+        "</svg>" +
+        "</button>" +
+        "</div>" +
+        '<div class="product-stats">' +
+        '<div class="stat">' +
+        '<svg class="icon star-icon" fill="currentColor" viewBox="0 0 20 20">' +
+        '<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>' +
+        "</svg>" +
+        "<span>" +
+        product.rating +
+        "</span>" +
+        "</div>" +
+        '<div class="stat">' +
+        '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>' +
+        "</svg>" +
+        "<span>" +
+        product.downloads.toLocaleString() +
+        "</span>" +
+        "</div>" +
+        '<div class="stat">' +
+        '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>' +
+        "</svg>" +
+        "<span>" +
+        product.likes +
+        "</span>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div>"
+      );
+    })
+    .join("");
+
+  // Add event listeners to heart buttons
+  document.querySelectorAll(".heart-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      this.classList.toggle("liked");
     });
+  });
 }
 
 // Category filter event listeners
-document.querySelectorAll('.filter-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-        document.querySelectorAll('.filter-btn').forEach(function(b) {
-            b.classList.remove('active');
-        });
-        this.classList.add('active');
-        currentCategory = this.dataset.category;
-        fetchTemplatesFromAPI();
+document.querySelectorAll(".filter-btn").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    document.querySelectorAll(".filter-btn").forEach(function (b) {
+      b.classList.remove("active");
     });
+    this.classList.add("active");
+    currentCategory = this.dataset.category;
+    fetchTemplatesFromAPI();
+  });
 });
 
 // Type filter event listeners
-document.querySelectorAll('.type-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-        document.querySelectorAll('.type-btn').forEach(function(b) {
-            b.classList.remove('active');
-        });
-        this.classList.add('active');
-        currentType = this.dataset.type;
-        fetchTemplatesFromAPI();
+document.querySelectorAll(".type-btn").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    document.querySelectorAll(".type-btn").forEach(function (b) {
+      b.classList.remove("active");
     });
+    this.classList.add("active");
+    currentType = this.dataset.type;
+    fetchTemplatesFromAPI();
+  });
 });
 
 // Search functionality
-const searchInput = document.querySelector('.search-input');
+const searchInput = document.querySelector(".search-input");
 if (searchInput) {
-    let searchTimeout;
-    searchInput.addEventListener('input', function(e) {
-        searchQuery = e.target.value.trim();
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => fetchTemplatesFromAPI(), 300);
-        
-        // Show notification if no results found
-        const grid = document.getElementById('productsGrid');
-        if (searchQuery && grid.children.length === 0) {
-            grid.innerHTML = '<div class="no-results">' +
-                '<svg class="no-results-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-                    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>' +
-                '</svg>' +
-                '<h3>No products found</h3>' +
-                '<p>Try searching with different keywords or browse our categories</p>' +
-                '<button class="btn-primary" onclick="clearSearch()">Clear Search</button>' +
-            '</div>';
-        }
-    });
-    
-    // Clear search on Escape key
-    searchInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            clearSearch();
-        }
-    });
+  let searchTimeout;
+  searchInput.addEventListener("input", function (e) {
+    searchQuery = e.target.value.trim();
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => fetchTemplatesFromAPI(), 300);
+
+    // Show notification if no results found
+    const grid = document.getElementById("productsGrid");
+    if (searchQuery && grid.children.length === 0) {
+      grid.innerHTML =
+        '<div class="no-results">' +
+        '<svg class="no-results-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>' +
+        "</svg>" +
+        "<h3>No products found</h3>" +
+        "<p>Try searching with different keywords or browse our categories</p>" +
+        '<button class="btn-primary" onclick="clearSearch()">Clear Search</button>' +
+        "</div>";
+    }
+  });
+
+  // Clear search on Escape key
+  searchInput.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      clearSearch();
+    }
+  });
 }
 
 function clearSearch() {
-    const searchInput = document.querySelector('.search-input');
-    if (searchInput) {
-        searchInput.value = '';
-        searchQuery = '';
-        renderProducts();
-    }
+  const searchInput = document.querySelector(".search-input");
+  if (searchInput) {
+    searchInput.value = "";
+    searchQuery = "";
+    renderProducts();
+  }
 }
 
 // Initial render - try API first, fallback to local data
@@ -677,46 +734,51 @@ fetchTemplatesFromAPI();
 let currentPreviewProduct = null;
 
 function openPreviewModal(productId) {
-    const product = products.find(p => p.id === productId || p._id === productId);
-    if (!product) return;
+  const product = products.find(
+    (p) => p.id === productId || p._id === productId,
+  );
+  if (!product) return;
 
-    // If template from API and no html/css loaded, fetch full template
-    if (product._id && !product.html) {
-      fetch(`/api/marketplace/templates/${product._id}`, { credentials: "include" })
-        .then(r => r.json())
-        .then(data => {
-          if (data.success) {
-            product.html = data.template.html;
-            product.css = data.template.css;
-            showPreview(product);
-          }
-        })
-        .catch(err => console.error("Fetch template error:", err));
-      return;
-    }
+  // If template from API and no html/css loaded, fetch full template
+  if (product._id && !product.html) {
+    fetch(`/api/marketplace/templates/${product._id}`, {
+      credentials: "include",
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success) {
+          product.html = data.template.html;
+          product.css = data.template.css;
+          showPreview(product);
+        }
+      })
+      .catch((err) => console.error("Fetch template error:", err));
+    return;
+  }
 
-    showPreview(product);
+  showPreview(product);
 }
 
 function showPreview(product) {
-    currentPreviewProduct = product;
-    
-    // Set modal title
-    document.getElementById('previewTitle').textContent = product.title + ' - Preview';
-    
-    if (product.type === 'free') {
-        document.getElementById('modal-footer').innerHTML = `
+  currentPreviewProduct = product;
+
+  // Set modal title
+  document.getElementById("previewTitle").textContent =
+    product.title + " - Preview";
+
+  if (product.type === "free") {
+    document.getElementById("modal-footer").innerHTML = `
             <button class="btn-secondary" onclick="closePreviewModal()">Close</button>
             <button class="btn-primary" onclick="downloadPreview()">Download</button>
         `;
-    } else  {
-    document.getElementById('modal-footer').innerHTML = `
+  } else {
+    document.getElementById("modal-footer").innerHTML = `
         <button class="btn-secondary" onclick="closePreviewModal()">Close</button>
         <button class="btn-primary" onclick="buyNow()">Buy Now</button>
     `;
-    }
-    // Create HTML content with CSS
-    const iframeContent = `
+  }
+  // Create HTML content with CSS
+  const iframeContent = `
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -732,35 +794,34 @@ function showPreview(product) {
         </body>
         </html>
     `;
-    
-    // Inject content into iframe
-    const iframe = document.getElementById('previewFrame');
-    iframe.srcdoc = iframeContent;
-    // Show modal
-    document.getElementById('previewModal').classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
 
+  // Inject content into iframe
+  const iframe = document.getElementById("previewFrame");
+  iframe.srcdoc = iframeContent;
+  // Show modal
+  document.getElementById("previewModal").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
 }
 
 function closePreviewModal() {
-    document.getElementById('previewModal').classList.add('hidden');
-    document.body.style.overflow = 'auto';
-    currentPreviewProduct = null;
+  document.getElementById("previewModal").classList.add("hidden");
+  document.body.style.overflow = "auto";
+  currentPreviewProduct = null;
 }
 
 function downloadPreview() {
-    if (!currentPreviewProduct) return;
-    
-    const product = currentPreviewProduct;
+  if (!currentPreviewProduct) return;
 
-    // Try API download first (tracks download count)
-    if (product._id) {
-      downloadTemplateFromAPI(product._id);
-      return;
-    }
-    
-    // Fallback: local download
-    const htmlContent = `<!DOCTYPE html>
+  const product = currentPreviewProduct;
+
+  // Try API download first (tracks download count)
+  if (product._id) {
+    downloadTemplateFromAPI(product._id);
+    return;
+  }
+
+  // Fallback: local download
+  const htmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -774,243 +835,253 @@ function downloadPreview() {
     ${product.html}
 </body>
 </html>`;
-    
-    const blob = new Blob([htmlContent], { type: 'text/html' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = product.title.replace(/\s+/g, '-').toLowerCase() + '.html';
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
+
+  const blob = new Blob([htmlContent], { type: "text/html" });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = product.title.replace(/\s+/g, "-").toLowerCase() + ".html";
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
 }
 
 function buyNow() {
-    if (!currentPreviewProduct) return;
-    if(!isLoggedIn) {
-        showNotification('Please log in to proceed with the purchase.', 'error');
-        location.href ='../login2/index.html';
-        return;
-    }
-    const product = currentPreviewProduct;
-    closePreviewModal();
-    openPaymentModal(product);
+  if (!currentPreviewProduct) return;
+  if (!isLoggedIn) {
+    showNotification("Please log in to proceed with the purchase.", "error");
+    location.href = "../login2/index.html";
+    return;
+  }
+  const product = currentPreviewProduct;
+  closePreviewModal();
+  openPaymentModal(product);
 }
 
 // Payment Gateway Functions
 let currentPaymentProduct = null;
 
 function openPaymentModal(product) {
-    currentPaymentProduct = product;
-    
-    // Update order summary
-    document.getElementById('itemName').textContent = product.title;
-    document.getElementById('itemPrice').textContent = 'Tk ' + product.price;
-    document.getElementById('totalAmount').textContent = 'Tk ' + product.price;
-    
-    // Populate user info if logged in
-    if (isLoggedIn && userData) {
-        document.getElementById('fullName').value = userData.name || '';
-        document.getElementById('email').value = userData.email || '';
-    }
-    
-    // Show payment modal
-    document.getElementById('paymentModal').classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
+  currentPaymentProduct = product;
+
+  // Update order summary
+  document.getElementById("itemName").textContent = product.title;
+  document.getElementById("itemPrice").textContent = "Tk " + product.price;
+  document.getElementById("totalAmount").textContent = "Tk " + product.price;
+
+  // Populate user info if logged in
+  if (isLoggedIn && userData) {
+    document.getElementById("fullName").value = userData.name || "";
+    document.getElementById("email").value = userData.email || "";
+  }
+
+  // Show payment modal
+  document.getElementById("paymentModal").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
 }
 
 function closePaymentModal() {
-    document.getElementById('paymentModal').classList.add('hidden');
-    document.body.style.overflow = 'auto';
-    document.getElementById('paymentForm').reset();
+  document.getElementById("paymentModal").classList.add("hidden");
+  document.body.style.overflow = "auto";
+  document.getElementById("paymentForm").reset();
 }
 
 function validatePaymentForm() {
-    const fullName = document.getElementById('fullName').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
-    const expiryDate = document.getElementById('expiryDate').value;
-    const cvv = document.getElementById('cvv').value;
-    const cardholderName = document.getElementById('cardholderName').value.trim();
-    const address = document.getElementById('address').value.trim();
-    const city = document.getElementById('city').value.trim();
-    const zipCode = document.getElementById('zipCode').value.trim();
-    const country = document.getElementById('country').value.trim();
-    const termsCheck = document.getElementById('termsCheck').checked;
+  const fullName = document.getElementById("fullName").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const cardNumber = document
+    .getElementById("cardNumber")
+    .value.replace(/\s/g, "");
+  const expiryDate = document.getElementById("expiryDate").value;
+  const cvv = document.getElementById("cvv").value;
+  const cardholderName = document.getElementById("cardholderName").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const city = document.getElementById("city").value.trim();
+  const zipCode = document.getElementById("zipCode").value.trim();
+  const country = document.getElementById("country").value.trim();
+  const termsCheck = document.getElementById("termsCheck").checked;
 
-    // Validation checks
-    if (!fullName) {
-        showNotification('Please enter your full name', 'error');   
-        return false;
-    }
-    
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showNotification('Please enter a valid email address', 'error');
-        return false;
-    }
-    
-    if (cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
-        showNotification('Please enter a valid 16-digit card number', 'error');
-        return false;
-    }
-    
-    if (!expiryDate || !/^\d{2}\/\d{2}$/.test(expiryDate)) {
-        showNotification('Please enter a valid expiry date in MM/YY format', 'error');
-        return false;
-    }
-    
-    if (cvv.length < 3 || cvv.length > 4 || !/^\d+$/.test(cvv)) {
-        showNotification('Please enter a valid CVV', 'error');
-        return false;
-    }
-    
-    if (!cardholderName) {
-        showNotification('Please enter cardholder name', 'error');
-        return false;
-    }
-    
-    if (!address || !city || !zipCode || !country) {
-        showNotification('Please fill in all billing address fields', 'error');
-        return false;
-    }
-    
-    if (!termsCheck) {
-        showNotification('Please agree to the terms and conditions', 'error');
-        return false;
-    }
-    
-    return true;
+  // Validation checks
+  if (!fullName) {
+    showNotification("Please enter your full name", "error");
+    return false;
+  }
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showNotification("Please enter a valid email address", "error");
+    return false;
+  }
+
+  if (cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
+    showNotification("Please enter a valid 16-digit card number", "error");
+    return false;
+  }
+
+  if (!expiryDate || !/^\d{2}\/\d{2}$/.test(expiryDate)) {
+    showNotification(
+      "Please enter a valid expiry date in MM/YY format",
+      "error",
+    );
+    return false;
+  }
+
+  if (cvv.length < 3 || cvv.length > 4 || !/^\d+$/.test(cvv)) {
+    showNotification("Please enter a valid CVV", "error");
+    return false;
+  }
+
+  if (!cardholderName) {
+    showNotification("Please enter cardholder name", "error");
+    return false;
+  }
+
+  if (!address || !city || !zipCode || !country) {
+    showNotification("Please fill in all billing address fields", "error");
+    return false;
+  }
+
+  if (!termsCheck) {
+    showNotification("Please agree to the terms and conditions", "error");
+    return false;
+  }
+
+  return true;
 }
 
 function processPayment() {
-    if (!validatePaymentForm()) {
-        return;
-    }
-    
-    // Show processing state
-    const payBtn = event.target;
-    const originalText = payBtn.textContent;
-    payBtn.textContent = 'Processing...';
-    payBtn.disabled = true;
-    
-    // Process payment - try API first for backend templates
-    setTimeout(async function() {
-        let transactionId = 'TXN-' + Date.now();
-        const currentDate = new Date();
+  if (!validatePaymentForm()) {
+    return;
+  }
 
-        // Record purchase in backend if template has _id
-        if (currentPaymentProduct._id) {
-          const purchaseResult = await purchaseTemplateFromAPI(currentPaymentProduct._id);
-          if (purchaseResult && purchaseResult.transactionId) {
-            transactionId = purchaseResult.transactionId;
-          }
-        }
-        
-        // Show success modal
-        document.getElementById('transactionId').textContent = transactionId;
-        document.getElementById('receiptAmount').textContent = 'Tk ' + currentPaymentProduct.price;
-        document.getElementById('transactionDate').textContent = currentDate.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        });
-        document.getElementById('successMessage').textContent = 
-            'Your purchase of "' + currentPaymentProduct.title + '" has been completed successfully.';
-        
-        // Store order in localStorage
-        const orders = JSON.parse(localStorage.getItem('userOrders')) || [];
-        orders.push({
-            id: transactionId,
-            product: currentPaymentProduct.title,
-            price: currentPaymentProduct.price,
-            date: currentDate.toISOString(),
-            productData: currentPaymentProduct
-        });
-        localStorage.setItem('userOrders', JSON.stringify(orders));
-        
-        // Close payment modal and show success
-        closePaymentModal();
-        document.getElementById('successModal').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-        
-        // Reset button
-        payBtn.textContent = originalText;
-        payBtn.disabled = false;
-    }, 2000);
+  // Show processing state
+  const payBtn = event.target;
+  const originalText = payBtn.textContent;
+  payBtn.textContent = "Processing...";
+  payBtn.disabled = true;
+
+  // Process payment - try API first for backend templates
+  setTimeout(async function () {
+    let transactionId = "TXN-" + Date.now();
+    const currentDate = new Date();
+
+    // Record purchase in backend if template has _id
+    if (currentPaymentProduct._id) {
+      const purchaseResult = await purchaseTemplateFromAPI(
+        currentPaymentProduct._id,
+      );
+      if (purchaseResult && purchaseResult.transactionId) {
+        transactionId = purchaseResult.transactionId;
+      }
+    }
+
+    // Show success modal
+    document.getElementById("transactionId").textContent = transactionId;
+    document.getElementById("receiptAmount").textContent =
+      "Tk " + currentPaymentProduct.price;
+    document.getElementById("transactionDate").textContent =
+      currentDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    document.getElementById("successMessage").textContent =
+      'Your purchase of "' +
+      currentPaymentProduct.title +
+      '" has been completed successfully.';
+
+    // Store order in localStorage
+    const orders = JSON.parse(localStorage.getItem("userOrders")) || [];
+    orders.push({
+      id: transactionId,
+      product: currentPaymentProduct.title,
+      price: currentPaymentProduct.price,
+      date: currentDate.toISOString(),
+      productData: currentPaymentProduct,
+    });
+    localStorage.setItem("userOrders", JSON.stringify(orders));
+
+    // Close payment modal and show success
+    closePaymentModal();
+    document.getElementById("successModal").classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+
+    // Reset button
+    payBtn.textContent = originalText;
+    payBtn.disabled = false;
+  }, 2000);
 }
 
 function completeCheckout() {
-    document.getElementById('successModal').classList.add('hidden');
-    document.body.style.overflow = 'auto';
-    
-    // Download the purchased template
-    if (currentPaymentProduct) {
-        downloadPreview();
-    }
-    
-    currentPaymentProduct = null;
+  document.getElementById("successModal").classList.add("hidden");
+  document.body.style.overflow = "auto";
+
+  // Download the purchased template
+  if (currentPaymentProduct) {
+    downloadPreview();
+  }
+
+  currentPaymentProduct = null;
 }
 
 // Format card number input
-document.addEventListener('input', function(e) {
-    if (e.target.id === 'cardNumber') {
-        let value = e.target.value.replace(/\s/g, '');
-        let formatted = '';
-        for (let i = 0; i < value.length; i++) {
-            if (i > 0 && i % 4 === 0) {
-                formatted += ' ';
-            }
-            formatted += value[i];
-        }
-        e.target.value = formatted;
-        
-        // Detect card type
-        const firstDigit = value[0];
-        const cardTypeEl = document.getElementById('cardType');
-        if (firstDigit === '4') {
-            cardTypeEl.textContent = 'Visa';
-        } else if (firstDigit === '5') {
-            cardTypeEl.textContent = 'Mastercard';
-        } else if (firstDigit === '3') {
-            cardTypeEl.textContent = 'Amex';
-        } else {
-            cardTypeEl.textContent = 'Card';
-        }
+document.addEventListener("input", function (e) {
+  if (e.target.id === "cardNumber") {
+    let value = e.target.value.replace(/\s/g, "");
+    let formatted = "";
+    for (let i = 0; i < value.length; i++) {
+      if (i > 0 && i % 4 === 0) {
+        formatted += " ";
+      }
+      formatted += value[i];
     }
-    
-    if (e.target.id === 'expiryDate') {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length >= 2) {
-            value = value.slice(0, 2) + '/' + value.slice(2, 4);
-        }
-        e.target.value = value;
+    e.target.value = formatted;
+
+    // Detect card type
+    const firstDigit = value[0];
+    const cardTypeEl = document.getElementById("cardType");
+    if (firstDigit === "4") {
+      cardTypeEl.textContent = "Visa";
+    } else if (firstDigit === "5") {
+      cardTypeEl.textContent = "Mastercard";
+    } else if (firstDigit === "3") {
+      cardTypeEl.textContent = "Amex";
+    } else {
+      cardTypeEl.textContent = "Card";
     }
-    
-    if (e.target.id === 'cvv') {
-        e.target.value = e.target.value.replace(/\D/g, '');
+  }
+
+  if (e.target.id === "expiryDate") {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.length >= 2) {
+      value = value.slice(0, 2) + "/" + value.slice(2, 4);
     }
+    e.target.value = value;
+  }
+
+  if (e.target.id === "cvv") {
+    e.target.value = e.target.value.replace(/\D/g, "");
+  }
 });
 
+closePreviewModal();
+document.addEventListener("click", function (event) {
+  const modal = document.getElementById("previewModal");
+  if (event.target === modal) {
     closePreviewModal();
-document.addEventListener('click', function(event) {
-    const modal = document.getElementById('previewModal');
-    if (event.target === modal) {
-        closePreviewModal();
-    }
+  }
 });
 
 // Close modal on Escape key
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-        closePreviewModal();
-    }
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    closePreviewModal();
+  }
 });
 
 function openprofile() {
-    window.location.href = "../profile/profile.html";
+  window.location.href = "../profile/profile.html";
 }
-
 
 // Notification Toast Function
 function showNotification(message, type = "success", title = "") {

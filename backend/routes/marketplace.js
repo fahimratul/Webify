@@ -8,7 +8,9 @@ const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.status(401).json({ error: "You must be logged in to perform this action" });
+  res
+    .status(401)
+    .json({ error: "You must be logged in to perform this action" });
 };
 
 // Optional auth - doesn't block, just attaches user if logged in
@@ -112,8 +114,10 @@ router.get("/templates", optionalAuth, async (req, res) => {
 // GET /api/marketplace/templates/:id - Get single template by ID
 router.get("/templates/:id", optionalAuth, async (req, res) => {
   try {
-    const template = await Template.findById(req.params.id)
-      .populate("author", "username profilePicture email");
+    const template = await Template.findById(req.params.id).populate(
+      "author",
+      "username profilePicture email",
+    );
 
     if (!template) {
       return res.status(404).json({ error: "Template not found" });
@@ -132,15 +136,29 @@ router.get("/templates/:id", optionalAuth, async (req, res) => {
 // POST /api/marketplace/templates - Create a new template (auth required)
 router.post("/templates", isAuthenticated, async (req, res) => {
   try {
-    const { title, description, html, css, type, price, category, tags, image } = req.body;
+    const {
+      title,
+      description,
+      html,
+      css,
+      type,
+      price,
+      category,
+      tags,
+      image,
+    } = req.body;
 
     if (!title || !html) {
-      return res.status(400).json({ error: "Title and HTML content are required" });
+      return res
+        .status(400)
+        .json({ error: "Title and HTML content are required" });
     }
 
     // Validate price for paid templates
     if (type === "paid" && (!price || price <= 0)) {
-      return res.status(400).json({ error: "Paid templates must have a valid price" });
+      return res
+        .status(400)
+        .json({ error: "Paid templates must have a valid price" });
     }
 
     const template = new Template({
@@ -181,10 +199,23 @@ router.put("/templates/:id", isAuthenticated, async (req, res) => {
 
     // Check ownership
     if (template.author.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ error: "You can only edit your own templates" });
+      return res
+        .status(403)
+        .json({ error: "You can only edit your own templates" });
     }
 
-    const { title, description, html, css, type, price, category, tags, image, isPublished } = req.body;
+    const {
+      title,
+      description,
+      html,
+      css,
+      type,
+      price,
+      category,
+      tags,
+      image,
+      isPublished,
+    } = req.body;
 
     if (title) template.title = title;
     if (description !== undefined) template.description = description;
@@ -222,7 +253,9 @@ router.delete("/templates/:id", isAuthenticated, async (req, res) => {
 
     // Check ownership
     if (template.author.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ error: "You can only delete your own templates" });
+      return res
+        .status(403)
+        .json({ error: "You can only delete your own templates" });
     }
 
     await template.deleteOne();
@@ -310,7 +343,7 @@ router.post("/templates/:id/rate", isAuthenticated, async (req, res) => {
 
     const userId = req.user._id;
     const existingRating = template.ratedBy.find(
-      (r) => r.user.toString() === userId.toString()
+      (r) => r.user.toString() === userId.toString(),
     );
 
     if (existingRating) {
@@ -324,7 +357,8 @@ router.post("/templates/:id/rate", isAuthenticated, async (req, res) => {
 
     // Recalculate average rating
     const totalRating = template.ratedBy.reduce((sum, r) => sum + r.rating, 0);
-    template.rating = Math.round((totalRating / template.ratedBy.length) * 10) / 10;
+    template.rating =
+      Math.round((totalRating / template.ratedBy.length) * 10) / 10;
 
     await template.save();
 
@@ -352,15 +386,21 @@ router.post("/templates/:id/download", async (req, res) => {
     // For paid templates, check if user has purchased
     if (template.type === "paid") {
       if (!req.isAuthenticated()) {
-        return res.status(401).json({ error: "You must be logged in to download paid templates" });
+        return res
+          .status(401)
+          .json({ error: "You must be logged in to download paid templates" });
       }
 
       const hasPurchased = template.purchasedBy.some(
-        (p) => p.user.toString() === req.user._id.toString()
+        (p) => p.user.toString() === req.user._id.toString(),
       );
 
       if (!hasPurchased) {
-        return res.status(403).json({ error: "You must purchase this template before downloading" });
+        return res
+          .status(403)
+          .json({
+            error: "You must purchase this template before downloading",
+          });
       }
     }
 
@@ -394,22 +434,27 @@ router.post("/templates/:id/purchase", isAuthenticated, async (req, res) => {
     }
 
     if (template.type !== "paid") {
-      return res.status(400).json({ error: "This template is free, no purchase needed" });
+      return res
+        .status(400)
+        .json({ error: "This template is free, no purchase needed" });
     }
 
     const userId = req.user._id;
 
     // Check if already purchased
     const alreadyPurchased = template.purchasedBy.some(
-      (p) => p.user.toString() === userId.toString()
+      (p) => p.user.toString() === userId.toString(),
     );
 
     if (alreadyPurchased) {
-      return res.status(400).json({ error: "You have already purchased this template" });
+      return res
+        .status(400)
+        .json({ error: "You have already purchased this template" });
     }
 
     // Generate transaction ID
-    const transactionId = "TXN-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9);
+    const transactionId =
+      "TXN-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9);
 
     // Record purchase
     template.purchasedBy.push({

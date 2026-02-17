@@ -121,7 +121,7 @@ const TemplateSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Indexes for search and filtering
