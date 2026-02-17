@@ -1,5 +1,9 @@
-// Product data with HTML/CSS templates
-const products = [
+// ============================================================
+// Marketplace with Backend API Integration
+// ============================================================
+
+// Fallback product data (used when backend has no templates)
+const fallbackProducts = [
     {
         id: 1,
         title: 'Modern Dashboard UI Kit',
@@ -332,6 +336,168 @@ const products = [
     }
 ];
 
+// Active products array - will be populated from API or fallback
+let products = [...fallbackProducts];
+
+// ============================================================
+// API Integration Functions
+// ============================================================
+
+// Fetch templates from backend API
+async function fetchTemplatesFromAPI() {
+  try {
+    const params = new URLSearchParams();
+    if (currentCategory && currentCategory !== "all") params.append("type", currentCategory);
+    if (currentType && currentType !== "all") params.append("category", currentType);
+    if (searchQuery) params.append("search", searchQuery);
+
+    const response = await fetch(`/api/marketplace/templates?${params}`, {
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch templates from API");
+    }
+
+    const data = await response.json();
+
+    if (data.success && data.templates && data.templates.length > 0) {
+      // Convert API templates to frontend format
+      products = data.templates.map((t) => ({
+        id: t._id,
+        title: t.title,
+        author: t.author ? t.author.username : "Unknown",
+        authorPicture: t.author ? t.author.profilePicture : "",
+        rating: t.rating || 0,
+        downloads: t.downloads || 0,
+        likes: t.likes || 0,
+        price: t.price ? String(t.price) : "0",
+        type: t.type || "free",
+        category: t.category || "webpage",
+        image: t.image || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
+        html: t.html || "",
+        css: t.css || "",
+        description: t.description || "",
+        _id: t._id,
+      }));
+      console.log(`✅ Loaded ${products.length} templates from API`);
+    } else {
+      console.log("⚠️ No templates from API, using fallback data");
+      products = [...fallbackProducts];
+    }
+  } catch (error) {
+    console.error("API fetch error, using fallback:", error);
+    products = [...fallbackProducts];
+  }
+
+  renderProducts();
+}
+
+// Like a template via API
+async function likeTemplate(templateId) {
+  if (!isLoggedIn) {
+    showNotification("Please log in to like templates", "error");
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/marketplace/templates/${templateId}/like`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      // Update local state
+      const product = products.find((p) => p.id === templateId || p._id === templateId);
+      if (product) {
+        product.likes = data.likes;
+      }
+      showNotification(data.liked ? "Template liked!" : "Like removed", "success light");
+      renderProducts();
+    }
+  } catch (error) {
+    console.error("Like error:", error);
+  }
+}
+
+// Download template via API
+async function downloadTemplateFromAPI(templateId) {
+  try {
+    const response = await fetch(`/api/marketplace/templates/${templateId}/download`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      // Create and download the HTML file
+      const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${data.template.title}</title>
+    <style>
+        ${data.template.css}
+    </style>
+</head>
+<body>
+    ${data.template.html}
+</body>
+</html>`;
+
+      const blob = new Blob([htmlContent], { type: "text/html" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = data.template.title.replace(/\s+/g, "-").toLowerCase() + ".html";
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      showNotification("Template downloaded!", "success light");
+    } else {
+      showNotification(data.error || "Download failed", "error");
+    }
+  } catch (error) {
+    console.error("Download error:", error);
+    // Fallback to local download
+    downloadPreview();
+  }
+}
+
+// Purchase template via API
+async function purchaseTemplateFromAPI(templateId) {
+  if (!isLoggedIn) {
+    showNotification("Please log in to purchase templates", "error");
+    return null;
+  }
+
+  try {
+    const response = await fetch(`/api/marketplace/templates/${templateId}/purchase`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      return data;
+    } else {
+      showNotification(data.error || "Purchase failed", "error");
+      return null;
+    }
+  } catch (error) {
+    console.error("Purchase error:", error);
+    return null;
+  }
+}
+
 const isLoggedIn = localStorage.getItem("isLoggedIn") === "true" ? true : false;
 const currentUser = localStorage.getItem("currentUser");
 const userData = currentUser ? JSON.parse(currentUser) : null;
@@ -402,7 +568,7 @@ function renderProducts() {
                         '<div class="product-title">' + product.title + '</div>' +
                         '<div class="product-author">by ' + product.author + '</div>' +
                     '</div>' +
-                    '<button class="heart-btn">' +
+                    '<button class="heart-btn" data-id="' + (product._id || product.id) + '" onclick="likeTemplate(\'' + (product._id || product.id) + '\')">' +
                         '<svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
                             '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>' +
                         '</svg>' +
@@ -448,7 +614,7 @@ document.querySelectorAll('.filter-btn').forEach(function(btn) {
         });
         this.classList.add('active');
         currentCategory = this.dataset.category;
-        renderProducts();
+        fetchTemplatesFromAPI();
     });
 });
 
@@ -460,16 +626,18 @@ document.querySelectorAll('.type-btn').forEach(function(btn) {
         });
         this.classList.add('active');
         currentType = this.dataset.type;
-        renderProducts();
+        fetchTemplatesFromAPI();
     });
 });
 
 // Search functionality
 const searchInput = document.querySelector('.search-input');
 if (searchInput) {
+    let searchTimeout;
     searchInput.addEventListener('input', function(e) {
         searchQuery = e.target.value.trim();
-        renderProducts();
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => fetchTemplatesFromAPI(), 300);
         
         // Show notification if no results found
         const grid = document.getElementById('productsGrid');
@@ -502,16 +670,35 @@ function clearSearch() {
     }
 }
 
-// Initial render
-renderProducts();
+// Initial render - try API first, fallback to local data
+fetchTemplatesFromAPI();
 
 // Preview Modal Functions
 let currentPreviewProduct = null;
 
 function openPreviewModal(productId) {
-    const product = products.find(p => p.id === productId);
+    const product = products.find(p => p.id === productId || p._id === productId);
     if (!product) return;
-    
+
+    // If template from API and no html/css loaded, fetch full template
+    if (product._id && !product.html) {
+      fetch(`/api/marketplace/templates/${product._id}`, { credentials: "include" })
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            product.html = data.template.html;
+            product.css = data.template.css;
+            showPreview(product);
+          }
+        })
+        .catch(err => console.error("Fetch template error:", err));
+      return;
+    }
+
+    showPreview(product);
+}
+
+function showPreview(product) {
     currentPreviewProduct = product;
     
     // Set modal title
@@ -565,8 +752,14 @@ function downloadPreview() {
     if (!currentPreviewProduct) return;
     
     const product = currentPreviewProduct;
+
+    // Try API download first (tracks download count)
+    if (product._id) {
+      downloadTemplateFromAPI(product._id);
+      return;
+    }
     
-    // Create a blob with the combined HTML and CSS
+    // Fallback: local download
     const htmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -701,15 +894,22 @@ function processPayment() {
     payBtn.textContent = 'Processing...';
     payBtn.disabled = true;
     
-    // Simulate payment processing
-    setTimeout(function() {
-        // Generate transaction ID
-        const transactionId = 'TXN-' + Date.now();
+    // Process payment - try API first for backend templates
+    setTimeout(async function() {
+        let transactionId = 'TXN-' + Date.now();
         const currentDate = new Date();
+
+        // Record purchase in backend if template has _id
+        if (currentPaymentProduct._id) {
+          const purchaseResult = await purchaseTemplateFromAPI(currentPaymentProduct._id);
+          if (purchaseResult && purchaseResult.transactionId) {
+            transactionId = purchaseResult.transactionId;
+          }
+        }
         
         // Show success modal
         document.getElementById('transactionId').textContent = transactionId;
-        document.getElementById('receiptAmount').textContent = '$' + currentPaymentProduct.price;
+        document.getElementById('receiptAmount').textContent = 'Tk ' + currentPaymentProduct.price;
         document.getElementById('transactionDate').textContent = currentDate.toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',
