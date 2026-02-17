@@ -63,6 +63,9 @@ import User from "./models/User.js";
 // Import Community Routes
 import communityRoutes from "./routes/community.js";
 
+// Import Marketplace Routes
+import marketplaceRoutes from "./routes/marketplace.js";
+
 // Authentication middleware for profile routes
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -73,6 +76,9 @@ const isAuthenticated = (req, res, next) => {
 
 // Use Community Routes
 app.use("/api", communityRoutes);
+
+// Use Marketplace Routes
+app.use("/api/marketplace", marketplaceRoutes);
 
 // Import community routes
 import questionRoutes from './routes/questions.js';
