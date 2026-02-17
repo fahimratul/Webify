@@ -400,11 +400,9 @@ router.post("/templates/:id/download", async (req, res) => {
       );
 
       if (!hasPurchased) {
-        return res
-          .status(403)
-          .json({
-            error: "You must purchase this template before downloading",
-          });
+        return res.status(403).json({
+          error: "You must purchase this template before downloading",
+        });
       }
     }
 
@@ -486,7 +484,7 @@ router.post("/templates/:id/purchase", isAuthenticated, async (req, res) => {
 
 // Alias: /api/marketplace/items -> same as /api/marketplace/templates (backward compatibility)
 router.post("/items", isAuthenticated, async (req, res) => {
-  // Redirect internally to the /templates route handler  
+  // Redirect internally to the /templates route handler
   try {
     const {
       title,
@@ -504,11 +502,15 @@ router.post("/items", isAuthenticated, async (req, res) => {
     const type = rawType || (isPremium ? "paid" : "free");
 
     if (!title || !html) {
-      return res.status(400).json({ error: "Title and HTML content are required" });
+      return res
+        .status(400)
+        .json({ error: "Title and HTML content are required" });
     }
 
     if (type === "paid" && (!price || price <= 0)) {
-      return res.status(400).json({ error: "Paid templates must have a valid price" });
+      return res
+        .status(400)
+        .json({ error: "Paid templates must have a valid price" });
     }
 
     const template = new Template({

@@ -352,6 +352,8 @@ let products = [...fallbackProducts];
 // Fetch templates from backend API
 async function fetchTemplatesFromAPI() {
   try {
+    console.log("🔄 Fetching templates from API...");
+
     const params = new URLSearchParams();
     if (currentCategory && currentCategory !== "all")
       params.append("type", currentCategory);
@@ -359,15 +361,26 @@ async function fetchTemplatesFromAPI() {
       params.append("category", currentType);
     if (searchQuery) params.append("search", searchQuery);
 
+    // Add cache-busting parameter to ensure fresh data
+    params.append("_t", Date.now());
+
+    console.log("📡 Request URL:", `/api/marketplace/templates?${params}`);
+
     const response = await fetch(`/api/marketplace/templates?${params}`, {
       credentials: "include",
+      cache: "no-store", // Force bypass cache
     });
+
+    console.log("📥 Response status:", response.status);
 
     if (!response.ok) {
       throw new Error("Failed to fetch templates from API");
     }
 
     const data = await response.json();
+
+    console.log("📦 Received data:", data);
+    console.log("📊 Total templates:", data.templates?.length || 0);
 
     if (data.success && data.templates && data.templates.length > 0) {
       // Convert API templates to frontend format
@@ -390,13 +403,16 @@ async function fetchTemplatesFromAPI() {
         description: t.description || "",
         _id: t._id,
       }));
-      console.log(`✅ Loaded ${products.length} templates from API`);
+      console.log(
+        `✅ Loaded ${products.length} templates from API:`,
+        products.map((p) => p.title),
+      );
     } else {
       console.log("⚠️ No templates from API, using fallback data");
       products = [...fallbackProducts];
     }
   } catch (error) {
-    console.error("API fetch error, using fallback:", error);
+    console.error("❌ API fetch error, using fallback:", error);
     products = [...fallbackProducts];
   }
 

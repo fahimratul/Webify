@@ -256,10 +256,15 @@
         document.getElementById('marketplaceForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            console.log("🚀 UPLOAD FORM SUBMITTED!");
+
             if (!builderData) {
+                console.error("❌ No builder data found!");
                 alert("Cannot upload: No design data found from the builder.");
                 return;
             }
+
+            console.log("✅ Builder data found:", builderData);
 
             const isPremium = document.querySelector('input[name="pricing"]:checked').value === 'premium';
             const formData = {
@@ -272,12 +277,16 @@
                 css: builderData.css || ''
             };
 
-            console.log("Preparing to send to Backend API:", formData);
+            console.log("📦 Form Data:", formData);
+            console.log("📝 HTML length:", formData.html?.length || 0);
+            console.log("🎨 CSS length:", formData.css?.length || 0);
 
             const submitBtn = e.target.querySelector('button[type="submit"]');
             try {
                 submitBtn.disabled = true;
                 submitBtn.innerText = 'Publishing...';
+
+                console.log("🌐 Sending POST request to /api/marketplace/templates...");
 
                 const response = await fetch('/api/marketplace/templates', {
                     method: 'POST',
@@ -286,17 +295,24 @@
                     body: JSON.stringify(formData)
                 });
 
+                console.log("📡 Response status:", response.status, response.statusText);
+
                 const contentType = response.headers.get('content-type') || '';
                 let body;
                 if (contentType.includes('application/json')) body = await response.json();
                 else body = await response.text();
 
+                console.log("📥 Response body:", body);
+
                 if (response.ok) {
-                    // alert('Published to marketplace!');
-                    localStorage.removeItem('webify-project');
+                    console.log("✅ Upload successful!");
+                    console.log("🎉 Template created:", body.template);
+                    alert('✅ Published to marketplace successfully!');
+                    localStorage.removeItem('webify-upload-to-marketplace');
+                    console.log("🔄 Redirecting to marketplace...");
                     window.location.href = '/marketplace/market.html';
                 } else {
-                    console.error('Upload failed', response.status, body);
+                    console.error('❌ Upload failed:', response.status, body);
                     alert(body?.error || body || `Upload failed: ${response.status}`);
                 }
             } catch (err) {

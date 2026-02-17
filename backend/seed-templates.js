@@ -5,13 +5,13 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: path.join(__dirname, "backend/.env") });
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 // Fix DNS for Windows
 dns.setServers(["8.8.8.8", "8.8.4.4", "1.1.1.1"]);
 
-import Template from "./backend/models/Template.js";
-import User from "./backend/models/User.js";
+import Template from "./models/Template.js";
+import User from "./models/User.js";
 
 const defaultTemplates = [
   {

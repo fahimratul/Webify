@@ -143,21 +143,45 @@ const App = () => {
 
   // Publish to Marketplace logic
   const publishToMarketplace = () => {
-    if (!editorInstance) return;
+    console.log("🚀 Upload button clicked!");
+
+    if (!editorInstance) {
+      console.error("❌ Editor instance not found!");
+      alert("Editor not ready. Please wait a moment and try again.");
+      return;
+    }
+
+    console.log("✅ Editor instance found");
 
     const html = editorInstance.getHtml();
     const css = editorInstance.getCss();
 
+    console.log("📄 HTML length:", html?.length || 0);
+    console.log("🎨 CSS length:", css?.length || 0);
+    console.log("📝 HTML preview:", html?.substring(0, 100));
+
     if (!html || html.trim() === "<body></body>" || html.trim() === "") {
+      console.warn("⚠️ Canvas is empty!");
       alert("Your canvas is empty! Add some content before publishing.");
       return;
     }
 
     // Save the HTML/CSS to localStorage so the upload page can read it
-    const uploadData = JSON.stringify({ html, css, title: "" });
-    localStorage.setItem("webify-upload-to-marketplace", uploadData);
+    const uploadData = { html, css, title: "" };
+    const uploadDataString = JSON.stringify(uploadData);
+
+    console.log("💾 Saving to localStorage...");
+    localStorage.setItem("webify-upload-to-marketplace", uploadDataString);
+
+    // Verify it was saved
+    const saved = localStorage.getItem("webify-upload-to-marketplace");
+    console.log(
+      "✅ Verified localStorage:",
+      saved ? "Data saved successfully" : "❌ Save failed!",
+    );
 
     // Redirect to the upload page
+    console.log("🔄 Redirecting to upload page...");
     window.location.href = "/marketplace/upload_to_marketplace.html";
   };
 
