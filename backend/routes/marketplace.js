@@ -141,12 +141,16 @@ router.post("/templates", isAuthenticated, async (req, res) => {
       description,
       html,
       css,
-      type,
+      type: rawType,
+      isPremium,
       price,
       category,
       tags,
       image,
     } = req.body;
+
+    // Support both old format (isPremium: true/false) and new format (type: "paid"/"free")
+    const type = rawType || (isPremium ? "paid" : "free");
 
     if (!title || !html) {
       return res
@@ -167,7 +171,7 @@ router.post("/templates", isAuthenticated, async (req, res) => {
       html,
       css: css || "",
       type: type || "free",
-      price: type === "paid" ? price : 0,
+      price: type === "paid" ? parseFloat(price) : 0,
       category: category || "webpage",
       tags: tags || [],
       image: image || "",
@@ -477,6 +481,60 @@ router.post("/templates/:id/purchase", isAuthenticated, async (req, res) => {
   } catch (error) {
     console.error("Purchase template error:", error);
     res.status(500).json({ error: "Failed to purchase template" });
+  }
+});
+
+// Alias: /api/marketplace/items -> same as /api/marketplace/templates (backward compatibility)
+router.post("/items", isAuthenticated, async (req, res) => {
+  // Redirect internally to the /templates route handler  
+  try {
+    const {
+      title,
+      description,
+      html,
+      css,
+      type: rawType,
+      isPremium,
+      price,
+      category,
+      tags,
+      image,
+    } = req.body;
+
+    const type = rawType || (isPremium ? "paid" : "free");
+
+    if (!title || !html) {
+      return res.status(400).json({ error: "Title and HTML content are required" });
+    }
+
+    if (type === "paid" && (!price || price <= 0)) {
+      return res.status(400).json({ error: "Paid templates must have a valid price" });
+    }
+
+    const template = new Template({
+      title,
+      description: description || "",
+      html,
+      css: css || "",
+      type: type || "free",
+      price: type === "paid" ? parseFloat(price) : 0,
+      category: category || "webpage",
+      tags: tags || [],
+      image: image || "",
+      author: req.user._id,
+    });
+
+    await template.save();
+    await template.populate("author", "username profilePicture");
+
+    res.status(201).json({
+      success: true,
+      message: "Template created successfully",
+      template,
+    });
+  } catch (error) {
+    console.error("Create template (items alias) error:", error);
+    res.status(500).json({ error: "Failed to create template" });
   }
 });
 

@@ -42,7 +42,7 @@ const TemplateSchema = new mongoose.Schema(
     // Categorization
     category: {
       type: String,
-      enum: ["dashboard", "portfolio", "webpage", "other"],
+      enum: ["dashboard", "portfolio", "webpage", "component", "other"],
       default: "webpage",
     },
     tags: [
