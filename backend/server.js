@@ -74,6 +74,10 @@ const isAuthenticated = (req, res, next) => {
 // Use Community Routes
 app.use("/api", communityRoutes);
 
+// Import community routes
+import questionRoutes from './routes/questions.js';
+import answerRoutes from './routes/answers.js';
+
 // Signup Route
 app.post("/api/signup", async (req, res) => {
   try {
@@ -537,6 +541,10 @@ app.get("/api/test", (req, res) => {
     version: "v2.0"
   });
 });
+
+// Community Routes
+app.use('/api/questions', questionRoutes);
+app.use('/api/answers', answerRoutes);
 
 // Builder SPA Routing
 app.get(/^\/builder(\/.*)?$/, (req, res) => {
