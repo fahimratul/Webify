@@ -254,4 +254,185 @@ router.get("/my-templates", isAuthenticated, async (req, res) => {
   }
 });
 
+// ============================================================
+// INTERACTIONS: Like, Rate, Download, Purchase
+// ============================================================
+
+// POST /api/marketplace/templates/:id/like - Toggle like on a template
+router.post("/templates/:id/like", isAuthenticated, async (req, res) => {
+  try {
+    const template = await Template.findById(req.params.id);
+
+    if (!template) {
+      return res.status(404).json({ error: "Template not found" });
+    }
+
+    const userId = req.user._id;
+    const hasLiked = template.likedBy.includes(userId);
+
+    if (hasLiked) {
+      // Unlike
+      template.likedBy.pull(userId);
+      template.likes -= 1;
+    } else {
+      // Like
+      template.likedBy.push(userId);
+      template.likes += 1;
+    }
+
+    await template.save();
+
+    res.json({
+      success: true,
+      liked: !hasLiked,
+      likes: template.likes,
+    });
+  } catch (error) {
+    console.error("Like template error:", error);
+    res.status(500).json({ error: "Failed to like template" });
+  }
+});
+
+// POST /api/marketplace/templates/:id/rate - Rate a template (1-5)
+router.post("/templates/:id/rate", isAuthenticated, async (req, res) => {
+  try {
+    const { rating } = req.body;
+
+    if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({ error: "Rating must be between 1 and 5" });
+    }
+
+    const template = await Template.findById(req.params.id);
+
+    if (!template) {
+      return res.status(404).json({ error: "Template not found" });
+    }
+
+    const userId = req.user._id;
+    const existingRating = template.ratedBy.find(
+      (r) => r.user.toString() === userId.toString()
+    );
+
+    if (existingRating) {
+      // Update existing rating
+      existingRating.rating = rating;
+    } else {
+      // Add new rating
+      template.ratedBy.push({ user: userId, rating });
+      template.ratingCount += 1;
+    }
+
+    // Recalculate average rating
+    const totalRating = template.ratedBy.reduce((sum, r) => sum + r.rating, 0);
+    template.rating = Math.round((totalRating / template.ratedBy.length) * 10) / 10;
+
+    await template.save();
+
+    res.json({
+      success: true,
+      rating: template.rating,
+      ratingCount: template.ratingCount,
+      userRating: rating,
+    });
+  } catch (error) {
+    console.error("Rate template error:", error);
+    res.status(500).json({ error: "Failed to rate template" });
+  }
+});
+
+// POST /api/marketplace/templates/:id/download - Download a template (increments count)
+router.post("/templates/:id/download", async (req, res) => {
+  try {
+    const template = await Template.findById(req.params.id);
+
+    if (!template) {
+      return res.status(404).json({ error: "Template not found" });
+    }
+
+    // For paid templates, check if user has purchased
+    if (template.type === "paid") {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ error: "You must be logged in to download paid templates" });
+      }
+
+      const hasPurchased = template.purchasedBy.some(
+        (p) => p.user.toString() === req.user._id.toString()
+      );
+
+      if (!hasPurchased) {
+        return res.status(403).json({ error: "You must purchase this template before downloading" });
+      }
+    }
+
+    // Increment download count
+    template.downloads += 1;
+    await template.save();
+
+    // Return the template content for download
+    res.json({
+      success: true,
+      template: {
+        title: template.title,
+        html: template.html,
+        css: template.css,
+      },
+      downloads: template.downloads,
+    });
+  } catch (error) {
+    console.error("Download template error:", error);
+    res.status(500).json({ error: "Failed to download template" });
+  }
+});
+
+// POST /api/marketplace/templates/:id/purchase - Purchase a paid template
+router.post("/templates/:id/purchase", isAuthenticated, async (req, res) => {
+  try {
+    const template = await Template.findById(req.params.id);
+
+    if (!template) {
+      return res.status(404).json({ error: "Template not found" });
+    }
+
+    if (template.type !== "paid") {
+      return res.status(400).json({ error: "This template is free, no purchase needed" });
+    }
+
+    const userId = req.user._id;
+
+    // Check if already purchased
+    const alreadyPurchased = template.purchasedBy.some(
+      (p) => p.user.toString() === userId.toString()
+    );
+
+    if (alreadyPurchased) {
+      return res.status(400).json({ error: "You have already purchased this template" });
+    }
+
+    // Generate transaction ID
+    const transactionId = "TXN-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9);
+
+    // Record purchase
+    template.purchasedBy.push({
+      user: userId,
+      purchasedAt: new Date(),
+      transactionId,
+    });
+
+    await template.save();
+
+    res.json({
+      success: true,
+      message: "Purchase successful",
+      transactionId,
+      template: {
+        title: template.title,
+        price: template.price,
+      },
+    });
+  } catch (error) {
+    console.error("Purchase template error:", error);
+    res.status(500).json({ error: "Failed to purchase template" });
+  }
+});
+
 export default router;
