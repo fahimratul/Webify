@@ -338,21 +338,20 @@ const userData = currentUser ? JSON.parse(currentUser) : null;
 console.log("isLoggedIn:", currentUser);
 
 function isUserLoggedIn() {
-const userName = userData ? userData.name : ""; // Replace with actual user name
-
-  if (isLoggedIn) {
-    document.getElementById('loginLink').style.display = 'none';
-    const userNameDiv = document.getElementById('userName');
-    userNameDiv.style.display = 'flex';
-    userNameDiv.innerHTML = `<img src="${userData.profilePicture}" alt="User Avatar" /> ${userName}`;
-    return true;  
+    const userName = userData ? userData.name : "";
+    if (isLoggedIn) {
+        document.getElementById('loginLink').style.display = 'none';
+        const userNameDiv = document.getElementById('userName');
+        userNameDiv.style.display = 'flex';
+        userNameDiv.innerHTML = `<img src="${userData.profilePicture}" alt="User Avatar" /> ${userName}`;
+        return true;
+    } else {
+        return false;
     }
-  else {
-    return false;
-  } 
 }
 
 isUserLoggedIn();
+
 // State
 let currentCategory = 'all';
 let currentType = 'all';
@@ -361,20 +360,19 @@ let searchQuery = '';
 // Render products function
 function renderProducts() {
     const grid = document.getElementById('productsGrid');
-    
+
     const filteredProducts = products.filter(function(product) {
-        const categoryMatch = currentCategory === 'all' || 
+        const categoryMatch = currentCategory === 'all' ||
             (currentCategory === 'free' && product.type === 'free') ||
             (currentCategory === 'premium' && product.type === 'paid');
-        
+
         const typeMatch = currentType === 'all' || product.category === currentType;
-        
-        // Search filter - search in title, author, and category
-        const searchMatch = !searchQuery || 
+
+        const searchMatch = !searchQuery ||
             product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
             product.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
             product.category.toLowerCase().includes(searchQuery.toLowerCase());
-        
+
         return categoryMatch && typeMatch && searchMatch;
     });
 
@@ -432,7 +430,6 @@ function renderProducts() {
         '</div>';
     }).join('');
 
-    // Add event listeners to heart buttons
     document.querySelectorAll('.heart-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
             this.classList.toggle('liked');
@@ -470,8 +467,7 @@ if (searchInput) {
     searchInput.addEventListener('input', function(e) {
         searchQuery = e.target.value.trim();
         renderProducts();
-        
-        // Show notification if no results found
+
         const grid = document.getElementById('productsGrid');
         if (searchQuery && grid.children.length === 0) {
             grid.innerHTML = '<div class="no-results">' +
@@ -484,8 +480,7 @@ if (searchInput) {
             '</div>';
         }
     });
-    
-    // Clear search on Escape key
+
     searchInput.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             clearSearch();
@@ -511,24 +506,23 @@ let currentPreviewProduct = null;
 function openPreviewModal(productId) {
     const product = products.find(p => p.id === productId);
     if (!product) return;
-    
+
     currentPreviewProduct = product;
-    
-    // Set modal title
+
     document.getElementById('previewTitle').textContent = product.title + ' - Preview';
-    
+
     if (product.type === 'free') {
         document.getElementById('modal-footer').innerHTML = `
             <button class="btn-secondary" onclick="closePreviewModal()">Close</button>
             <button class="btn-primary" onclick="downloadPreview()">Download</button>
         `;
-    } else  {
-    document.getElementById('modal-footer').innerHTML = `
-        <button class="btn-secondary" onclick="closePreviewModal()">Close</button>
-        <button class="btn-primary" onclick="buyNow()">Buy Now</button>
-    `;
+    } else {
+        document.getElementById('modal-footer').innerHTML = `
+            <button class="btn-secondary" onclick="closePreviewModal()">Close</button>
+            <button class="btn-primary" onclick="buyNow()">Buy Now</button>
+        `;
     }
-    // Create HTML content with CSS
+
     const iframeContent = `
         <!DOCTYPE html>
         <html lang="en">
@@ -536,23 +530,16 @@ function openPreviewModal(productId) {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>${product.title}</title>
-            <style>
-                ${product.css}
-            </style>
+            <style>${product.css}</style>
         </head>
-        <body>
-            ${product.html}
-        </body>
+        <body>${product.html}</body>
         </html>
     `;
-    
-    // Inject content into iframe
+
     const iframe = document.getElementById('previewFrame');
     iframe.srcdoc = iframeContent;
-    // Show modal
     document.getElementById('previewModal').classList.remove('hidden');
     document.body.style.overflow = 'hidden';
-
 }
 
 function closePreviewModal() {
@@ -561,12 +548,13 @@ function closePreviewModal() {
     currentPreviewProduct = null;
 }
 
-function downloadPreview() {
-    if (!currentPreviewProduct) return;
-    
-    const product = currentPreviewProduct;
-    
-    // Create a blob with the combined HTML and CSS
+// ─── DOWNLOAD FIX ───────────────────────────────────────────────
+// Accepts an optional product argument so completeCheckout can pass
+// the purchased product even after currentPreviewProduct is cleared.
+function downloadPreview(productToDownload) {
+    const product = productToDownload || currentPreviewProduct;
+    if (!product) return;
+
     const htmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -581,7 +569,7 @@ function downloadPreview() {
     ${product.html}
 </body>
 </html>`;
-    
+
     const blob = new Blob([htmlContent], { type: 'text/html' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -592,12 +580,13 @@ function downloadPreview() {
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
 }
+// ────────────────────────────────────────────────────────────────
 
 function buyNow() {
     if (!currentPreviewProduct) return;
-    if(!isLoggedIn) {
+    if (!isLoggedIn) {
         showNotification('Please log in to proceed with the purchase.', 'error');
-        location.href ='../login2/index.html';
+        location.href = '../login2/index.html';
         return;
     }
     const product = currentPreviewProduct;
@@ -610,19 +599,16 @@ let currentPaymentProduct = null;
 
 function openPaymentModal(product) {
     currentPaymentProduct = product;
-    
-    // Update order summary
+
     document.getElementById('itemName').textContent = product.title;
     document.getElementById('itemPrice').textContent = 'Tk ' + product.price;
     document.getElementById('totalAmount').textContent = 'Tk ' + product.price;
-    
-    // Populate user info if logged in
+
     if (isLoggedIn && userData) {
         document.getElementById('fullName').value = userData.name || '';
         document.getElementById('email').value = userData.email || '';
     }
-    
-    // Show payment modal
+
     document.getElementById('paymentModal').classList.remove('hidden');
     document.body.style.overflow = 'hidden';
 }
@@ -646,79 +632,38 @@ function validatePaymentForm() {
     const country = document.getElementById('country').value.trim();
     const termsCheck = document.getElementById('termsCheck').checked;
 
-    // Validation checks
-    if (!fullName) {
-        showNotification('Please enter your full name', 'error');   
-        return false;
-    }
-    
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showNotification('Please enter a valid email address', 'error');
-        return false;
-    }
-    
-    if (cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
-        showNotification('Please enter a valid 16-digit card number', 'error');
-        return false;
-    }
-    
-    if (!expiryDate || !/^\d{2}\/\d{2}$/.test(expiryDate)) {
-        showNotification('Please enter a valid expiry date in MM/YY format', 'error');
-        return false;
-    }
-    
-    if (cvv.length < 3 || cvv.length > 4 || !/^\d+$/.test(cvv)) {
-        showNotification('Please enter a valid CVV', 'error');
-        return false;
-    }
-    
-    if (!cardholderName) {
-        showNotification('Please enter cardholder name', 'error');
-        return false;
-    }
-    
-    if (!address || !city || !zipCode || !country) {
-        showNotification('Please fill in all billing address fields', 'error');
-        return false;
-    }
-    
-    if (!termsCheck) {
-        showNotification('Please agree to the terms and conditions', 'error');
-        return false;
-    }
-    
+    if (!fullName) { showNotification('Please enter your full name', 'error'); return false; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showNotification('Please enter a valid email address', 'error'); return false; }
+    if (cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) { showNotification('Please enter a valid 16-digit card number', 'error'); return false; }
+    if (!expiryDate || !/^\d{2}\/\d{2}$/.test(expiryDate)) { showNotification('Please enter a valid expiry date in MM/YY format', 'error'); return false; }
+    if (cvv.length < 3 || cvv.length > 4 || !/^\d+$/.test(cvv)) { showNotification('Please enter a valid CVV', 'error'); return false; }
+    if (!cardholderName) { showNotification('Please enter cardholder name', 'error'); return false; }
+    if (!address || !city || !zipCode || !country) { showNotification('Please fill in all billing address fields', 'error'); return false; }
+    if (!termsCheck) { showNotification('Please agree to the terms and conditions', 'error'); return false; }
+
     return true;
 }
 
 function processPayment() {
-    if (!validatePaymentForm()) {
-        return;
-    }
-    
-    // Show processing state
+    if (!validatePaymentForm()) return;
+
     const payBtn = event.target;
     const originalText = payBtn.textContent;
     payBtn.textContent = 'Processing...';
     payBtn.disabled = true;
-    
-    // Simulate payment processing
+
     setTimeout(function() {
-        // Generate transaction ID
         const transactionId = 'TXN-' + Date.now();
         const currentDate = new Date();
-        
-        // Show success modal
+
         document.getElementById('transactionId').textContent = transactionId;
-        document.getElementById('receiptAmount').textContent = '$' + currentPaymentProduct.price;
+        document.getElementById('receiptAmount').textContent = 'Tk ' + currentPaymentProduct.price;
         document.getElementById('transactionDate').textContent = currentDate.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
+            year: 'numeric', month: 'short', day: 'numeric'
         });
-        document.getElementById('successMessage').textContent = 
+        document.getElementById('successMessage').textContent =
             'Your purchase of "' + currentPaymentProduct.title + '" has been completed successfully.';
-        
-        // Store order in localStorage
+
         const orders = JSON.parse(localStorage.getItem('userOrders')) || [];
         orders.push({
             id: transactionId,
@@ -728,27 +673,29 @@ function processPayment() {
             productData: currentPaymentProduct
         });
         localStorage.setItem('userOrders', JSON.stringify(orders));
-        
-        // Close payment modal and show success
+
         closePaymentModal();
         document.getElementById('successModal').classList.remove('hidden');
         document.body.style.overflow = 'hidden';
-        
-        // Reset button
+
         payBtn.textContent = originalText;
         payBtn.disabled = false;
     }, 2000);
 }
 
 function completeCheckout() {
+    // ─── DOWNLOAD FIX ───────────────────────────────────────────
+    // Save reference BEFORE nulling it, then pass directly to downloadPreview
+    const productToDownload = currentPaymentProduct;
+    // ────────────────────────────────────────────────────────────
+
     document.getElementById('successModal').classList.add('hidden');
     document.body.style.overflow = 'auto';
-    
-    // Download the purchased template
-    if (currentPaymentProduct) {
-        downloadPreview();
+
+    if (productToDownload) {
+        downloadPreview(productToDownload);
     }
-    
+
     currentPaymentProduct = null;
 }
 
@@ -758,88 +705,69 @@ document.addEventListener('input', function(e) {
         let value = e.target.value.replace(/\s/g, '');
         let formatted = '';
         for (let i = 0; i < value.length; i++) {
-            if (i > 0 && i % 4 === 0) {
-                formatted += ' ';
-            }
+            if (i > 0 && i % 4 === 0) formatted += ' ';
             formatted += value[i];
         }
         e.target.value = formatted;
-        
-        // Detect card type
+
         const firstDigit = value[0];
         const cardTypeEl = document.getElementById('cardType');
-        if (firstDigit === '4') {
-            cardTypeEl.textContent = 'Visa';
-        } else if (firstDigit === '5') {
-            cardTypeEl.textContent = 'Mastercard';
-        } else if (firstDigit === '3') {
-            cardTypeEl.textContent = 'Amex';
-        } else {
-            cardTypeEl.textContent = 'Card';
-        }
+        if (firstDigit === '4') cardTypeEl.textContent = 'Visa';
+        else if (firstDigit === '5') cardTypeEl.textContent = 'Mastercard';
+        else if (firstDigit === '3') cardTypeEl.textContent = 'Amex';
+        else cardTypeEl.textContent = 'Card';
     }
-    
+
     if (e.target.id === 'expiryDate') {
         let value = e.target.value.replace(/\D/g, '');
-        if (value.length >= 2) {
-            value = value.slice(0, 2) + '/' + value.slice(2, 4);
-        }
+        if (value.length >= 2) value = value.slice(0, 2) + '/' + value.slice(2, 4);
         e.target.value = value;
     }
-    
+
     if (e.target.id === 'cvv') {
         e.target.value = e.target.value.replace(/\D/g, '');
     }
 });
 
-    closePreviewModal();
 document.addEventListener('click', function(event) {
     const modal = document.getElementById('previewModal');
-    if (event.target === modal) {
-        closePreviewModal();
-    }
+    if (event.target === modal) closePreviewModal();
 });
 
-// Close modal on Escape key
 document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-        closePreviewModal();
-    }
+    if (event.key === 'Escape') closePreviewModal();
 });
 
 function openprofile() {
     window.location.href = "../profile/profile.html";
 }
 
-
 // Notification Toast Function
 function showNotification(message, type = "success", title = "") {
-  const toast = document.getElementById("notification-toast");
+    const toast = document.getElementById("notification-toast");
 
-  // Set default titles based on type
-  if (!title) {
-    if (type === "success") title = "Success!";
-    else if (type === "error") title = "Error";
-    else if (type === "warning") title = "Warning";
-  }
+    if (!title) {
+        if (type === "success") title = "Success!";
+        else if (type === "error") title = "Error";
+        else if (type === "warning") title = "Warning";
+    }
 
-  // Icon based on type
-  let icon = "";
-  if (type === "success light") {
-    icon = `<svg fill="none" stroke="#ffffffff" stroke-width="2" viewBox="0 0 24 24">
+    let icon = "";
+    if (type === "success") {
+        icon = `<svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>`;
-  } else if (type === "error") {
-    icon = `<svg fill="none" stroke="#2b0116ff" stroke-width="2" viewBox="0 0 24 24">
+    } else if (type === "error") {
+        icon = `<svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>`;
-  } else if (type === "warning light") {
-    icon = `<svg fill="none" stroke="#ff0000ff" stroke-width="2" viewBox="0 0 24 24">
+    } else if (type === "warning") {
+        icon = `<svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
         </svg>`;
-  }
+    }
 
-  toast.innerHTML = `
+    toast.innerHTML = `
         <div class="toast-icon">${icon}</div>
         <div class="toast-content">
             <div class="toast-title">${title}</div>
@@ -852,18 +780,12 @@ function showNotification(message, type = "success", title = "") {
         </button>
     `;
 
-  toast.className = `notification-toast ${type}`;
-
-  setTimeout(() => {
-    toast.classList.add("show");
-  }, 100);
-
-  setTimeout(() => {
-    hideNotification();
-  }, 5000);
+    toast.className = `notification-toast ${type}`;
+    setTimeout(() => toast.classList.add("show"), 100);
+    setTimeout(() => hideNotification(), 5000);
 }
 
 function hideNotification() {
-  const toast = document.getElementById("notification-toast");
-  toast.classList.remove("show");
+    const toast = document.getElementById("notification-toast");
+    toast.classList.remove("show");
 }
