@@ -15,7 +15,8 @@ const MarketplaceItemSchema = new Schema({
     rating: { type: Number, default: 0, min: 0, max: 5 },
     ratingCount: { type: Number, default: 0 },
     likes: { type: Number, default: 0 },
-    likedBy: { type: [Schema.Types.ObjectId], ref: 'User', default: [] }
+    likedBy: { type: [Schema.Types.ObjectId], ref: 'User', default: [] },
+    downloads: { type: Number, default: 0 }
 }, { timestamps: true });
 
 export default model('MarketplaceItem', MarketplaceItemSchema);

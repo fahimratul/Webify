@@ -98,7 +98,7 @@ function renderProducts() {
     currentFilteredProducts = filteredProducts;
 
     grid.innerHTML = filteredProducts.map(function(product, idx) {
-        return '<div class="product-card">' +
+        return '<div class="product-card" data-product-id="' + product.id + '">' +
             '<div class="product-image" id="preview-' + idx + '">' +
                 '<iframe id="iframe-' + idx + '" class="product-preview-iframe" frameborder="0" scrolling="no"></iframe>' +
                 '<div class="product-tag ' + product.type + '">' +
@@ -121,7 +121,7 @@ function renderProducts() {
                         '<div class="product-title">' + product.title + '</div>' +
                         '<div class="product-author">by ' + product.author + '</div>' +
                     '</div>' +
-                    '<button class="heart-btn">' +
+                    '<button class="heart-btn" data-product-idx="' + idx + '">' +
                         '<svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
                             '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>' +
                         '</svg>' +
@@ -150,7 +150,7 @@ function renderProducts() {
                         '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
                             '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>' +
                         '</svg>' +
-                        '<span>' + product.likes + '</span>' +
+                        '<span class="likes-count" data-product-idx="' + idx + '">' + product.likes + '</span>' +
                     '</div>' +
                 '</div>' +
             '</div>' +
@@ -181,7 +181,20 @@ function renderProducts() {
     });
 
     document.querySelectorAll('.heart-btn').forEach(function(btn, index) {
-        const product = filteredProducts[index];
+        const product = currentFilteredProducts[index];
+        const productIdx = btn.getAttribute('data-product-idx');
+        
+        // Check if user already liked this product
+        if (isLoggedIn && userData && userData._id) {
+            const userLiked = product.likedBy && product.likedBy.some(likedUserId => {
+                // Compare as strings - both should be string ObjectIds from API
+                return String(likedUserId) === String(userData._id);
+            });
+            if (userLiked) {
+                btn.classList.add('liked');
+            }
+        }
+        
         btn.addEventListener('click', async function(e) {
             e.preventDefault();
             
@@ -191,8 +204,6 @@ function renderProducts() {
                 return;
             }
 
-            const isLiking = !this.classList.contains('liked');
-            
             try {
                 const response = await fetch('/api/marketplace/items/' + product.id + '/like', {
                     method: 'PUT',
@@ -204,10 +215,24 @@ function renderProducts() {
                 const data = await response.json();
                 this.classList.toggle('liked');
                 
-                // Update the likes count in the product object and re-render
+                // Update the product object with data from server response
                 const productIndex = products.findIndex(p => p.id === product.id);
                 if (productIndex !== -1) {
                     products[productIndex].likes = data.likes;
+                    products[productIndex].likedBy = data.likedBy || [];
+                    
+                    // Also update in filtered products if different array
+                    const filteredIndex = currentFilteredProducts.findIndex(p => p.id === product.id);
+                    if (filteredIndex !== -1) {
+                        currentFilteredProducts[filteredIndex].likes = data.likes;
+                        currentFilteredProducts[filteredIndex].likedBy = data.likedBy || [];
+                    }
+                }
+                
+                // Update the displayed likes count
+                const likesCountElement = document.querySelector('.likes-count[data-product-idx="' + productIdx + '"]');
+                if (likesCountElement) {
+                    likesCountElement.textContent = data.likes;
                 }
                 
                 showNotification(data.message, 'success');
@@ -338,7 +363,7 @@ function closePreviewModal() {
 // ─── DOWNLOAD FIX ───────────────────────────────────────────────
 // Accepts an optional product argument so completeCheckout can pass
 // the purchased product even after currentPreviewProduct is cleared.
-function downloadPreview(productToDownload) {
+async function downloadPreview(productToDownload) {
     const product = productToDownload || currentPreviewProduct;
     if (!product) return;
 
@@ -366,8 +391,156 @@ function downloadPreview(productToDownload) {
     a.click();
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
+    
+    // Increment download count in database
+    try {
+        const response = await fetch('/api/marketplace/items/' + product.id + '/download', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            console.log('✅ Download count updated:', data.downloads);
+            
+            // Update local product data
+            const productIndex = products.findIndex(p => p.id === product.id);
+            if (productIndex !== -1) {
+                products[productIndex].downloads = data.downloads;
+            }
+            
+            const filteredIndex = currentFilteredProducts.findIndex(p => p.id === product.id);
+            if (filteredIndex !== -1) {
+                currentFilteredProducts[filteredIndex].downloads = data.downloads;
+            }
+            
+            // Update the displayed download count in the product card
+            const productCard = document.querySelector('.product-card[data-product-id="' + product.id + '"]');
+            if (productCard) {
+                const downloadElements = productCard.querySelectorAll('.stat');
+                if (downloadElements.length >= 2) {
+                    const downloadStat = downloadElements[1]; // Download count is the second stat
+                    const downloadSpan = downloadStat.querySelector('span');
+                    if (downloadSpan) {
+                        downloadSpan.textContent = data.downloads.toLocaleString();
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        console.error('❌ Error updating download count:', error);
+    }
+    
+    // Show rating modal after download
+    openRatingModal(product);
 }
 // ────────────────────────────────────────────────────────────────
+
+// Rating system
+let currentRatingProduct = null;
+let selectedRating = 0;
+
+function openRatingModal(product) {
+    currentRatingProduct = product;
+    selectedRating = 0;
+    
+    document.getElementById('ratingProductName').textContent = `How do you rate "${product.title}"?`;
+    document.getElementById('ratingText').textContent = 'Please select a rating';
+    document.getElementById('submitRatingBtn').disabled = true;
+    
+    // Clear all active stars
+    document.querySelectorAll('.rating-star').forEach(star => {
+        star.classList.remove('active');
+    });
+    
+    document.getElementById('ratingModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeRatingModal() {
+    document.getElementById('ratingModal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    currentRatingProduct = null;
+    selectedRating = 0;
+}
+
+function setRating(rating) {
+    selectedRating = rating;
+    
+    // Update star display
+    document.querySelectorAll('.rating-star').forEach((star, idx) => {
+        if (idx < rating) {
+            star.classList.add('active');
+        } else {
+            star.classList.remove('active');
+        }
+    });
+    
+    // Update text and enable button
+    const ratingTexts = {
+        1: '😞 Poor',
+        2: '😕 Not Great',
+        3: '😐 Okay',
+        4: '😊 Good',
+        5: '😍 Excellent'
+    };
+    
+    document.getElementById('ratingText').textContent = ratingTexts[rating];
+    document.getElementById('submitRatingBtn').disabled = false;
+}
+
+async function submitRating() {
+    if (!currentRatingProduct || selectedRating === 0) {
+        showNotification('Please select a rating', 'error');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/marketplace/items/' + currentRatingProduct.id + '/rate', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ rating: selectedRating })
+        });
+        
+        if (!response.ok) throw new Error('Failed to submit rating');
+        
+        const data = await response.json();
+        showNotification('Thank you for your rating!', 'success');
+        
+        // Update local product data in both products and currentFilteredProducts
+        const productIndex = products.findIndex(p => p.id === currentRatingProduct.id);
+        if (productIndex !== -1) {
+            products[productIndex].rating = parseFloat(data.rating);
+            products[productIndex].ratingCount = data.ratingCount;
+        }
+        
+        const filteredIndex = currentFilteredProducts.findIndex(p => p.id === currentRatingProduct.id);
+        if (filteredIndex !== -1) {
+            currentFilteredProducts[filteredIndex].rating = parseFloat(data.rating);
+            currentFilteredProducts[filteredIndex].ratingCount = data.ratingCount;
+        }
+        
+        // Update the rating display in the DOM
+        const productCard = document.querySelector('.product-card[data-product-id="' + currentRatingProduct.id + '"]');
+        if (productCard) {
+            const ratingElements = productCard.querySelectorAll('.star-icon');
+            if (ratingElements.length > 0) {
+                const ratingContainer = ratingElements[0].closest('.stat');
+                if (ratingContainer) {
+                    const ratingSpan = ratingContainer.querySelector('span');
+                    if (ratingSpan) {
+                        ratingSpan.innerHTML = parseFloat(data.rating).toFixed(1) + ' <small>(' + data.ratingCount + ')</small>';
+                    }
+                }
+            }
+        }
+        
+        closeRatingModal();
+    } catch (error) {
+        console.error('❌ Error submitting rating:', error);
+        showNotification('Failed to submit rating', 'error');
+    }
+}
 
 function buyNow() {
     if (!currentPreviewProduct) return;

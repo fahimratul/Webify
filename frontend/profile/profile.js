@@ -58,6 +58,7 @@ function hideNotification() {
 document.addEventListener("DOMContentLoaded", () => {
   lucide.createIcons();
   loadUserData();
+  loadUserProjects();
   initializeApp();
 
   // Check if there's a section parameter in URL
@@ -129,6 +130,104 @@ function hideLoadingScreen() {
   }
 }
 
+// Load user's projects from backend
+async function loadUserProjects() {
+  try {
+    console.log('🔄 Fetching marketplace items...');
+    const currentUser = localStorage.getItem("currentUser");
+    if (!currentUser) return;
+
+    const userData = JSON.parse(currentUser);
+    if (!userData._id) return;
+
+    const response = await fetch('/api/marketplace/items');
+
+    if (!response.ok) {
+      console.error('❌ Failed to fetch marketplace items');
+      return;
+    }
+
+    const data = await response.json();
+    const userItems = (data.items || []).filter(item => item.ownerId === userData._id);
+    console.log('✅ User items loaded:', userItems);
+
+    displayUserProjects(userItems);
+  } catch (error) {
+    console.error('❌ Error loading projects:', error);
+  }
+}
+
+// Cache user projects for quick lookup
+let userProjectsById = {};
+
+// Display user projects as cards
+function displayUserProjects(projects) {
+  const grid = document.getElementById('projectsGrid');
+  
+  if (!projects || projects.length === 0) {
+    console.log('📭 No projects found');
+    return;
+  }
+  
+  // Cache projects for openProject
+  userProjectsById = projects.reduce((acc, project) => {
+    acc[project.id] = project;
+    return acc;
+  }, {});
+
+  // Add project cards after the create card
+  const projectCardsHTML = projects.map((project, idx) => `
+    <div class="project-card" onclick="openProject('${project.id}')" data-project-id="${project.id}">
+      <div class="card-thumbnail">
+        <iframe id="project-iframe-${idx}" class="project-preview-iframe" frameborder="0" scrolling="no"></iframe>
+        <button class="more-button" onclick="event.stopPropagation(); showProjectMenu('${project.id}')">
+          <i data-lucide="more-vertical"></i>
+        </button>
+      </div>
+      <div class="card-content">
+        <h3>${project.title}</h3>
+        <p class="project-date">${project.updatedAt ? new Date(project.updatedAt).toLocaleDateString() : ''}</p>
+      </div>
+    </div>
+  `).join('');
+  
+  // Append projects after the create card
+  grid.innerHTML += projectCardsHTML;
+  
+  // Populate iframe previews
+  projects.forEach((project, idx) => {
+    const iframe = document.getElementById('project-iframe-' + idx);
+    if (!iframe) return;
+
+    const iframeContent = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${project.title}</title>
+        <style>
+          ${project.css || ''}
+          body { margin: 0; padding: 0; overflow: hidden; }
+        </style>
+      </head>
+      <body>${project.html || ''}</body>
+      </html>
+    `;
+
+    iframe.srcdoc = iframeContent;
+  });
+  
+  // Re-initialize Lucide icons for the new elements
+  lucide.createIcons();
+}
+
+// Show project menu (edit, delete, etc.)
+function showProjectMenu(projectId) {
+  console.log('📋 Project menu for:', projectId);
+  // TODO: Implement project menu with edit and delete options
+  showNotification('Project menu coming soon', 'info');
+}
 function initializeApp() {
   // Profile dropdown toggle
   const userAvatar = document.getElementById("userAvatar");
@@ -375,7 +474,18 @@ function handleSearch(query) {
 // Project card actions
 function openProject(projectId) {
   console.log(`Opening project: ${projectId}`);
-  alert(`Opening project: ${projectId}`);
+  if (!projectId) return;
+
+  const project = userProjectsById[projectId];
+  if (project) {
+    // Store selected item so the builder can load it if supported
+    localStorage.setItem('selectedMarketplaceItem', JSON.stringify(project));
+  }
+
+  showNotification("Opening your project in builder...", "success");
+  setTimeout(() => {
+    location.href = "https://webify-kudm.onrender.com/builder/?itemId=" + projectId;
+  }, 300);
 }
 
 function createNewProject() {
