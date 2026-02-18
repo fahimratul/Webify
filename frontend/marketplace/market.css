@@ -965,6 +965,86 @@ header {
     padding: 2.5rem 2rem !important;
 }
 
+.rating-modal {
+    max-width: 480px !important;
+    height: auto !important;
+    border-radius: 20px !important;
+    background: white !important;
+    border: 1px solid var(--sky-200);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding: 2rem !important;
+}
+
+.rating-container {
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.rating-container p:first-child {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+.star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.rating-star {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rating-star svg {
+    width: 100%;
+    height: 100%;
+    stroke: var(--sky-400);
+    stroke-width: 1.5;
+    fill: none;
+}
+
+.rating-star:hover svg {
+    stroke: var(--sky-600);
+    transform: scale(1.15);
+}
+
+.rating-star.active svg {
+    fill: var(--sky-400);
+    stroke: var(--sky-600);
+}
+
+#ratingText {
+    text-align: center;
+    margin-top: 1rem;
+    color: #0284c7;
+    font-weight: 600;
+}
+
+#submitRatingBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #ccc;
+}
+
+#submitRatingBtn:not(:disabled) {
+    background: #10b981;
+}
+
+#submitRatingBtn:not(:disabled):hover {
+    background: #059669;
+}
+
 .success-icon {
     width: 84px; height: 84px;
     background: linear-gradient(135deg, var(--sky-100) 0%, var(--sky-200) 100%);

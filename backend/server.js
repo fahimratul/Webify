@@ -172,6 +172,7 @@ app.put("/api/marketplace/items/:id/like", isAuthenticated, async (req, res) => 
       success: true, 
       liked: !alreadyLiked, 
       likes: item.likes,
+      likedBy: item.likedBy.map(id => id.toString()),
       message: alreadyLiked ? 'Removed like' : 'Added like'
     });
   } catch (err) {
