@@ -58,6 +58,7 @@ function hideNotification() {
 document.addEventListener("DOMContentLoaded", () => {
   lucide.createIcons();
   loadUserData();
+  loadUserProjects();
   initializeApp();
 
   // Check if there's a section parameter in URL
@@ -129,6 +130,71 @@ function hideLoadingScreen() {
   }
 }
 
+// Load user's projects from backend
+async function loadUserProjects() {
+  try {
+    console.log('🔄 Fetching marketplace items...');
+    const currentUser = localStorage.getItem("currentUser");
+    if (!currentUser) return;
+
+    const userData = JSON.parse(currentUser);
+    if (!userData._id) return;
+
+    const response = await fetch('/api/marketplace/items');
+
+    if (!response.ok) {
+      console.error('❌ Failed to fetch marketplace items');
+      return;
+    }
+
+    const data = await response.json();
+    const userItems = (data.items || []).filter(item => item.ownerId === userData._id);
+    console.log('✅ User items loaded:', userItems);
+
+    displayUserProjects(userItems);
+  } catch (error) {
+    console.error('❌ Error loading projects:', error);
+  }
+}
+
+// Display user projects as cards
+function displayUserProjects(projects) {
+  const grid = document.getElementById('projectsGrid');
+  
+  if (!projects || projects.length === 0) {
+    console.log('📭 No projects found');
+    return;
+  }
+  
+  // Add project cards after the create card
+  const projectCardsHTML = projects.map(project => `
+    <div class="project-card" onclick="openProject('${project.id}')" data-project-id="${project.id}">
+      <div class="card-thumbnail">
+        <img src="${project.image || 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80'}" alt="${project.title}">
+        <button class="more-button" onclick="event.stopPropagation(); showProjectMenu('${project.id}')">
+          <i data-lucide="more-vertical"></i>
+        </button>
+      </div>
+      <div class="card-content">
+        <h3>${project.title}</h3>
+        <p class="project-date">${project.updatedAt ? new Date(project.updatedAt).toLocaleDateString() : ''}</p>
+      </div>
+    </div>
+  `).join('');
+  
+  // Append projects after the create card
+  grid.innerHTML += projectCardsHTML;
+  
+  // Re-initialize Lucide icons for the new elements
+  lucide.createIcons();
+}
+
+// Show project menu (edit, delete, etc.)
+function showProjectMenu(projectId) {
+  console.log('📋 Project menu for:', projectId);
+  // TODO: Implement project menu with edit and delete options
+  showNotification('Project menu coming soon', 'info');
+}
 function initializeApp() {
   // Profile dropdown toggle
   const userAvatar = document.getElementById("userAvatar");
@@ -375,7 +441,12 @@ function handleSearch(query) {
 // Project card actions
 function openProject(projectId) {
   console.log(`Opening project: ${projectId}`);
-  alert(`Opening project: ${projectId}`);
+  if (!projectId) return;
+
+  showNotification("Opening your marketplace item...", "success");
+  setTimeout(() => {
+    location.href = "../marketplace/market.html";
+  }, 300);
 }
 
 function createNewProject() {

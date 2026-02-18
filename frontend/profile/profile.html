@@ -143,7 +143,7 @@
             <!-- Last Saved Section -->
             <section class="section" id="lastSavedSection">
                 <h2 class="section-title">Last Saved</h2>
-                <div class="grid">
+                <div class="grid" id="projectsGrid">
                     <!-- Create New Project — FIRST -->
                     <div class="create-card" onclick="createNewProject()">
                         <div class="create-content">
@@ -154,19 +154,7 @@
                         </div>
                     </div>
 
-                    <!-- Untitled Project -->
-                    <div class="project-card" onclick="openProject('untitled')">
-                        <div class="card-thumbnail">
-                            <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80"
-                                alt="Untitled Project">
-                            <button class="more-button">
-                                <i data-lucide="more-vertical"></i>
-                            </button>
-                        </div>
-                        <div class="card-content">
-                            <h3>Untitled</h3>
-                        </div>
-                    </div>
+                    <!-- User projects will be loaded here -->
                 </div>
             </section>
 

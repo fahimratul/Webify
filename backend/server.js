@@ -95,6 +95,7 @@ app.get("/api/marketplace/items", async (req, res) => {
       id: item._id.toString(),
       title: item.title,
       author: item.owner?.username || 'Unknown',
+      ownerId: item.owner?._id ? item.owner._id.toString() : null,
       rating: item.rating || 0,
       ratingCount: item.ratingCount || 0,
       downloads: item.downloads || 0,
@@ -107,7 +108,8 @@ app.get("/api/marketplace/items", async (req, res) => {
       image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
       html: item.html || '',
       css: item.css || '',
-      description: item.description || ''
+      description: item.description || '',
+      updatedAt: item.updatedAt
     }));
 
     res.json({ success: true, items: formattedItems });

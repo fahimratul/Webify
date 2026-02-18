@@ -526,6 +526,12 @@ button {
     color: #1f2937;
 }
 
+.card-content .project-date {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
 /* Create New Project Card */
 .create-card {
     background: white;
