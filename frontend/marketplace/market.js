@@ -363,7 +363,7 @@ function closePreviewModal() {
 // ─── DOWNLOAD FIX ───────────────────────────────────────────────
 // Accepts an optional product argument so completeCheckout can pass
 // the purchased product even after currentPreviewProduct is cleared.
-function downloadPreview(productToDownload) {
+async function downloadPreview(productToDownload) {
     const product = productToDownload || currentPreviewProduct;
     if (!product) return;
 
@@ -391,6 +391,45 @@ function downloadPreview(productToDownload) {
     a.click();
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
+    
+    // Increment download count in database
+    try {
+        const response = await fetch('/api/marketplace/items/' + product.id + '/download', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            console.log('✅ Download count updated:', data.downloads);
+            
+            // Update local product data
+            const productIndex = products.findIndex(p => p.id === product.id);
+            if (productIndex !== -1) {
+                products[productIndex].downloads = data.downloads;
+            }
+            
+            const filteredIndex = currentFilteredProducts.findIndex(p => p.id === product.id);
+            if (filteredIndex !== -1) {
+                currentFilteredProducts[filteredIndex].downloads = data.downloads;
+            }
+            
+            // Update the displayed download count in the product card
+            const productCard = document.querySelector('.product-card[data-product-id="' + product.id + '"]');
+            if (productCard) {
+                const downloadElements = productCard.querySelectorAll('.stat');
+                if (downloadElements.length >= 2) {
+                    const downloadStat = downloadElements[1]; // Download count is the second stat
+                    const downloadSpan = downloadStat.querySelector('span');
+                    if (downloadSpan) {
+                        downloadSpan.textContent = data.downloads.toLocaleString();
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        console.error('❌ Error updating download count:', error);
+    }
     
     // Show rating modal after download
     openRatingModal(product);

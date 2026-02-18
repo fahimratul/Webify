@@ -97,7 +97,7 @@ app.get("/api/marketplace/items", async (req, res) => {
       author: item.owner?.username || 'Unknown',
       rating: item.rating || 0,
       ratingCount: item.ratingCount || 0,
-      downloads: 0,
+      downloads: item.downloads || 0,
       likes: item.likes || 0,
       likedBy: item.likedBy || [],
       tags: item.tags || [],
@@ -178,6 +178,27 @@ app.put("/api/marketplace/items/:id/like", isAuthenticated, async (req, res) => 
   } catch (err) {
     console.error('Like toggle error:', err);
     res.status(500).json({ error: 'Failed to toggle like' });
+  }
+});
+
+// PUT /api/marketplace/items/:id/download - Increment download count
+app.put("/api/marketplace/items/:id/download", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const item = await MarketplaceItem.findById(id);
+    if (!item) return res.status(404).json({ error: 'Item not found' });
+
+    item.downloads = (item.downloads || 0) + 1;
+    await item.save();
+
+    res.json({ 
+      success: true, 
+      downloads: item.downloads,
+      message: 'Download count updated'
+    });
+  } catch (err) {
+    console.error('Download count error:', err);
+    res.status(500).json({ error: 'Failed to update download count' });
   }
 });
 
