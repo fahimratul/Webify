@@ -157,6 +157,9 @@ async function loadUserProjects() {
   }
 }
 
+// Cache user projects for quick lookup
+let userProjectsById = {};
+
 // Display user projects as cards
 function displayUserProjects(projects) {
   const grid = document.getElementById('projectsGrid');
@@ -166,6 +169,12 @@ function displayUserProjects(projects) {
     return;
   }
   
+  // Cache projects for openProject
+  userProjectsById = projects.reduce((acc, project) => {
+    acc[project.id] = project;
+    return acc;
+  }, {});
+
   // Add project cards after the create card
   const projectCardsHTML = projects.map((project, idx) => `
     <div class="project-card" onclick="openProject('${project.id}')" data-project-id="${project.id}">
@@ -467,9 +476,15 @@ function openProject(projectId) {
   console.log(`Opening project: ${projectId}`);
   if (!projectId) return;
 
-  showNotification("Opening your marketplace item...", "success");
+  const project = userProjectsById[projectId];
+  if (project) {
+    // Store selected item so the builder can load it if supported
+    localStorage.setItem('selectedMarketplaceItem', JSON.stringify(project));
+  }
+
+  showNotification("Opening your project in builder...", "success");
   setTimeout(() => {
-    location.href = "../marketplace/market.html";
+    location.href = "https://webify-kudm.onrender.com/builder/?itemId=" + projectId;
   }, 300);
 }
 
