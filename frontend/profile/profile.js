@@ -167,10 +167,10 @@ function displayUserProjects(projects) {
   }
   
   // Add project cards after the create card
-  const projectCardsHTML = projects.map(project => `
+  const projectCardsHTML = projects.map((project, idx) => `
     <div class="project-card" onclick="openProject('${project.id}')" data-project-id="${project.id}">
       <div class="card-thumbnail">
-        <img src="${project.image || 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80'}" alt="${project.title}">
+        <iframe id="project-iframe-${idx}" class="project-preview-iframe" frameborder="0" scrolling="no"></iframe>
         <button class="more-button" onclick="event.stopPropagation(); showProjectMenu('${project.id}')">
           <i data-lucide="more-vertical"></i>
         </button>
@@ -184,6 +184,30 @@ function displayUserProjects(projects) {
   
   // Append projects after the create card
   grid.innerHTML += projectCardsHTML;
+  
+  // Populate iframe previews
+  projects.forEach((project, idx) => {
+    const iframe = document.getElementById('project-iframe-' + idx);
+    if (!iframe) return;
+
+    const iframeContent = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${project.title}</title>
+        <style>
+          ${project.css || ''}
+          body { margin: 0; padding: 0; overflow: hidden; }
+        </style>
+      </head>
+      <body>${project.html || ''}</body>
+      </html>
+    `;
+
+    iframe.srcdoc = iframeContent;
+  });
   
   // Re-initialize Lucide icons for the new elements
   lucide.createIcons();
