@@ -1,336 +1,53 @@
-// Product data with HTML/CSS templates
-const products = [
-    {
-        id: 1,
-        title: 'Modern Dashboard UI Kit',
-        author: 'Sarah Design',
-        rating: 4.8,
-        downloads: 1234,
-        likes: 523,
-        price: '41',
-        type: 'paid',
-        category: 'dashboard',
-        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
-        html: `
-            <div class="dashboard">
-                <header class="dashboard-header">
-                    <h1>Dashboard</h1>
-                    <div class="user-info">
-                        <span>Welcome, User</span>
-                    </div>
-                </header>
-                <div class="dashboard-content">
-                    <aside class="sidebar">
-                        <nav class="nav-menu">
-                            <a href="#" class="nav-item active">Home</a>
-                            <a href="#" class="nav-item">Analytics</a>
-                            <a href="#" class="nav-item">Reports</a>
-                            <a href="#" class="nav-item">Settings</a>
-                        </nav>
-                    </aside>
-                    <main class="main-content">
-                        <div class="cards-grid">
-                            <div class="card">
-                                <h3>Total Users</h3>
-                                <p class="stat-number">1,234</p>
-                            </div>
-                            <div class="card">
-                                <h3>Revenue</h3>
-                                <p class="stat-number">$45,678</p>
-                            </div>
-                            <div class="card">
-                                <h3>Growth</h3>
-                                <p class="stat-number">+23%</p>
-                            </div>
-                        </div>
-                    </main>
-                </div>
-            </div>
-        `,
-        css: `
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; }
-            .dashboard { height: 100vh; display: flex; flex-direction: column; }
-            .dashboard-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-            .dashboard-header h1 { font-size: 1.75rem; }
-            .dashboard-content { display: flex; flex: 1; }
-            .sidebar { width: 250px; background: white; border-right: 1px solid #e0e0e0; padding: 1.5rem 0; }
-            .nav-menu { display: flex; flex-direction: column; }
-            .nav-item { padding: 0.75rem 1.5rem; color: #666; text-decoration: none; transition: all 0.3s; border-left: 3px solid transparent; }
-            .nav-item:hover { background: #f0f0f0; color: #667eea; }
-            .nav-item.active { color: #667eea; border-left-color: #667eea; background: #f8f9ff; }
-            .main-content { flex: 1; padding: 2rem; }
-            .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-            .card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-            .card h3 { color: #666; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 0.5rem; }
-            .stat-number { font-size: 2rem; font-weight: bold; color: #667eea; }
-        `
-    },
-    {
-        id: 2,
-        title: 'Website Template Pack',
-        author: 'UX Masters',
-        rating: 4.9,
-        downloads: 3421,
-        likes: 892,
-        type: 'free',
-        category: 'webpage',
-        image: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=400&h=300&fit=crop',
-        html: `
-            <div class="landing-page">
-                <header class="header">
-                    <nav class="navbar">
-                        <div class="logo">MyWebsite</div>
-                        <ul class="nav-links">
-                            <li><a href="#home">Home</a></li>
-                            <li><a href="#about">About</a></li>
-                            <li><a href="#services">Services</a></li>
-                            <li><a href="#contact">Contact</a></li>
-                        </ul>
-                    </nav>
-                </header>
-                <section class="hero">
-                    <h1>Welcome to Our Website</h1>
-                    <p>Create amazing web experiences</p>
-                    <button class="cta-button">Get Started</button>
-                </section>
-                <section class="features" id="about">
-                    <h2>Our Features</h2>
-                    <div class="feature-cards">
-                        <div class="feature">
-                            <h3>Fast</h3>
-                            <p>Lightning quick performance</p>
-                        </div>
-                        <div class="feature">
-                            <h3>Responsive</h3>
-                            <p>Works on all devices</p>
-                        </div>
-                        <div class="feature">
-                            <h3>Modern</h3>
-                            <p>Latest design trends</p>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        `,
-        css: `
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
-            .header { background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-            .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; max-width: 1200px; margin: 0 auto; }
-            .logo { font-size: 1.5rem; font-weight: bold; color: #667eea; }
-            .nav-links { display: flex; list-style: none; gap: 2rem; }
-            .nav-links a { text-decoration: none; color: #333; transition: color 0.3s; }
-            .nav-links a:hover { color: #667eea; }
-            .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 5rem 1rem; }
-            .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
-            .hero p { font-size: 1.25rem; margin-bottom: 2rem; }
-            .cta-button { background: white; color: #667eea; border: none; padding: 0.75rem 2rem; border-radius: 50px; font-size: 1rem; font-weight: bold; cursor: pointer; }
-            .features { padding: 3rem 2rem; max-width: 1200px; margin: 0 auto; }
-            .features h2 { text-align: center; font-size: 2rem; margin-bottom: 2rem; }
-            .feature-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-            .feature { background: #f9f9f9; padding: 1.5rem; border-radius: 8px; text-align: center; }
-            .feature h3 { color: #667eea; margin-bottom: 0.5rem; }
-        `
-    },
-    {
-        id: 3,
-        title: 'Mobile App Interface',
-        author: 'AppCraft Studio',
-        rating: 4.7,
-        downloads: 2103,
-        likes: 651,
-        price: '79',
-        type: 'paid',
-        category: 'dashboard',
-        image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop',
-        html: `
-            <div class="mobile-interface">
-                <div class="phone-frame">
-                    <div class="phone-header">
-                        <span class="time">9:41</span>
-                    </div>
-                    <div class="phone-content">
-                        <h2>Messages</h2>
-                        <div class="message-list">
-                            <div class="message-item">
-                                <div class="avatar">A</div>
-                                <div class="message-preview">
-                                    <h4>Alice</h4>
-                                    <p>Hey! How are you?</p>
-                                </div>
-                            </div>
-                            <div class="message-item">
-                                <div class="avatar">B</div>
-                                <div class="message-preview">
-                                    <h4>Bob</h4>
-                                    <p>Let's meet tomorrow</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `,
-        css: `
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { background: #f0f0f0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-            .mobile-interface { padding: 2rem; }
-            .phone-frame { width: 375px; height: 812px; background: white; border-radius: 40px; border: 10px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.3); overflow: hidden; display: flex; flex-direction: column; }
-            .phone-header { background: #f5f5f5; padding: 0.5rem; text-align: center; font-weight: bold; }
-            .phone-content { flex: 1; padding: 1rem; overflow-y: auto; }
-            .phone-content h2 { margin-bottom: 1rem; }
-            .message-list { display: flex; flex-direction: column; gap: 1rem; }
-            .message-item { display: flex; gap: 1rem; align-items: center; padding: 0.75rem; background: #f9f9f9; border-radius: 8px; }
-            .avatar { width: 50px; height: 50px; border-radius: 50%; background: #667eea; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-            .message-preview h4 { margin-bottom: 0.25rem; }
-            .message-preview p { color: #999; font-size: 0.9rem; }
-        `
-    },
-    {
-        id: 4,
-        title: 'E-commerce Platform Kit',
-        author: 'DesignHub Pro',
-        rating: 4.6,
-        downloads: 1876,
-        likes: 445,
-        price: '59',
-        type: 'paid',
-        category: 'portfolio',
-        image: 'https://images.unsplash.com/photo-1460925895917-afdab684c3c7?w=400&h=300&fit=crop',
-        html: `
-            <div class="ecommerce">
-                <div class="product-showcase">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop" alt="Product">
-                    </div>
-                    <div class="product-details">
-                        <h2>Premium Headphones</h2>
-                        <div class="rating">★★★★★ (245 reviews)</div>
-                        <div class="price-section">
-                            <span class="price">$199.99</span>
-                            <span class="original">$249.99</span>
-                        </div>
-                        <p class="description">High-quality audio with noise cancellation.</p>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        `,
-        css: `
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { font-family: 'Segoe UI', sans-serif; background: white; }
-            .ecommerce { padding: 2rem; max-width: 1000px; margin: 0 auto; }
-            .product-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
-            .product-image { background: #f0f0f0; padding: 2rem; border-radius: 8px; }
-            .product-image img { width: 100%; border-radius: 8px; }
-            .product-details h2 { font-size: 2rem; margin-bottom: 1rem; }
-            .rating { color: #ffc107; margin-bottom: 1rem; }
-            .price-section { margin-bottom: 1rem; }
-            .price { font-size: 2rem; font-weight: bold; color: #667eea; margin-right: 1rem; }
-            .original { text-decoration: line-through; color: #999; }
-            .description { color: #666; margin-bottom: 1.5rem; line-height: 1.6; }
-            .add-to-cart { background: #667eea; color: white; border: none; padding: 0.75rem 2rem; border-radius: 4px; font-size: 1rem; cursor: pointer; }
-            .add-to-cart:hover { background: #764ba2; }
-        `
-    },
-    {
-        id: 5,
-        title: 'Icon Library Collection',
-        author: 'Icon Masters',
-        rating: 4.9,
-        downloads: 5234,
-        likes: 1203,
-        type: 'free',
-        category: 'dashboard',
-        image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=300&fit=crop',
-        html: `
-            <div class="icon-library">
-                <h1>Icon Library</h1>
-                <div class="icons-grid">
-                    <div class="icon-item">
-                        <div class="icon">📱</div>
-                        <p>Mobile</p>
-                    </div>
-                    <div class="icon-item">
-                        <div class="icon">💻</div>
-                        <p>Desktop</p>
-                    </div>
-                    <div class="icon-item">
-                        <div class="icon">🔧</div>
-                        <p>Tools</p>
-                    </div>
-                    <div class="icon-item">
-                        <div class="icon">🎨</div>
-                        <p>Design</p>
-                    </div>
-                </div>
-            </div>
-        `,
-        css: `
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { font-family: Arial, sans-serif; background: white; }
-            .icon-library { padding: 2rem; text-align: center; }
-            .icon-library h1 { margin-bottom: 2rem; color: #333; }
-            .icons-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; }
-            .icon-item { padding: 1.5rem; }
-            .icon { font-size: 3rem; margin-bottom: 1rem; }
-            .icon-item p { color: #666; margin-top: 0.5rem; }
-        `
-    },
-    {
-        id: 6,
-        title: 'Analytics Dashboard Pro',
-        author: 'DataViz Studio',
-        rating: 4.8,
-        downloads: 2567,
-        likes: 734,
-        price: '89',
-        type: 'paid',
-        category: 'portfolio',
-        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
-        html: `
-            <div class="analytics-dashboard">
-                <div class="header">
-                    <h1>Analytics Dashboard</h1>
-                    <div class="date-range">
-                        <select><option>Last 30 days</option></select>
-                    </div>
-                </div>
-                <div class="metrics">
-                    <div class="metric-card">
-                        <div class="metric-label">Page Views</div>
-                        <div class="metric-value">124,523</div>
-                        <div class="metric-change">+12.5%</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-label">Unique Users</div>
-                        <div class="metric-value">45,231</div>
-                        <div class="metric-change">+8.2%</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-label">Conversion Rate</div>
-                        <div class="metric-value">3.24%</div>
-                        <div class="metric-change">+1.5%</div>
-                    </div>
-                </div>
-            </div>
-        `,
-        css: `
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; }
-            .analytics-dashboard { padding: 2rem; max-width: 1200px; margin: 0 auto; }
-            .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-            .header h1 { color: #333; }
-            .date-range select { padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 4px; }
-            .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-            .metric-card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-            .metric-label { color: #999; font-size: 0.9rem; margin-bottom: 0.5rem; }
-            .metric-value { font-size: 2rem; font-weight: bold; color: #333; }
-            .metric-change { color: #4caf50; margin-top: 0.5rem; font-size: 0.9rem; }
-        `
+// Fetch products from MongoDB via API
+let products = [];
+
+async function loadProductsFromDB() {
+    try {
+        console.log('🔄 Fetching products from /api/marketplace/items...');
+        const response = await fetch('/api/marketplace/items');
+        
+        console.log('📊 Response status:', response.status);
+        console.log('📊 Response ok:', response.ok);
+        
+        if (!response.ok) {
+            const errorData = await response.text();
+            console.error('❌ API Error Response:', errorData);
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        console.log('📦 API Response:', data);
+        
+        products = data.items || [];
+        console.log('✅ Loaded', products.length, 'products from MongoDB');
+        
+        // Initialize the page after products are loaded
+        renderProducts();
+    } catch (error) {
+        console.error('❌ Error loading products:', error);
+        console.error('❌ Error details:', {
+            message: error.message,
+            stack: error.stack,
+            type: error.type
+        });
+        
+        // Fallback to showing error message
+        const grid = document.getElementById('productsGrid');
+        if (grid) {
+            grid.innerHTML = '<div class="no-results">' +
+                '<svg class="no-results-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+                    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>' +
+                '</svg>' +
+                '<h3>Unable to Load Products</h3>' +
+                '<p>Error: ' + error.message + '</p>' +
+                '<p>Please check the console for details</p>' +
+            '</div>';
+        }
     }
-];
+}
+
+// Load products when page loads
+document.addEventListener('DOMContentLoaded', loadProductsFromDB);
 
 const isLoggedIn = localStorage.getItem("isLoggedIn") === "true" ? true : false;
 const currentUser = localStorage.getItem("currentUser");
@@ -356,6 +73,7 @@ isUserLoggedIn();
 let currentCategory = 'all';
 let currentType = 'all';
 let searchQuery = '';
+let currentFilteredProducts = []; // Store the filtered products for easy access
 
 // Render products function
 function renderProducts() {
@@ -376,22 +94,25 @@ function renderProducts() {
         return categoryMatch && typeMatch && searchMatch;
     });
 
-    grid.innerHTML = filteredProducts.map(function(product) {
+    // Store filtered products for use in modal functions
+    currentFilteredProducts = filteredProducts;
+
+    grid.innerHTML = filteredProducts.map(function(product, idx) {
         return '<div class="product-card">' +
-            '<div class="product-image">' +
-                '<img src="' + product.image + '" alt="' + product.title + '">' +
+            '<div class="product-image" id="preview-' + idx + '">' +
+                '<iframe id="iframe-' + idx + '" class="product-preview-iframe" frameborder="0" scrolling="no"></iframe>' +
                 '<div class="product-tag ' + product.type + '">' +
                     (product.type === 'free' ? 'Free' : 'Tk ' + product.price) +
                 '</div>' +
                 '<div class="product-overlay">' +
-                    '<button class="overlay-btn preview" onclick="openPreviewModal(' + product.id + ')">' +
+                    '<button class="overlay-btn preview" onclick="openPreviewModal(' + idx + ')">' +
                         '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
                             '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>' +
                             '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>' +
                         '</svg>' +
                         'Preview' +
                     '</button>' +
-                    (product.type === 'paid' ? '<button class="overlay-btn buy" onclick="openPaymentModal(products.find(p => p.id === ' + product.id + '))">Buy</button>' : '') +
+                    (product.type === 'paid' ? '<button class="overlay-btn buy" onclick="openPaymentModal(currentFilteredProducts[' + idx + '])">Buy</button>' : '') +
                 '</div>' +
             '</div>' +
             '<div class="product-info">' +
@@ -406,12 +127,18 @@ function renderProducts() {
                         '</svg>' +
                     '</button>' +
                 '</div>' +
+                (product.tags && product.tags.length > 0 ? 
+                    '<div class="product-tags">' +
+                        product.tags.slice(0, 3).map(function(tag) {
+                            return '<span class="tag">' + tag + '</span>';
+                        }).join('') +
+                    '</div>' : '') +
                 '<div class="product-stats">' +
                     '<div class="stat">' +
                         '<svg class="icon star-icon" fill="currentColor" viewBox="0 0 20 20">' +
                             '<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>' +
                         '</svg>' +
-                        '<span>' + product.rating + '</span>' +
+                        '<span>' + product.rating.toFixed(1) + ' <small>(' + (product.ratingCount || 0) + ')</small></span>' +
                     '</div>' +
                     '<div class="stat">' +
                         '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
@@ -430,9 +157,64 @@ function renderProducts() {
         '</div>';
     }).join('');
 
-    document.querySelectorAll('.heart-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            this.classList.toggle('liked');
+    // Populate each iframe with product preview
+    filteredProducts.forEach(function(product, idx) {
+        const iframe = document.getElementById('iframe-' + idx);
+        if (iframe) {
+            const iframeContent = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>${product.title}</title>
+                    <style>
+                        ${product.css}
+                        body { margin: 0; padding: 0; overflow: hidden; }
+                    </style>
+                </head>
+                <body>${product.html}</body>
+                </html>
+            `;
+            iframe.srcdoc = iframeContent;
+        }
+    });
+
+    document.querySelectorAll('.heart-btn').forEach(function(btn, index) {
+        const product = filteredProducts[index];
+        btn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            if (!isLoggedIn) {
+                showNotification('Please log in to like products', 'error');
+                location.href = '../auth/login.html';
+                return;
+            }
+
+            const isLiking = !this.classList.contains('liked');
+            
+            try {
+                const response = await fetch('/api/marketplace/items/' + product.id + '/like', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!response.ok) throw new Error('Failed to toggle like');
+                
+                const data = await response.json();
+                this.classList.toggle('liked');
+                
+                // Update the likes count in the product object and re-render
+                const productIndex = products.findIndex(p => p.id === product.id);
+                if (productIndex !== -1) {
+                    products[productIndex].likes = data.likes;
+                }
+                
+                showNotification(data.message, 'success');
+            } catch (error) {
+                console.error('❌ Error toggling like:', error);
+                showNotification('Failed to update like', 'error');
+            }
         });
     });
 }
@@ -497,16 +279,21 @@ function clearSearch() {
     }
 }
 
-// Initial render
-renderProducts();
-
 // Preview Modal Functions
 let currentPreviewProduct = null;
 
-function openPreviewModal(productId) {
-    const product = products.find(p => p.id === productId);
-    if (!product) return;
+function openPreviewModal(idx) {
+    console.log('🔍 openPreviewModal called with index:', idx);
+    console.log('📊 currentFilteredProducts length:', currentFilteredProducts.length);
+    
+    const product = currentFilteredProducts[idx];
+    if (!product) {
+        console.error('❌ Product not found at index', idx);
+        showNotification('Product not found. Please try again.', 'error');
+        return;
+    }
 
+    console.log('✅ Preview product found:', product.title);
     currentPreviewProduct = product;
 
     document.getElementById('previewTitle').textContent = product.title + ' - Preview';

@@ -344,6 +344,16 @@ header {
     background: var(--sky-50);
 }
 
+.product-preview-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: white;
+    pointer-events: none;
+    transform: scale(0.7);
+    transform-origin: top left;
+}
+
 .product-image img {
     width: 100%; height: 100%;
     object-fit: cover;
@@ -451,6 +461,24 @@ header {
 }
 
 .heart-btn:hover { color: #ec4899; }
+
+.product-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+}
+
+.tag {
+    display: inline-block;
+    background: var(--sky-100);
+    color: var(--sky-700);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
 
 .product-stats {
     display: flex;

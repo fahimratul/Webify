@@ -9,7 +9,6 @@ import connectDB from "./db.js";
 import "./config/passport.js";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
-import marketplaceRoutes from "./routes/marketplace.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(__dirname, ".env") });
@@ -26,6 +25,12 @@ connectDB();
 // 2. Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`📨 ${req.method} ${req.path}`);
+  next();
+});
 
 // 3. Session Configuration (The "Database for Cookies")
 app.use(
@@ -72,8 +77,141 @@ const isAuthenticated = (req, res, next) => {
   res.status(401).json({ error: "You must be logged in to perform this action" });
 };
 
-// Marketplace routes (protected)
-app.use("/api/marketplace", isAuthenticated, marketplaceRoutes);
+// Marketplace routes - GET is public, POST requires auth
+import MarketplaceItem from "./models/MarketPlaceItem.js";
+
+// Public GET endpoint for viewing all marketplace items
+app.get("/api/marketplace/items", async (req, res) => {
+  console.log('📍 GET /api/marketplace/items endpoint called');
+  try {
+    console.log('🔍 Searching for published marketplace items...');
+    const items = await MarketplaceItem.find({ published: true })
+      .populate('owner', 'username profilePicture')
+      .sort({ createdAt: -1 });
+
+    console.log('✅ Found', items.length, 'items');
+
+    const formattedItems = items.map(item => ({
+      id: item._id.toString(),
+      title: item.title,
+      author: item.owner?.username || 'Unknown',
+      rating: item.rating || 0,
+      ratingCount: item.ratingCount || 0,
+      downloads: 0,
+      likes: item.likes || 0,
+      likedBy: item.likedBy || [],
+      tags: item.tags || [],
+      price: item.isPremium ? item.price.toString() : '0',
+      type: item.isPremium ? 'paid' : 'free',
+      category: item.category || 'webpage',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
+      html: item.html || '',
+      css: item.css || '',
+      description: item.description || ''
+    }));
+
+    res.json({ success: true, items: formattedItems });
+  } catch (err) {
+    console.error('❌ Marketplace fetch error:', err);
+    res.status(500).json({ error: 'Failed to fetch items' });
+  }
+});
+
+// Protected POST endpoint for uploading items
+app.post("/api/marketplace/items", isAuthenticated, async (req, res) => {
+  try {
+    const user = req.user;
+    const { title, description, category, isPremium, price, html, css, tags } = req.body;
+    if (!title) return res.status(400).json({ error: 'Title is required' });
+
+    const item = new MarketplaceItem({
+      title,
+      description,
+      category,
+      isPremium: !!isPremium,
+      price: Number(price) || 0,
+      html,
+      css,
+      tags: Array.isArray(tags) ? tags : [],
+      owner: user._id,
+      published: true
+    });
+
+    await item.save();
+    res.json({ success: true, item });
+  } catch (err) {
+    console.error('Marketplace upload error:', err);
+    res.status(500).json({ error: 'Failed to save item' });
+  }
+});
+
+// PUT /api/marketplace/items/:id/like - Toggle like on an item
+app.put("/api/marketplace/items/:id/like", isAuthenticated, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    const item = await MarketplaceItem.findById(id);
+    if (!item) return res.status(404).json({ error: 'Item not found' });
+
+    // Check if user already liked this item
+    const alreadyLiked = item.likedBy.includes(userId);
+
+    if (alreadyLiked) {
+      // Unlike: remove user from likedBy array
+      item.likedBy = item.likedBy.filter(id => !id.equals(userId));
+      item.likes = Math.max(0, item.likes - 1);
+    } else {
+      // Like: add user to likedBy array
+      item.likedBy.push(userId);
+      item.likes += 1;
+    }
+
+    await item.save();
+    res.json({ 
+      success: true, 
+      liked: !alreadyLiked, 
+      likes: item.likes,
+      message: alreadyLiked ? 'Removed like' : 'Added like'
+    });
+  } catch (err) {
+    console.error('Like toggle error:', err);
+    res.status(500).json({ error: 'Failed to toggle like' });
+  }
+});
+
+// PUT /api/marketplace/items/:id/rate - Add or update rating
+app.put("/api/marketplace/items/:id/rate", isAuthenticated, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rating } = req.body;
+
+    if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({ error: 'Rating must be between 1 and 5' });
+    }
+
+    const item = await MarketplaceItem.findById(id);
+    if (!item) return res.status(404).json({ error: 'Item not found' });
+
+    // Simple rating system (average of all ratings)
+    // In production, you'd want to track individual ratings per user
+    const currentTotal = (item.rating * item.ratingCount) || 0;
+    const newTotal = currentTotal + rating;
+    item.ratingCount += 1;
+    item.rating = newTotal / item.ratingCount;
+
+    await item.save();
+    res.json({ 
+      success: true, 
+      rating: item.rating.toFixed(1),
+      ratingCount: item.ratingCount,
+      message: 'Rating updated successfully'
+    });
+  } catch (err) {
+    console.error('Rating error:', err);
+    res.status(500).json({ error: 'Failed to add rating' });
+  }
+});
 
 // Use Community Routes
 app.use("/api", communityRoutes);

@@ -540,3 +540,30 @@ style.textContent = `
 document.head.appendChild(style);
 
 console.log("WEBIFY Login/Signup page loaded successfully");
+
+
+document.getElementById("remember-me").addEventListener("change", function() {
+  if (this.checked) {
+    localStorage.setItem("rememberMe", "true");
+    localStorage.setItem("rememberedEmail", document.getElementById("login-email").value);
+  } else {
+    localStorage.removeItem("rememberMe");
+    localStorage.removeItem("rememberedEmail");
+  }
+});
+
+// On page load, check if "Remember Me" was previously set
+window.addEventListener("load", function() {
+  const rememberMe = localStorage.getItem("rememberMe");
+  if (rememberMe === "true") {
+    document.getElementById("remember-me").checked = true;
+  }
+});
+
+
+window.addEventListener("load", function() {
+  const rememberedEmail = localStorage.getItem("rememberedEmail");
+  if (rememberedEmail) {
+    document.getElementById("login-email").value = rememberedEmail;
+  }
+});

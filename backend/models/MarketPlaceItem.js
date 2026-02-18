@@ -10,7 +10,12 @@ const MarketplaceItemSchema = new Schema({
     html: { type: String },   // full HTML from builder
     css: { type: String },    // full CSS from builder
     owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    published: { type: Boolean, default: false }
+    published: { type: Boolean, default: false },
+    tags: { type: [String], default: [] },
+    rating: { type: Number, default: 0, min: 0, max: 5 },
+    ratingCount: { type: Number, default: 0 },
+    likes: { type: Number, default: 0 },
+    likedBy: { type: [Schema.Types.ObjectId], ref: 'User', default: [] }
 }, { timestamps: true });
 
 export default model('MarketplaceItem', MarketplaceItemSchema);
