@@ -1,52 +1,79 @@
 import { createEffect, onCleanup, onMount } from 'solid-js';
 import styles from './Canvas.module.css';
+
+// GrapesJS core editor import
 import grapesjs from 'grapesjs';
 import 'grapesjs/dist/css/grapes.min.css';
+
+// Basic block plugin (default blocks like text, image, etc.)
 import gjsBasicBlocks from 'grapesjs-blocks-basic';
 
-//selected device classes
+/**
+ * Device class mapping
+ * Used to apply different CSS container styles
+ * depending on the selected device type.
+ */
 const deviceClasses = {
-    "Desktop": styles.container_desktop,
-    "Tablet": styles.container_tablet,
-    "Mobile": styles.container_mobile
-}
+    Desktop: styles.container_desktop,
+    Tablet: styles.container_tablet,
+    Mobile: styles.container_mobile,
+};
 
-//globale editor instance
+/**
+ * Global GrapesJS editor instance
+ * This allows access to the editor outside this component.
+ */
 let editor;
 
-//function to make the editor instance available gobally
+/**
+ * Getter function to access the editor globally
+ * Useful when other components need editor reference.
+ */
 export function getEditor() {
     return editor;
 }
 
+/**
+ * Canvas Component
+ * This component initializes GrapesJS editor inside a SolidJS app.
+ */
 export function Canvas(props) {
     let canvasRef;
 
+    /**
+     * onMount runs once when component loads.
+     * We initialize GrapesJS editor here.
+     */
     onMount(() => {
         editor = grapesjs.init({
+            // DOM container where GrapesJS will mount
             container: canvasRef,
+
+            // Load components from the container element itself
             fromElement: true,
 
-            //prevents auto save
+            // Disable built-in auto-saving
             storageManager: false,
 
-            //remove the purple ouline around the canvas
+            // Show element offsets while selecting components
             showOffsets: true,
 
-            //prevents body highlight on load
-            componentFirst: true, //doesn't do anything
+            // Prevent body highlight and focus first component
+            componentFirst: true,
 
-            //do not create default panels
+            // Disable default GrapesJS panels (custom UI will be provided)
             panels: { defaults: [] },
 
-            //grapes js handles different devices
-            //we are registering our devices here
+            /**
+             * Device Manager Configuration
+             * Allows switching between Desktop/Tablet/Mobile preview modes.
+             */
             deviceManager: {
                 devices: [
                     {
                         id: 'Desktop',
                         name: 'Desktop',
-                        width: '', // default size
+                        width: '', // Default full width
                     },
                     {
                         id: 'Tablet',
@@ -63,89 +90,117 @@ export function Canvas(props) {
                 ],
             },
 
+            // Register plugins
             plugins: [gjsBasicBlocks],
+
+            // Plugin options
             pluginsOpts: {
                 [gjsBasicBlocks]: {},
             },
 
-            //we will not attach mamnagers to default UI
-            // rather provide our own custom UI
+            /**
+             * Managers are disabled from default UI
+             * because custom panels will be created separately.
+             */
             layerManager: { appendTo: '' },
             selectorManager: { appendTo: '' },
-            styleManager: { sectors: [], },
+            styleManager: { sectors: [] },
             traitManager: { appendTo: '' },
             blockManager: { appendTo: '' },
-
         });
 
-        //registering my custom blocks
+        /**
+         * Custom Block Registration
+         * Adding reusable content blocks into the editor.
+         */
+
+        // Paragraph block
         editor.BlockManager.add('paragraph', {
             label: 'Paragraph',
             content: '<p>Insert your text here</p>',
             catagory: 'Basic',
         });
 
+        // Heading block
         editor.BlockManager.add('heading', {
             label: 'Heading',
             content: '<h2>Heading</h2>',
             category: 'Basic',
         });
 
+        // List block
         editor.BlockManager.add('list', {
             label: 'List',
             content: '<ul><li>Item 1</li><li>Item 2</li></ul>',
             category: 'Basic',
         });
 
+        // Table block
         editor.BlockManager.add('table', {
             label: 'Table',
             content: '<table><tr><td>Cell 1</td><td>Cell 2</td></tr></table>',
             category: 'Basic',
         });
 
+        // Image block
         editor.BlockManager.add('image', {
             label: 'Image',
-            content: '<img src="https://via.placeholder.com/350x150" alt="placeholder"/>',
+            content:
+                '<img src="https://via.placeholder.com/350x150" alt="placeholder"/>',
             category: 'Media',
         });
 
+        // Video block
         editor.BlockManager.add('video', {
             label: 'Video',
-            content: '<video controls><source src="" type="video/mp4"></video>',
+            content:
+                '<video controls><source src="" type="video/mp4"></video>',
             category: 'Media',
         });
 
+        // Audio block
         editor.BlockManager.add('audio', {
             label: 'Audio',
-            content: '<audio controls><source src="" type="audio/mpeg"></audio>',
+            content:
+                '<audio controls><source src="" type="audio/mpeg"></audio>',
             category: 'Media',
         });
     });
 
+    /**
+     * createEffect reacts to prop changes in SolidJS.
+     * Since GrapesJS is non-reactive, we manually update device mode here.
+     */
     createEffect(() => {
-        //grapes js is non reactive but solid is reactive
-        //to tell grapes js about device change we use crateEffect
-        //so, if a signal changes, we can use createEffect
-        // to run code in response
+        console.log(
+            'Selected device changed to: ' + props.selectedDevice
+        );
 
-        //test
-        console.log("Selected device changed to: " + props.selectedDevice);
+        // Update GrapesJS device preview mode when selection changes
         if (editor) {
             const device = props.selectedDevice;
             if (device) {
-                //this line is grapejs code
                 editor.setDevice(device);
             }
         }
     });
 
+    /**
+     * Cleanup function
+     * Destroys editor instance when component unmounts.
+     */
     onCleanup(() => {
         if (editor) editor.destroy();
     });
 
+    /**
+     * Canvas container div
+     * GrapesJS editor will render inside this element.
+     */
     return (
-        <div ref={canvasRef} class={deviceClasses[props.selectedDevice]}>
-
-        </div>
-    )
+        <div
+            ref={canvasRef}
+            class={deviceClasses[props.selectedDevice]}
+        ></div>
+    );
 }
