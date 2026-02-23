@@ -25,6 +25,18 @@ const App = () => {
     if (editorRef) {
       editorInstance = initEditor(editorRef);
 
+      const savedProject = localStorage.getItem('webify-project');
+      if (savedProject) {
+        try {
+          const data = JSON.parse(savedProject);
+          // Combine HTML and CSS, then set components
+          const fullContent = `<style>${data.css}</style>${data.html}`;
+          editorInstance.setComponents(fullContent);
+        } catch (e) {
+          console.error('Failed to load saved project:', e);
+        }
+      }
+
       // --- NEW LOGIC: Render and Move Managers ---
       const sm = editorInstance.StyleManager;
       const slm = editorInstance.SelectorManager;
