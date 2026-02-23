@@ -3,6 +3,8 @@ import { onMount, onCleanup, createSignal } from "solid-js";
 import "./AnotherApp.css";
 import export_icon from './assets/icons/export_icon.svg';
 import upload_icon from './assets/icons/upload_icon.svg';
+import chat_icon from './assets/icons/chat_icon.svg';
+import { CreateMLCEngine } from "@mlc-ai/web-llm";
 
 const App = () => {
   let editorRef;
@@ -19,6 +21,62 @@ const App = () => {
   const [isDark, setIsDark] = createSignal(false);
   //signal for previes
   const [isPreview, setIsPreview] = createSignal(false);
+
+  // --- LLM code ---
+  //signal for LLM response
+  const [aiStatus, setAiStatus] = createSignal("idle"); // idle, loading, ready, busy
+  const [aiProgress, setAiProgress] = createSignal(0);
+  const [prompt, setPrompt] = createSignal("");
+
+  let engine; //holds the ai instance
+  //function that loads the Ai
+  const initAI = async () => {
+    if (aiStatus() !== "idle") return;
+
+    setAiStatus("loading");
+
+    try {
+      // another small model: Qwen2-0.5B-Instruct-q4f16_1-MLC -> 0.5B
+      // in the middle: TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC -> 1.1B
+      // bigger but better: Phi-3-mini-4k-instruct-q4f16_1-MLC -> 2.7B
+      engine = await CreateMLCEngine("Qwen2-0.5B-Instruct-q4f16_1-MLC", {
+        initProgressCallback: (report) => {
+          setAiProgress(Math.round(report.progress * 100));
+        }
+      });
+      setAiStatus("ready");
+    }
+    catch (e) {
+      console.error("WebGPU Error:", e);
+      alert("WebGPU not supported on this browser.");
+      setAiStatus("idle");
+    }
+  };
+
+  //function for generating code
+  const generateCode = async () => {
+    if (!engine || !prompt()) return;
+    setAiStatus("busy");
+
+    const messages = [
+      { role: "system", content: "You are a web designer. Output ONLY valid HTML/CSS code. No talk." },
+      { role: "user", content: `Create this section: ${prompt()}` }
+    ];
+
+    const reply = await engine.chat.completions.create({ messages });
+    const code = reply.choices[0].message.content;
+
+    // Cleaning markdown backticks if the dumbass ai added them
+    const cleanCode = code.replace(/```html|```css|```/gi, "").trim();
+
+    if (editorInstance) {
+      editorInstance.addComponents(cleanCode);
+    }
+
+    setAiStatus("ready");
+    setPrompt("");
+  };
+  // ---llm cide end ----
 
 
   onMount(() => {
@@ -227,6 +285,14 @@ const App = () => {
             <span>Assets</span>
           </button>
 
+          <button onClick={() => { setActiveTab('ai'); setLeftOpen(true); }}
+            class={activeTab() === 'ai' && isLeftOpen() ? 'active' : ''}
+            title="AI Assistant"
+          >
+            <img src={chat_icon} alt="Chat" style="width: 20px; height: 20px;" />
+            <span>LLM</span>
+          </button>
+
           <button onClick={toggleTheme} style="margin-top: auto;">
             {isDark() ? '☀' : '☾'}
             <span>Theme</span>
@@ -248,6 +314,42 @@ const App = () => {
             so GrapesJS can still find the IDs on mount */}
           <div id="blocks-container" style={{ display: activeTab() === 'blocks' ? 'block' : 'none' }}></div>
           <div id="layers-container" style={{ display: activeTab() === 'layers' ? 'block' : 'none' }}></div>
+
+          {/* NEW AI CONTAINER */}
+          <div id="ai-container" style={{ display: activeTab() === 'ai' ? 'block' : 'none', padding: '15px' }}>
+
+            <Show when={aiStatus() === "idle"}>
+              <p style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">
+                Load the AI model to your GPU. (First time download: ~2GB)
+              </p>
+              <button class="btn-primary" onClick={initAI} style="width: 100%;">Initialize AI</button>
+            </Show>
+
+            <Show when={aiStatus() === "loading"}>
+              <p style="font-size: 13px;">Downloading Model: {aiProgress()}%</p>
+              <div style="width: 100%; height: 4px; background: #334155; margin-top: 10px;">
+                <div style={{ width: `${aiProgress()}%`, height: '100%', background: '#22d3ee' }}></div>
+              </div>
+            </Show>
+
+            <Show when={aiStatus() === "ready" || aiStatus() === "busy"}>
+              <textarea
+                placeholder="e.g. A modern hero section with a blue button..."
+                value={prompt()}
+                onInput={(e) => setPrompt(e.target.value)}
+                style="width: 100%; background: #0f172a; color: white; border: 1px solid #334155; padding: 10px; border-radius: 4px; resize: vertical;"
+                rows="5"
+              />
+              <button
+                class="btn-primary"
+                onClick={generateCode}
+                disabled={aiStatus() === "busy"}
+                style="width: 100%; margin-top: 10px;"
+              >
+                {aiStatus() === "busy" ? "Generating..." : "Generate Section"}
+              </button>
+            </Show>
+          </div>
         </aside>
 
 
