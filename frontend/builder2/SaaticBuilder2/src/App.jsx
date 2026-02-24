@@ -3,6 +3,9 @@ import { onMount, onCleanup, createSignal } from "solid-js";
 import "./AnotherApp.css";
 import export_icon from './assets/icons/export_icon.svg';
 import upload_icon from './assets/icons/upload_icon.svg';
+import chat_icon from './assets/icons/chat_icon.svg';
+import { CreateMLCEngine } from "@mlc-ai/web-llm";
+import { z } from "zod";
 
 const App = () => {
   let editorRef;
@@ -19,6 +22,118 @@ const App = () => {
   const [isDark, setIsDark] = createSignal(false);
   //signal for previes
   const [isPreview, setIsPreview] = createSignal(false);
+
+  // --- LLM code ---
+  //signal for LLM response
+  const [aiStatus, setAiStatus] = createSignal("idle"); // idle, loading, ready, busy
+  const [aiProgress, setAiProgress] = createSignal(0);
+  const [prompt, setPrompt] = createSignal("");
+
+  let engine; //holds the ai instance
+  //function that loads the Ai
+  const initAI = async () => {
+    if (aiStatus() !== "idle") return;
+
+    setAiStatus("loading");
+
+    try {
+      // another small model: Qwen2-0.5B-Instruct-q4f16_1-MLC -> 0.5B
+      // in the middle: TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC -> 1.1B
+      // bigger but better: Phi-3-mini-4k-instruct-q4f16_1-MLC -> 2.7B
+      engine = await CreateMLCEngine("Phi-3-mini-4k-instruct-q4f16_1-MLC", {
+        initProgressCallback: (report) => {
+          setAiProgress(Math.round(report.progress * 100));
+        }
+      });
+      setAiStatus("ready");
+    }
+    catch (e) {
+      console.error("WebGPU Error:", e);
+      alert("WebGPU not supported on this browser.");
+      setAiStatus("idle");
+    }
+  };
+
+  // the idiot llm is returning stuff other then html and css
+  //Defining what a "Perfect" response looks like using zod
+  const AIResponseSchema = z.object({
+    html: z.string(),
+    css: z.string(),
+    thought: z.string().optional()
+  });
+
+  //function for generating code
+  const generateCode = async () => {
+    if (!engine || !prompt()) return;
+    setAiStatus("busy");
+
+    const messages = [
+      {
+        role: "system",
+        content: `You are a Webify Export Tool. 
+      Rules:
+      1. Respond ONLY with a JSON object.
+      2. Format: {"html": "...", "css": "...", "thought": "..."}
+      3. Use single quotes for HTML attributes internally or escape double quotes carefully.
+      
+      Example Response:
+      {"html": "<div class='hero'><h1>Hello</h1></div>", "css": ".hero { color: cyan; }", "thought": "Created a hero."}`
+      },
+      { role: "user", content: prompt() }
+    ];
+
+    try {
+      const reply = await engine.chat.completions.create({ messages });
+      const rawContent = reply.choices[0].message.content;
+
+      // DEBUG: See exactly what the AI said in the console
+      console.log("AI Raw Output:", rawContent);
+
+      try {
+        // 1. Better Extraction: Find the first '{' and last '}'
+        // This ignores any "Sure! Here is your code" junk
+        const startIdx = rawContent.indexOf('{');
+        const endIdx = rawContent.lastIndexOf('}');
+
+        if (startIdx === -1 || endIdx === -1) {
+          throw new Error("No JSON object found in response");
+        }
+
+        const jsonString = rawContent.substring(startIdx, endIdx + 1);
+        const parsedData = JSON.parse(jsonString);
+
+        // 2. Validate with Zod
+        const validatedData = AIResponseSchema.parse(parsedData);
+
+        // 3. Inject
+        if (editorInstance) {
+          const fullContent = `<style>${validatedData.css}</style>${validatedData.html}`;
+          editorInstance.setComponents(fullContent);
+        }
+
+        setPrompt(""); // Clear only on success
+
+      } catch (parseError) {
+        console.error("Extraction/Parse Error:", parseError);
+
+        // FALLBACK: If JSON fails, try to treat the whole thing as raw HTML
+        // Small models sometimes ignore JSON instructions entirely.
+        if (rawContent.includes('<') && editorInstance) {
+          const cleanFallback = rawContent.replace(/```html|```css|```/gi, "").trim();
+          editorInstance.addComponents(cleanFallback);
+          console.warn("JSON failed, but HTML fallback succeeded.");
+        } else {
+          alert("AI failed to format code correctly. Try a simpler request.");
+        }
+      }
+
+    } catch (error) {
+      console.error("Engine Error:", error);
+    } finally {
+      setAiStatus("ready");
+    }
+  };
+  // ---llm cide end ----
 
 
   onMount(() => {
@@ -227,6 +342,14 @@ const App = () => {
             <span>Assets</span>
           </button>
 
+          <button onClick={() => { setActiveTab('ai'); setLeftOpen(true); }}
+            class={activeTab() === 'ai' && isLeftOpen() ? 'active' : ''}
+            title="AI Assistant"
+          >
+            <img src={chat_icon} alt="Chat" style="width: 20px; height: 20px;" />
+            <span>LLM</span>
+          </button>
+
           <button onClick={toggleTheme} style="margin-top: auto;">
             {isDark() ? '☀' : '☾'}
             <span>Theme</span>
@@ -248,6 +371,64 @@ const App = () => {
             so GrapesJS can still find the IDs on mount */}
           <div id="blocks-container" style={{ display: activeTab() === 'blocks' ? 'block' : 'none' }}></div>
           <div id="layers-container" style={{ display: activeTab() === 'layers' ? 'block' : 'none' }}></div>
+
+          {/* NEW AI CONTAINER */}
+          <div id="ai-container" style={{ display: activeTab() === 'ai' ? 'block' : 'none', padding: '15px' }}>
+
+            <Show when={aiStatus() === "idle"}>
+              <p style="font-size: 13px; color: #94a3b8; margin-bottom: 15px;">
+                Load the AI model to your GPU. (First time download: ~400MB)
+              </p>
+
+              <button class="btn-primary" onClick={initAI} style="width: 100%; margin-bottom: 20px;">
+                Initialize AI
+              </button>
+
+              <div style="background: rgba(34, 211, 238, 0.05); border: 1px dashed rgba(34, 211, 238, 0.3); padding: 12px; border-radius: 8px;">
+                <p style="font-size: 12px; color: #22d3ee; margin-bottom: 8px; font-weight: bold;">
+                  <i class="fas fa-info-circle"></i> How to enable WebGPU:
+                </p>
+                <ul style="font-size: 11px; color: #94a3b8; padding-left: 15px; line-height: 1.6;">
+                  <li style="margin-bottom: 5px;">
+                    <strong>Chrome / Edge / Brave:</strong> Ensure browser is version 113+ and
+                    <span style="color: #cbd5e1;">Hardware Acceleration</span> is enabled in Settings.
+                  </li>
+                  <li style="margin-bottom: 5px;">
+                    <strong>Firefox:</strong> Go to <code style="color: #e2e8f0;">about:config</code>,
+                    search for <code style="color: #e2e8f0;">dom.webgpu.enabled</code>, and set it to <strong>true</strong>.
+                  </li>
+                  <li>
+                    <strong>Safari:</strong> Go to Settings → Advanced → Show Develop menu. Then Develop → Experimental Features → WebGPU.
+                  </li>
+                </ul>
+              </div>
+            </Show>
+
+            <Show when={aiStatus() === "loading"}>
+              <p style="font-size: 13px;">Downloading Model: {aiProgress()}%</p>
+              <div style="width: 100%; height: 4px; background: #334155; margin-top: 10px;">
+                <div style={{ width: `${aiProgress()}%`, height: '100%', background: '#22d3ee' }}></div>
+              </div>
+            </Show>
+
+            <Show when={aiStatus() === "ready" || aiStatus() === "busy"}>
+              <textarea
+                placeholder="e.g. A modern hero section with a blue button..."
+                value={prompt()}
+                onInput={(e) => setPrompt(e.target.value)}
+                style="width: 100%; background: #0f172a; color: white; border: 1px solid #334155; padding: 10px; border-radius: 4px; resize: vertical;"
+                rows="5"
+              />
+              <button
+                class="btn-primary"
+                onClick={generateCode}
+                disabled={aiStatus() === "busy"}
+                style="width: 100%; margin-top: 10px;"
+              >
+                {aiStatus() === "busy" ? "Generating..." : "Generate Section"}
+              </button>
+            </Show>
+          </div>
         </aside>
 
 
