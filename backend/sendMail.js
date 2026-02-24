@@ -13,6 +13,11 @@ if (!connectionString) {
 const client = connectionString ? new EmailClient(connectionString) : null;
 
 async function mailSender(mailcontent) {
+    if (!client) {
+        console.error('❌ Cannot send email: Azure Email Client is not configured');
+        throw new Error('Email service is not configured. Please set COMMUNICATION_SERVICES_CONNECTION_STRING in .env file');
+    }
+
     const emailMessage = {
         senderAddress: "DoNotReply@ec8b80ea-24df-4c00-8d23-40bd4e223dfe.azurecomm.net",
         content: {
@@ -28,6 +33,7 @@ async function mailSender(mailcontent) {
 
     const poller = await client.beginSend(emailMessage);
     const result = await poller.pollUntilDone();
+    return result;
 }
 
 export { mailSender };
