@@ -340,8 +340,8 @@ loginForm.addEventListener("submit", async (e) => {
 signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const name = document.getElementById("signup-name").value;
-  const email = document.getElementById("signup-email").value;
+  const name = document.getElementById("signup-name").value.trim();
+  const email = document.getElementById("signup-email").value.trim();
   const password = document.getElementById("signup-password").value;
   const confirmPassword = document.getElementById(
     "signup-confirm-password",
@@ -350,8 +350,11 @@ signupForm.addEventListener("submit", async (e) => {
 
   let hasError = false;
 
-  if (!name) {
+  if (!name || name.length === 0) {
     showError("signup-name", "Name is required");
+    hasError = true;
+  } else if (name.length < 3) {
+    showError("signup-name", "Name must be at least 3 characters");
     hasError = true;
   }
 
@@ -365,6 +368,15 @@ signupForm.addEventListener("submit", async (e) => {
 
   if (!password) {
     showError("signup-password", "Password is required");
+    hasError = true;
+  } else if (password !== password.trim()) {
+    showError(
+      "signup-password",
+      "Password cannot have leading or trailing spaces",
+    );
+    hasError = true;
+  } else if (password.trim().length === 0) {
+    showError("signup-password", "Password cannot be empty");
     hasError = true;
   } else if (password.length < 6) {
     showError("signup-password", "Password must be at least 6 characters");
