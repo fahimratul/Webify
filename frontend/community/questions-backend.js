@@ -93,8 +93,10 @@ function questionCard(q) {
   const timeAgo = getTimeAgo(new Date(q.createdAt));
   const author = q.author ;
   const answerCount = q.answers ? q.answers.length : 0;
-  const votebyUser = state.currentUser._id;
-  const userVote = q.votedBy ? q.votedBy.find((v) => v.user.toString() === votebyUser) : null;
+  
+  // Check if user is logged in before accessing user ID
+  const votebyUser = state.currentUser ? state.currentUser._id : null;
+  const userVote = votebyUser && q.votedBy ? q.votedBy.find((v) => v.user.toString() === votebyUser) : null;
   let voteClass = "";
   if (userVote) {
     if (userVote.voteType === "up") {
