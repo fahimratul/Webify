@@ -252,6 +252,18 @@ app.post("/api/signup", async (req, res) => {
         .json({ error: "Username, email, and password are required" });
     }
 
+    // Validate username: trim and check length
+    const trimmedUsername = username.trim();
+    if (trimmedUsername.length === 0) {
+      return res.status(400).json({ error: "Username cannot be empty or whitespace only" });
+    }
+    if (trimmedUsername.length < 3) {
+      return res.status(400).json({ error: "Username must be at least 3 characters long" });
+    }
+    if (trimmedUsername.length > 30) {
+      return res.status(400).json({ error: "Username must not exceed 30 characters" });
+    }
+
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -260,10 +272,10 @@ app.post("/api/signup", async (req, res) => {
 
     // Check if user already exists (username or email)
     const existingUser = await User.findOne({
-      $or: [{ username }, { email: email.toLowerCase() }]
+      $or: [{ username: trimmedUsername }, { email: email.toLowerCase() }]
     });
     if (existingUser) {
-      if (existingUser.username === username) {
+      if (existingUser.username === trimmedUsername) {
         return res.status(400).json({ error: "Username already exists" });
       } else {
         return res.status(400).json({ error: "Email already registered" });
@@ -272,7 +284,7 @@ app.post("/api/signup", async (req, res) => {
 
     // Create new user with email verification required
     const userData = {
-      username,
+      username: trimmedUsername,
       email: email.toLowerCase(),
       password,
       emailVerified: false
