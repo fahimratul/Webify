@@ -265,8 +265,8 @@ loginForm.addEventListener("submit", async (e) => {
         const userData = {
           name: data.user.username,
           email: data.user.email || `${data.user.username}@webify.com`,
-          avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
-          bio: "Welcome to Webify! Update your bio in settings.",
+          profilePicture: data.user.profilePicture || "https://api.dicebear.com/9.x/thumbs/svg?seed=Default",
+          bio: data.user.bio || "Welcome to Webify! Update your bio in settings.",
           projects: 0,
           templates: 0,
           followers: 0,
@@ -274,6 +274,16 @@ loginForm.addEventListener("submit", async (e) => {
         };
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("currentUser", JSON.stringify(userData));
+
+        // Save email for "Remember Me" if checked
+        const rememberMe = document.getElementById("remember-me").checked;
+        if (rememberMe) {
+          localStorage.setItem("rememberMe", "true");
+          localStorage.setItem("rememberedEmail", email);
+        } else {
+          localStorage.removeItem("rememberMe");
+          localStorage.removeItem("rememberedEmail");
+        }
 
         showNotification(
           "Welcome back! You have successfully signed in.",
@@ -541,27 +551,13 @@ document.head.appendChild(style);
 
 console.log("WEBIFY Login/Signup page loaded successfully");
 
-
-document.getElementById("remember-me").addEventListener("change", function() {
-  if (this.checked) {
-    localStorage.setItem("rememberMe", "true");
-    localStorage.setItem("rememberedEmail", document.getElementById("login-email").value);
-  } else {
-    localStorage.removeItem("rememberMe");
-    localStorage.removeItem("rememberedEmail");
-  }
-});
-
 // On page load, check if "Remember Me" was previously set
 window.addEventListener("load", function() {
   const rememberMe = localStorage.getItem("rememberMe");
   if (rememberMe === "true") {
     document.getElementById("remember-me").checked = true;
   }
-});
 
-
-window.addEventListener("load", function() {
   const rememberedEmail = localStorage.getItem("rememberedEmail");
   if (rememberedEmail) {
     document.getElementById("login-email").value = rememberedEmail;
