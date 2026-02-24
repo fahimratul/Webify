@@ -5,6 +5,7 @@ import export_icon from './assets/icons/export_icon.svg';
 import upload_icon from './assets/icons/upload_icon.svg';
 import chat_icon from './assets/icons/chat_icon.svg';
 import { CreateMLCEngine } from "@mlc-ai/web-llm";
+import { z } from "zod";
 
 const App = () => {
   let editorRef;
@@ -39,7 +40,7 @@ const App = () => {
       // another small model: Qwen2-0.5B-Instruct-q4f16_1-MLC -> 0.5B
       // in the middle: TinyLlama-1.1B-Chat-v1.0-q4f16_1-MLC -> 1.1B
       // bigger but better: Phi-3-mini-4k-instruct-q4f16_1-MLC -> 2.7B
-      engine = await CreateMLCEngine("Qwen2-0.5B-Instruct-q4f16_1-MLC", {
+      engine = await CreateMLCEngine("Phi-3-mini-4k-instruct-q4f16_1-MLC", {
         initProgressCallback: (report) => {
           setAiProgress(Math.round(report.progress * 100));
         }
@@ -53,28 +54,84 @@ const App = () => {
     }
   };
 
+  // the idiot llm is returning stuff other then html and css
+  //Defining what a "Perfect" response looks like using zod
+  const AIResponseSchema = z.object({
+    html: z.string(),
+    css: z.string(),
+    thought: z.string().optional()
+  });
+
   //function for generating code
   const generateCode = async () => {
     if (!engine || !prompt()) return;
     setAiStatus("busy");
 
     const messages = [
-      { role: "system", content: "You are a web designer. Output ONLY valid HTML/CSS code. No talk." },
-      { role: "user", content: `Create this section: ${prompt()}` }
+      {
+        role: "system",
+        content: `You are a Webify Export Tool. 
+      Rules:
+      1. Respond ONLY with a JSON object.
+      2. Format: {"html": "...", "css": "...", "thought": "..."}
+      3. Use single quotes for HTML attributes internally or escape double quotes carefully.
+      
+      Example Response:
+      {"html": "<div class='hero'><h1>Hello</h1></div>", "css": ".hero { color: cyan; }", "thought": "Created a hero."}`
+      },
+      { role: "user", content: prompt() }
     ];
 
-    const reply = await engine.chat.completions.create({ messages });
-    const code = reply.choices[0].message.content;
+    try {
+      const reply = await engine.chat.completions.create({ messages });
+      const rawContent = reply.choices[0].message.content;
 
-    // Cleaning markdown backticks if the dumbass ai added them
-    const cleanCode = code.replace(/```html|```css|```/gi, "").trim();
+      // DEBUG: See exactly what the AI said in the console
+      console.log("AI Raw Output:", rawContent);
 
-    if (editorInstance) {
-      editorInstance.addComponents(cleanCode);
+      try {
+        // 1. Better Extraction: Find the first '{' and last '}'
+        // This ignores any "Sure! Here is your code" junk
+        const startIdx = rawContent.indexOf('{');
+        const endIdx = rawContent.lastIndexOf('}');
+
+        if (startIdx === -1 || endIdx === -1) {
+          throw new Error("No JSON object found in response");
+        }
+
+        const jsonString = rawContent.substring(startIdx, endIdx + 1);
+        const parsedData = JSON.parse(jsonString);
+
+        // 2. Validate with Zod
+        const validatedData = AIResponseSchema.parse(parsedData);
+
+        // 3. Inject
+        if (editorInstance) {
+          const fullContent = `<style>${validatedData.css}</style>${validatedData.html}`;
+          editorInstance.setComponents(fullContent);
+        }
+
+        setPrompt(""); // Clear only on success
+
+      } catch (parseError) {
+        console.error("Extraction/Parse Error:", parseError);
+
+        // FALLBACK: If JSON fails, try to treat the whole thing as raw HTML
+        // Small models sometimes ignore JSON instructions entirely.
+        if (rawContent.includes('<') && editorInstance) {
+          const cleanFallback = rawContent.replace(/```html|```css|```/gi, "").trim();
+          editorInstance.addComponents(cleanFallback);
+          console.warn("JSON failed, but HTML fallback succeeded.");
+        } else {
+          alert("AI failed to format code correctly. Try a simpler request.");
+        }
+      }
+
+    } catch (error) {
+      console.error("Engine Error:", error);
+    } finally {
+      setAiStatus("ready");
     }
-
-    setAiStatus("ready");
-    setPrompt("");
   };
   // ---llm cide end ----
 
@@ -319,10 +376,32 @@ const App = () => {
           <div id="ai-container" style={{ display: activeTab() === 'ai' ? 'block' : 'none', padding: '15px' }}>
 
             <Show when={aiStatus() === "idle"}>
-              <p style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">
-                Load the AI model to your GPU. (First time download: ~2GB)
+              <p style="font-size: 13px; color: #94a3b8; margin-bottom: 15px;">
+                Load the AI model to your GPU. (First time download: ~400MB)
               </p>
-              <button class="btn-primary" onClick={initAI} style="width: 100%;">Initialize AI</button>
+
+              <button class="btn-primary" onClick={initAI} style="width: 100%; margin-bottom: 20px;">
+                Initialize AI
+              </button>
+
+              <div style="background: rgba(34, 211, 238, 0.05); border: 1px dashed rgba(34, 211, 238, 0.3); padding: 12px; border-radius: 8px;">
+                <p style="font-size: 12px; color: #22d3ee; margin-bottom: 8px; font-weight: bold;">
+                  <i class="fas fa-info-circle"></i> How to enable WebGPU:
+                </p>
+                <ul style="font-size: 11px; color: #94a3b8; padding-left: 15px; line-height: 1.6;">
+                  <li style="margin-bottom: 5px;">
+                    <strong>Chrome / Edge / Brave:</strong> Ensure browser is version 113+ and
+                    <span style="color: #cbd5e1;">Hardware Acceleration</span> is enabled in Settings.
+                  </li>
+                  <li style="margin-bottom: 5px;">
+                    <strong>Firefox:</strong> Go to <code style="color: #e2e8f0;">about:config</code>,
+                    search for <code style="color: #e2e8f0;">dom.webgpu.enabled</code>, and set it to <strong>true</strong>.
+                  </li>
+                  <li>
+                    <strong>Safari:</strong> Go to Settings → Advanced → Show Develop menu. Then Develop → Experimental Features → WebGPU.
+                  </li>
+                </ul>
+              </div>
             </Show>
 
             <Show when={aiStatus() === "loading"}>
