@@ -1,4 +1,3 @@
-
 // Show toast notifications - auto-hides after 5 seconds
 function showNotification(message, type = "success", title = "") {
   const toast = document.getElementById("notification-toast");
@@ -173,18 +172,15 @@ function validateEmail(email) {
   return re.test(email);
 }
 
-
-
-
 // Resend verification email function
 async function resendVerificationEmail(email) {
   try {
     showNotification("Sending verification email...", "info", "Please wait");
-    
-    const response = await fetch('/api/resend-verification', {
-      method: 'POST',
+
+    const response = await fetch("/api/resend-verification", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email }),
     });
@@ -193,23 +189,24 @@ async function resendVerificationEmail(email) {
 
     if (response.ok) {
       showNotification(
-        data.message || "Verification email has been sent! Please check your inbox.",
+        data.message ||
+          "Verification email has been sent! Please check your inbox.",
         "success",
-        "Email Sent! 📧"
+        "Email Sent! 📧",
       );
     } else {
       showNotification(
         data.error || "Failed to send verification email. Please try again.",
         "error",
-        "Send Failed"
+        "Send Failed",
       );
     }
   } catch (error) {
-    console.error('Resend verification error:', error);
+    console.error("Resend verification error:", error);
     showNotification(
       "Unable to send email. Please try again later.",
       "error",
-      "Network Error"
+      "Network Error",
     );
   }
 }
@@ -237,20 +234,20 @@ loginForm.addEventListener("submit", async (e) => {
     // Show loading state
     const submitBtn = loginForm.querySelector(".submit-btn");
     const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span>Logging in...</span>';
+    submitBtn.innerHTML = "<span>Logging in...</span>";
     submitBtn.disabled = true;
 
     try {
       // Call backend API
-      const response = await fetch('/api/login', {
-        method: 'POST',
+      const response = await fetch("/api/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify({
           username: email, // Backend uses 'username' field
-          password: password
+          password: password,
         }),
       });
 
@@ -262,12 +259,15 @@ loginForm.addEventListener("submit", async (e) => {
         const userData = {
           name: data.user.username,
           email: data.user.email || `${data.user.username}@webify.com`,
-          profilePicture: data.user.profilePicture || "https://api.dicebear.com/9.x/thumbs/svg?seed=Default",
-          bio: data.user.bio || "Welcome to Webify! Update your bio in settings.",
+          profilePicture:
+            data.user.profilePicture ||
+            "https://api.dicebear.com/9.x/thumbs/svg?seed=Default",
+          bio:
+            data.user.bio || "Welcome to Webify! Update your bio in settings.",
           projects: 0,
           templates: 0,
           followers: 0,
-          ...data.user // Include any additional fields from backend
+          ...data.user, // Include any additional fields from backend
         };
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("currentUser", JSON.stringify(userData));
@@ -284,7 +284,7 @@ loginForm.addEventListener("submit", async (e) => {
 
         showNotification(
           "Welcome back! You have successfully signed in.",
-          "success"
+          "success",
         );
         // Redirect to profile page after short delay
         setTimeout(() => {
@@ -297,9 +297,9 @@ loginForm.addEventListener("submit", async (e) => {
           showNotification(
             `${data.error}\n\nWould you like us to resend the verification email?`,
             "warning",
-            "Email Verification Required"
+            "Email Verification Required",
           );
-          
+
           // Show resend verification option
           setTimeout(() => {
             const confirmModal = document.getElementById("confirm-modal");
@@ -307,7 +307,7 @@ loginForm.addEventListener("submit", async (e) => {
             document.getElementById("confirm-yes").onclick = () => {
               resendVerificationEmail(email);
               confirmModal.classList.add("hidden");
-            }
+            };
             document.getElementById("confirm-no").onclick = () => {
               confirmModal.classList.add("hidden");
             };
@@ -317,18 +317,18 @@ loginForm.addEventListener("submit", async (e) => {
           showNotification(
             data.error || "Invalid credentials. Please try again.",
             "error",
-            "Login Failed"
+            "Login Failed",
           );
         }
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
       showNotification(
         "Unable to connect to server. Please try again later.",
         "error",
-        "Connection Error"
+        "Connection Error",
       );
       submitBtn.innerHTML = originalText;
       submitBtn.disabled = false;
@@ -344,7 +344,7 @@ signupForm.addEventListener("submit", async (e) => {
   const email = document.getElementById("signup-email").value;
   const password = document.getElementById("signup-password").value;
   const confirmPassword = document.getElementById(
-    "signup-confirm-password"
+    "signup-confirm-password",
   ).value;
   const agreeToTerms = document.getElementById("terms-agree").checked;
 
@@ -383,7 +383,7 @@ signupForm.addEventListener("submit", async (e) => {
     showNotification(
       "Please agree to the Terms and Conditions",
       "warning",
-      "Action Required"
+      "Action Required",
     );
     hasError = true;
   }
@@ -392,21 +392,21 @@ signupForm.addEventListener("submit", async (e) => {
     // Show loading state
     const submitBtn = signupForm.querySelector(".submit-btn");
     const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span>Creating account...</span>';
+    submitBtn.innerHTML = "<span>Creating account...</span>";
     submitBtn.disabled = true;
 
     try {
       // Call backend API
-      const response = await fetch('/api/signup', {
-        method: 'POST',
+      const response = await fetch("/api/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify({
           username: name, // Using name as username
           email: email,
-          password: password
+          password: password,
         }),
       });
 
@@ -414,9 +414,10 @@ signupForm.addEventListener("submit", async (e) => {
 
       if (response.ok) {
         showNotification(
-          data.message || "Account created successfully! Please check your email and click the verification link before logging in.",
+          data.message ||
+            "Account created successfully! Please check your email and click the verification link before logging in.",
           "success",
-          "Check Your Email! 📧"
+          "Check Your Email! 📧",
         );
         // Reset form and switch to login tab
         signupForm.reset();
@@ -434,17 +435,17 @@ signupForm.addEventListener("submit", async (e) => {
         showNotification(
           data.error || "Unable to create account. Please try again.",
           "error",
-          "Signup Failed"
+          "Signup Failed",
         );
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
       }
     } catch (error) {
-      console.error('Signup error:', error);
+      console.error("Signup error:", error);
       showNotification(
         "Unable to connect to server. Please try again later.",
         "error",
-        "Connection Error"
+        "Connection Error",
       );
       submitBtn.innerHTML = originalText;
       submitBtn.disabled = false;
@@ -549,7 +550,7 @@ document.head.appendChild(style);
 console.log("WEBIFY Login/Signup page loaded successfully");
 
 // On page load, check if "Remember Me" was previously set
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
   const rememberMe = localStorage.getItem("rememberMe");
   if (rememberMe === "true") {
     document.getElementById("remember-me").checked = true;
