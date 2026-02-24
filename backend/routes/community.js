@@ -120,7 +120,7 @@ router.post("/questions", isAuthenticated, async (req, res) => {
   try {
     const { title, body, tags } = req.body;
 
-    if (!title || !body) {
+    if (!title || !title.trim() || !body || !body.trim()) {
       return res.status(400).json({ error: "Title and body are required" });
     }
 
@@ -151,7 +151,7 @@ router.post("/questions/:id/answers", isAuthenticated, async (req, res) => {
     const { id } = req.params;
     const { body } = req.body;
 
-    if (!body) {
+    if (!body || !body.trim()) {
       return res.status(400).json({ error: "Answer body is required" });
     }
 
