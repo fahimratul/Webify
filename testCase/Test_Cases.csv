@@ -1,0 +1,125 @@
+Test Scenario,Test Case ID,Test Case Description,Test Data,Steps to Execute,Expected Result,Actual Result,Status
+Community Q&A - Post Question,TC001,Verify user can post a new question with valid data,"Title: How to center a div in CSS?
+Body: I am trying to center a div element horizontally and vertically. What is the best modern approach?
+Tags: css, html, flexbox","1. Go to Community page
+2. Click 'Ask Question' button
+3. Enter question title
+4. Enter question body (min 20 chars)
+5. Add tags
+6. Click 'Post Question'","Question posted successfully, redirected to question detail page, question visible in community list",,[Empty]
+Community Q&A - Post Question,TC002,Verify validation for short question body,"Title: Test Question
+Body: Short
+Tags: test","1. Go to Community page
+2. Click 'Ask Question' button
+3. Enter question title
+4. Enter short body (less than 20 chars)
+5. Click 'Post Question'","Error message: 'Question must be at least 20 characters', question not posted",,[Empty]
+Community Q&A - Post Question,TC003,Verify validation for empty title,"Title: [Empty]
+Body: This is a valid question body with more than 20 characters for testing purposes
+Tags: test","1. Go to Community page
+2. Click 'Ask Question' button
+3. Leave title empty
+4. Enter valid question body
+5. Click 'Post Question'","Error message: 'Title and body are required', question not posted",,[Empty]
+Community Q&A - Voting System,TC004,Verify upvote functionality on question,"Question ID: Valid existing question
+User: Logged in user","1. Go to Community page
+2. Click on any question
+3. Click upvote button
+4. Verify vote count increases","Vote count increases by 1, upvote button highlighted, user's vote recorded in database",,[Empty]
+Community Q&A - Voting System,TC005,Verify user can toggle their vote,"Question ID: Valid existing question with user's upvote
+User: Logged in user","1. Go to question with existing upvote
+2. Click upvote button again
+3. Verify vote is removed","Vote count decreases by 1, upvote button unhighlighted, vote removed from database",,[Empty]
+Community Q&A - Answer System,TC006,Verify user can post answer to question,"Question ID: Valid existing question
+Answer Body: You can use flexbox: display: flex; justify-content: center; align-items: center; on the parent container.","1. Go to question detail page
+2. Scroll to answer section
+3. Enter answer in text area
+4. Click 'Post Answer'","Answer posted successfully, appears below question, question marked as answered if first answer",,[Empty]
+Marketplace - Upload Template,TC007,Verify user can upload free template with valid data,"Title: Modern Portfolio Template
+Description: Clean and responsive portfolio design
+Category: portfolio
+Type: Free
+HTML: <div>...</div>
+CSS: .container {...}","1. Go to Marketplace
+2. Click 'Upload Template' button
+3. Fill in all required fields
+4. Set type as Free
+5. Click 'Publish'","Template uploaded successfully, visible in marketplace, download count is 0",,[Empty]
+Marketplace - Upload Template,TC008,Verify validation for empty title,"Title: [Empty]
+Description: Test description
+Category: webpage
+Type: Free","1. Go to Marketplace
+2. Click 'Upload Template' button
+3. Leave title empty
+4. Fill other fields
+5. Click 'Publish'","Error message: 'Title is required', template not uploaded",,[Empty]
+Marketplace - Upload Template,TC009,Verify premium template upload with price,"Title: Premium Business Template
+Description: Professional business website
+Category: business
+Type: Premium
+Price: 500
+HTML/CSS: Valid code","1. Go to Marketplace
+2. Click 'Upload Template' button
+3. Fill all fields
+4. Select Premium type
+5. Enter price: 500
+6. Click 'Publish'","Template uploaded as premium, price displayed as 'Tk 500', requires payment to download",,[Empty]
+Marketplace - Download,TC010,Verify free template download,"Template: Any free template
+User: Logged in","1. Go to Marketplace
+2. Find a free template
+3. Click 'Preview' button
+4. Click 'Download' button","HTML file downloads to device, download count increments by 1, rating modal appears",,[Empty]
+Marketplace - Like System,TC011,Verify user can like a template,"Template ID: Valid template
+User: Logged in user","1. Go to Marketplace
+2. Find any template card
+3. Click heart icon
+4. Verify like count","Like count increases by 1, heart icon filled, user added to likedBy array",,[Empty]
+Marketplace - Rating,TC012,Verify user can rate downloaded template,"Template: Recently downloaded template
+Rating: 4 stars","1. After downloading template
+2. Rating modal appears
+3. Select 4 stars
+4. Click 'Submit Rating'","Rating submitted, average rating updated, rating count increases",,[Empty]
+Profile Management,TC013,Verify user can update profile information,"Full Name: John Doe Updated
+Bio: Web developer and designer
+Phone: 01712345678","1. Go to Profile page
+2. Click 'Edit Profile' button
+3. Update name, bio, and phone
+4. Click 'Save Changes'","Profile updated successfully, success notification shown, changes reflected immediately",,[Empty]
+Profile Management,TC014,Verify email validation in profile update,"Email: invalid-email-format","1. Go to Edit Profile page
+2. Enter invalid email
+3. Click 'Save Changes'","Error message: 'Please enter a valid email address', profile not updated",,[Empty]
+Profile Management,TC015,Verify profile picture update,"Profile Picture: Valid image URL","1. Go to Edit Profile page
+2. Change profile picture URL
+3. Click 'Save Changes'","Profile picture updated, new image displayed in profile and across the app",,[Empty]
+Builder - Save Project,TC016,Verify user can save builder project,"Project Name: My Website
+HTML: <h1>Hello World</h1>
+CSS: h1 { color: blue; }","1. Open Builder
+2. Add elements to canvas
+3. Modify styles
+4. Click 'Save' button","Project saved to localStorage, success notification, can be restored on next visit",,[Empty]
+Builder - Export Code,TC017,Verify user can export HTML/CSS code,"Project: Valid builder project with content","1. Open Builder with content
+2. Click 'Export' button
+3. Select 'Download HTML'","HTML file with embedded CSS downloads, file contains all current canvas content",,[Empty]
+Builder - Device Preview,TC018,Verify responsive preview switching,"Project: Active builder project
+Devices: Desktop, Tablet, Mobile","1. Open Builder
+2. Click device selector
+3. Switch between Desktop/Tablet/Mobile","Canvas resizes to selected device dimensions, content adapts responsively",,[Empty]
+Email Verification,TC019,Verify email verification with valid token,"Email: test@webify.com
+Token: Valid 24-hour token","1. User receives verification email
+2. Click verification link in email
+3. Redirected to verification page","Email marked as verified in database, success message shown, user can now login",,[Empty]
+Email Verification,TC020,Verify expired token handling,"Email: test@webify.com
+Token: Expired token (>24 hours)","1. Click verification link with expired token
+2. Verify error handling","Error message: 'Email verification token is invalid or has expired', option to resend verification",,[Empty]
+Password Reset,TC021,Verify password reset request with valid email,"Email: existing@webify.com","1. Go to Forgot Password page
+2. Enter registered email
+3. Click 'Send Reset Link'","Reset email sent, success message displayed, token valid for 10 minutes",,[Empty]
+Password Reset,TC022,Verify password reset with valid token,"Token: Valid reset token
+New Password: newSecurePass123","1. Click reset link from email
+2. Enter new password
+3. Confirm new password
+4. Click 'Reset Password'","Password updated in database (hashed), success message, redirected to login",,[Empty]
+Password Reset,TC023,Verify password reset with expired token,"Token: Expired token (>10 minutes)
+New Password: newPassword123","1. Click expired reset link
+2. Enter new password
+3. Click 'Reset Password'","Error message: 'Password reset token is invalid or has expired', reset not completed",,[Empty]
