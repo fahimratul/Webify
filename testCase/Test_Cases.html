@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Webify Test Cases</title>
+    <style>
+        body {
+            font-family: Calibri, Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: #22d3ee;
+            text-align: center;
+            font-size: 24pt;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 16pt;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 12pt;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+
+        th {
+            background-color: #22d3ee;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            border: 1px solid #ddd;
+        }
+
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .tc-id {
+            font-weight: bold;
+            color: #22d3ee;
+        }
+
+        .steps {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Webify - Test Case Documentation</h1>
+    <p class="subtitle">Software Development Project | Test Case Scenarios (Excluding Login System)</p>
+
+    <h2>1. Community Q&A System</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th width="8%">Test Case ID</th>
+                <th width="20%">Test Case Description</th>
+                <th width="18%">Test Data</th>
+                <th width="22%">Steps to Execute</th>
+                <th width="18%">Expected Result</th>
+                <th width="7%">Actual Result</th>
+                <th width="7%">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tc-id">TC001</td>
+                <td>Verify user can post a new question with valid data</td>
+                <td>
+                    <strong>Title:</strong> How to center a div in CSS?<br>
+                    <strong>Body:</strong> I am trying to center a div element horizontally and vertically. What is the
+                    best modern approach?<br>
+                    <strong>Tags:</strong> css, html, flexbox
+                </td>
+                <td class="steps">
+                    1. Go to Community page<br>
+                    2. Click 'Ask Question' button<br>
+                    3. Enter question title<br>
+                    4. Enter question body (min 20 chars)<br>
+                    5. Add tags<br>
+                    6. Click 'Post Question'
+                </td>
+                <td>Question posted successfully, redirected to question detail page, question visible in community list
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC002</td>
+                <td>Verify validation for short question body</td>
+                <td>
+                    <strong>Title:</strong> Test Question<br>
+                    <strong>Body:</strong> Short<br>
+                    <strong>Tags:</strong> test
+                </td>
+                <td class="steps">
+                    1. Go to Community page<br>
+                    2. Click 'Ask Question' button<br>
+                    3. Enter question title<br>
+                    4. Enter short body (less than 20 chars)<br>
+                    5. Click 'Post Question'
+                </td>
+                <td>Error message: 'Question must be at least 20 characters', question not posted</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC003</td>
+                <td>Verify validation for empty title</td>
+                <td>
+                    <strong>Title:</strong> [Empty]<br>
+                    <strong>Body:</strong> This is a valid question body with more than 20 characters for testing
+                    purposes<br>
+                    <strong>Tags:</strong> test
+                </td>
+                <td class="steps">
+                    1. Go to Community page<br>
+                    2. Click 'Ask Question' button<br>
+                    3. Leave title empty<br>
+                    4. Enter valid question body<br>
+                    5. Click 'Post Question'
+                </td>
+                <td>Error message: 'Title and body are required', question not posted</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC004</td>
+                <td>Verify upvote functionality on question</td>
+                <td>
+                    <strong>Question ID:</strong> Valid existing question<br>
+                    <strong>User:</strong> Logged in user
+                </td>
+                <td class="steps">
+                    1. Go to Community page<br>
+                    2. Click on any question<br>
+                    3. Click upvote button<br>
+                    4. Verify vote count increases
+                </td>
+                <td>Vote count increases by 1, upvote button highlighted, user's vote recorded in database</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC005</td>
+                <td>Verify user can toggle their vote</td>
+                <td>
+                    <strong>Question ID:</strong> Valid existing question with user's upvote<br>
+                    <strong>User:</strong> Logged in user
+                </td>
+                <td class="steps">
+                    1. Go to question with existing upvote<br>
+                    2. Click upvote button again<br>
+                    3. Verify vote is removed
+                </td>
+                <td>Vote count decreases by 1, upvote button unhighlighted, vote removed from database</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC006</td>
+                <td>Verify user can post answer to question</td>
+                <td>
+                    <strong>Question ID:</strong> Valid existing question<br>
+                    <strong>Answer Body:</strong> You can use flexbox: display: flex; justify-content: center;
+                    align-items: center; on the parent container.
+                </td>
+                <td class="steps">
+                    1. Go to question detail page<br>
+                    2. Scroll to answer section<br>
+                    3. Enter answer in text area<br>
+                    4. Click 'Post Answer'
+                </td>
+                <td>Answer posted successfully, appears below question, question marked as answered if first answer</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>2. Marketplace Templates</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th width="8%">Test Case ID</th>
+                <th width="20%">Test Case Description</th>
+                <th width="18%">Test Data</th>
+                <th width="22%">Steps to Execute</th>
+                <th width="18%">Expected Result</th>
+                <th width="7%">Actual Result</th>
+                <th width="7%">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tc-id">TC007</td>
+                <td>Verify user can upload free template with valid data</td>
+                <td>
+                    <strong>Title:</strong> Modern Portfolio Template<br>
+                    <strong>Description:</strong> Clean and responsive portfolio design<br>
+                    <strong>Category:</strong> portfolio<br>
+                    <strong>Type:</strong> Free<br>
+                    <strong>HTML:</strong> &lt;div&gt;...&lt;/div&gt;<br>
+                    <strong>CSS:</strong> .container {...}
+                </td>
+                <td class="steps">
+                    1. Go to Marketplace<br>
+                    2. Click 'Upload Template' button<br>
+                    3. Fill in all required fields<br>
+                    4. Set type as Free<br>
+                    5. Click 'Publish'
+                </td>
+                <td>Template uploaded successfully, visible in marketplace, download count is 0</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC008</td>
+                <td>Verify validation for empty title</td>
+                <td>
+                    <strong>Title:</strong> [Empty]<br>
+                    <strong>Description:</strong> Test description<br>
+                    <strong>Category:</strong> webpage<br>
+                    <strong>Type:</strong> Free
+                </td>
+                <td class="steps">
+                    1. Go to Marketplace<br>
+                    2. Click 'Upload Template' button<br>
+                    3. Leave title empty<br>
+                    4. Fill other fields<br>
+                    5. Click 'Publish'
+                </td>
+                <td>Error message: 'Title is required', template not uploaded</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC009</td>
+                <td>Verify premium template upload with price</td>
+                <td>
+                    <strong>Title:</strong> Premium Business Template<br>
+                    <strong>Description:</strong> Professional business website<br>
+                    <strong>Category:</strong> business<br>
+                    <strong>Type:</strong> Premium<br>
+                    <strong>Price:</strong> 500<br>
+                    <strong>HTML/CSS:</strong> Valid code
+                </td>
+                <td class="steps">
+                    1. Go to Marketplace<br>
+                    2. Click 'Upload Template' button<br>
+                    3. Fill all fields<br>
+                    4. Select Premium type<br>
+                    5. Enter price: 500<br>
+                    6. Click 'Publish'
+                </td>
+                <td>Template uploaded as premium, price displayed as 'Tk 500', requires payment to download</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC010</td>
+                <td>Verify free template download</td>
+                <td>
+                    <strong>Template:</strong> Any free template<br>
+                    <strong>User:</strong> Logged in
+                </td>
+                <td class="steps">
+                    1. Go to Marketplace<br>
+                    2. Find a free template<br>
+                    3. Click 'Preview' button<br>
+                    4. Click 'Download' button
+                </td>
+                <td>HTML file downloads to device, download count increments by 1, rating modal appears</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC011</td>
+                <td>Verify user can like a template</td>
+                <td>
+                    <strong>Template ID:</strong> Valid template<br>
+                    <strong>User:</strong> Logged in user
+                </td>
+                <td class="steps">
+                    1. Go to Marketplace<br>
+                    2. Find any template card<br>
+                    3. Click heart icon<br>
+                    4. Verify like count
+                </td>
+                <td>Like count increases by 1, heart icon filled, user added to likedBy array</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC012</td>
+                <td>Verify user can rate downloaded template</td>
+                <td>
+                    <strong>Template:</strong> Recently downloaded template<br>
+                    <strong>Rating:</strong> 4 stars
+                </td>
+                <td class="steps">
+                    1. After downloading template<br>
+                    2. Rating modal appears<br>
+                    3. Select 4 stars<br>
+                    4. Click 'Submit Rating'
+                </td>
+                <td>Rating submitted, average rating updated, rating count increases</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h2>3. Profile Management</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th width="8%">Test Case ID</th>
+                <th width="20%">Test Case Description</th>
+                <th width="18%">Test Data</th>
+                <th width="22%">Steps to Execute</th>
+                <th width="18%">Expected Result</th>
+                <th width="7%">Actual Result</th>
+                <th width="7%">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tc-id">TC013</td>
+                <td>Verify user can update profile information</td>
+                <td>
+                    <strong>Full Name:</strong> John Doe Updated<br>
+                    <strong>Bio:</strong> Web developer and designer<br>
+                    <strong>Phone:</strong> 01712345678
+                </td>
+                <td class="steps">
+                    1. Go to Profile page<br>
+                    2. Click 'Edit Profile' button<br>
+                    3. Update name, bio, and phone<br>
+                    4. Click 'Save Changes'
+                </td>
+                <td>Profile updated successfully, success notification shown, changes reflected immediately</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC014</td>
+                <td>Verify email validation in profile update</td>
+                <td>
+                    <strong>Email:</strong> invalid-email-format
+                </td>
+                <td class="steps">
+                    1. Go to Edit Profile page<br>
+                    2. Enter invalid email<br>
+                    3. Click 'Save Changes'
+                </td>
+                <td>Error message: 'Please enter a valid email address', profile not updated</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC015</td>
+                <td>Verify profile picture update</td>
+                <td>
+                    <strong>Profile Picture:</strong> Valid image URL
+                </td>
+                <td class="steps">
+                    1. Go to Edit Profile page<br>
+                    2. Change profile picture URL<br>
+                    3. Click 'Save Changes'
+                </td>
+                <td>Profile picture updated, new image displayed in profile and across the app</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>4. Website Builder</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th width="8%">Test Case ID</th>
+                <th width="20%">Test Case Description</th>
+                <th width="18%">Test Data</th>
+                <th width="22%">Steps to Execute</th>
+                <th width="18%">Expected Result</th>
+                <th width="7%">Actual Result</th>
+                <th width="7%">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tc-id">TC016</td>
+                <td>Verify user can save builder project</td>
+                <td>
+                    <strong>Project Name:</strong> My Website<br>
+                    <strong>HTML:</strong> &lt;h1&gt;Hello World&lt;/h1&gt;<br>
+                    <strong>CSS:</strong> h1 { color: blue; }
+                </td>
+                <td class="steps">
+                    1. Open Builder<br>
+                    2. Add elements to canvas<br>
+                    3. Modify styles<br>
+                    4. Click 'Save' button
+                </td>
+                <td>Project saved to localStorage, success notification, can be restored on next visit</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC017</td>
+                <td>Verify user can export HTML/CSS code</td>
+                <td>
+                    <strong>Project:</strong> Valid builder project with content
+                </td>
+                <td class="steps">
+                    1. Open Builder with content<br>
+                    2. Click 'Export' button<br>
+                    3. Select 'Download HTML'
+                </td>
+                <td>HTML file with embedded CSS downloads, file contains all current canvas content</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC018</td>
+                <td>Verify responsive preview switching</td>
+                <td>
+                    <strong>Project:</strong> Active builder project<br>
+                    <strong>Devices:</strong> Desktop, Tablet, Mobile
+                </td>
+                <td class="steps">
+                    1. Open Builder<br>
+                    2. Click device selector<br>
+                    3. Switch between Desktop/Tablet/Mobile
+                </td>
+                <td>Canvas resizes to selected device dimensions, content adapts responsively</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>5. Email Verification & Password Reset</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th width="8%">Test Case ID</th>
+                <th width="20%">Test Case Description</th>
+                <th width="18%">Test Data</th>
+                <th width="22%">Steps to Execute</th>
+                <th width="18%">Expected Result</th>
+                <th width="7%">Actual Result</th>
+                <th width="7%">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tc-id">TC019</td>
+                <td>Verify email verification with valid token</td>
+                <td>
+                    <strong>Email:</strong> test@webify.com<br>
+                    <strong>Token:</strong> Valid 24-hour token
+                </td>
+                <td class="steps">
+                    1. User receives verification email<br>
+                    2. Click verification link in email<br>
+                    3. Redirected to verification page
+                </td>
+                <td>Email marked as verified in database, success message shown, user can now login</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC020</td>
+                <td>Verify expired token handling</td>
+                <td>
+                    <strong>Email:</strong> test@webify.com<br>
+                    <strong>Token:</strong> Expired token (&gt;24 hours)
+                </td>
+                <td class="steps">
+                    1. Click verification link with expired token<br>
+                    2. Verify error handling
+                </td>
+                <td>Error message: 'Email verification token is invalid or has expired', option to resend verification
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC021</td>
+                <td>Verify password reset request with valid email</td>
+                <td>
+                    <strong>Email:</strong> existing@webify.com
+                </td>
+                <td class="steps">
+                    1. Go to Forgot Password page<br>
+                    2. Enter registered email<br>
+                    3. Click 'Send Reset Link'
+                </td>
+                <td>Reset email sent, success message displayed, token valid for 10 minutes</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC022</td>
+                <td>Verify password reset with valid token</td>
+                <td>
+                    <strong>Token:</strong> Valid reset token<br>
+                    <strong>New Password:</strong> newSecurePass123
+                </td>
+                <td class="steps">
+                    1. Click reset link from email<br>
+                    2. Enter new password<br>
+                    3. Confirm new password<br>
+                    4. Click 'Reset Password'
+                </td>
+                <td>Password updated in database (hashed), success message, redirected to login</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="tc-id">TC023</td>
+                <td>Verify password reset with expired token</td>
+                <td>
+                    <strong>Token:</strong> Expired token (&gt;10 minutes)<br>
+                    <strong>New Password:</strong> newPassword123
+                </td>
+                <td class="steps">
+                    1. Click expired reset link<br>
+                    2. Enter new password<br>
+                    3. Click 'Reset Password'
+                </td>
+                <td>Error message: 'Password reset token is invalid or has expired', reset not completed</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr style="margin-top: 40px; border: none; border-top: 2px solid #22d3ee;">
+    <p style="text-align: center; color: #666; margin-top: 20px;">
+        <strong>Project:</strong> Webify - No Code Website Builder<br>
+        <strong>Team:</strong> Fahim Morshed Ratul, Tamim Hossain, Effat Jahan Erin, Abdullah Al Shahriar<br>
+        <strong>Institution:</strong> MIST | CSE-23 Section A
+    </p>
+</body>
+
+</html>
