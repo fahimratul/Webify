@@ -4,11 +4,11 @@ import User from '../models/User.js'; // Import the model you just made
 
 passport.use(new LocalStrategy(async (username, password, done) => {
     try {
-        // Find user by username OR email
+        // Find user by username OR email (email comparison is case-insensitive)
         const user = await User.findOne({
             $or: [
                 { username: username },
-                { email: username }
+                { email: username.toLowerCase() }
             ]
         });
 
