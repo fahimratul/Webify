@@ -209,6 +209,7 @@ app.put("/api/marketplace/items/:id/rate", isAuthenticated, async (req, res) => 
   try {
     const { id } = req.params;
     const { rating } = req.body;
+    const userId = req.user._id;
 
     if (!rating || rating < 1 || rating > 5) {
       return res.status(400).json({ error: 'Rating must be between 1 and 5' });
@@ -217,19 +218,35 @@ app.put("/api/marketplace/items/:id/rate", isAuthenticated, async (req, res) => 
     const item = await MarketplaceItem.findById(id);
     if (!item) return res.status(404).json({ error: 'Item not found' });
 
-    // Simple rating system (average of all ratings)
-    // In production, you'd want to track individual ratings per user
-    const currentTotal = (item.rating * item.ratingCount) || 0;
-    const newTotal = currentTotal + rating;
-    item.ratingCount += 1;
-    item.rating = newTotal / item.ratingCount;
+    // Check if user has already rated this item
+    const existingRatingIndex = item.ratedBy.findIndex(
+      r => r.userId.toString() === userId.toString()
+    );
+
+    if (existingRatingIndex !== -1) {
+      // User has already rated - update their rating
+      const oldRating = item.ratedBy[existingRatingIndex].rating;
+      item.ratedBy[existingRatingIndex].rating = rating;
+
+      // Recalculate average rating
+      const totalRating = item.ratedBy.reduce((sum, r) => sum + r.rating, 0);
+      item.rating = totalRating / item.ratedBy.length;
+    } else {
+      // New rating from this user
+      item.ratedBy.push({ userId, rating });
+      item.ratingCount = item.ratedBy.length;
+
+      // Recalculate average rating
+      const totalRating = item.ratedBy.reduce((sum, r) => sum + r.rating, 0);
+      item.rating = totalRating / item.ratedBy.length;
+    }
 
     await item.save();
     res.json({
       success: true,
       rating: item.rating.toFixed(1),
       ratingCount: item.ratingCount,
-      message: 'Rating updated successfully'
+      message: existingRatingIndex !== -1 ? 'Rating updated successfully' : 'Rating added successfully'
     });
   } catch (err) {
     console.error('Rating error:', err);

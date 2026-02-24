@@ -14,6 +14,10 @@ const MarketplaceItemSchema = new Schema({
     tags: { type: [String], default: [] },
     rating: { type: Number, default: 0, min: 0, max: 5 },
     ratingCount: { type: Number, default: 0 },
+    ratedBy: [{ 
+        userId: { type: Schema.Types.ObjectId, ref: 'User' },
+        rating: { type: Number, min: 1, max: 5 }
+    }],
     likes: { type: Number, default: 0 },
     likedBy: { type: [Schema.Types.ObjectId], ref: 'User', default: [] },
     downloads: { type: Number, default: 0 }
