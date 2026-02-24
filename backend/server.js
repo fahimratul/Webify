@@ -270,6 +270,17 @@ app.post("/api/signup", async (req, res) => {
       return res.status(400).json({ error: "Please enter a valid email address" });
     }
 
+    // Validate password: check for leading/trailing whitespace
+    if (password !== password.trim()) {
+      return res.status(400).json({ error: "Password cannot have leading or trailing spaces" });
+    }
+    if (password.trim().length === 0) {
+      return res.status(400).json({ error: "Password cannot be empty or whitespace only" });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ error: "Password must be at least 6 characters long" });
+    }
+
     // Check if user already exists (username or email)
     const existingUser = await User.findOne({
       $or: [{ username: trimmedUsername }, { email: email.toLowerCase() }]
