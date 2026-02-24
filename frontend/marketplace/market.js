@@ -426,9 +426,13 @@ async function downloadPreview(productToDownload) {
                     }
                 }
             }
+        } else {
+            console.error('❌ Failed to update download count:', response.status);
+            showNotification('Download successful, but failed to update count', 'warning');
         }
     } catch (error) {
         console.error('❌ Error updating download count:', error);
+        showNotification('Download successful, but failed to update count', 'warning');
     }
     
     // Show rating modal after download
