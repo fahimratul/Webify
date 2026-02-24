@@ -231,9 +231,6 @@ loginForm.addEventListener("submit", async (e) => {
   if (!password) {
     showError("login-password", "Password is required");
     hasError = true;
-  } else if (password.length < 6) {
-    showError("login-password", "Password must be at least 6 characters");
-    hasError = true;
   }
 
   if (!hasError) {
