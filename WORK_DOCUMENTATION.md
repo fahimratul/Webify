@@ -3,7 +3,8 @@
 **Developer:** Tamim Hossain (Tamim2276)  
 **Project:** Webify - No Code Website Builder  
 **Institution:** MIST | CSE-23 Section A  
-**Documentation Date:** February 25, 2026
+**Documentation Date:** February 25, 2026  
+**Last Updated:** February 25, 2026 (Added 5 more bug fixes)
 
 ---
 
@@ -21,24 +22,25 @@
 
 ## Summary of Contributions
 
-### Total Commits: 15+ commits
+### Total Commits: 20+ commits
 
-### Lines of Code: 2000+ lines added/modified
+### Lines of Code: 2500+ lines added/modified
 
 ### Key Areas:
 
 - ✅ Marketplace Backend & Frontend Integration
-- ✅ Authentication System Bug Fixes
+- ✅ Authentication System Bug Fixes (10 critical bugs)
 - ✅ Community Q&A System Validation
-- ✅ Test Case Documentation
+- ✅ Test Case Documentation (23 test cases)
 - ✅ Database Connection Utilities
 - ✅ Email Service Configuration
+- ✅ Input Validation & Security Improvements
 
 ---
 
 ## Recent Work (February 25, 2026)
 
-### 🐛 Critical Bug Fixes (5 Issues Resolved)
+### 🐛 Critical Bug Fixes (10 Issues Resolved Total)
 
 #### 1. **Remember Me & Profile Picture Fix**
 
@@ -298,6 +300,265 @@ Created comprehensive test case documentation covering 5 major scenarios with 23
 - `Test_Cases.csv`
 - `Test_Cases.html`
 - `testCase/` folder (duplicate for backup)
+
+---
+
+### 🔧 Additional Bug Fixes (5 More Issues Resolved)
+
+#### 6. **Case-Insensitive Email Login Authentication**
+
+**Commit:** `aa98696` | **Date:** Feb 25, 2026  
+**File:** `backend/config/passport.js`
+
+**What was done:**
+
+- Fixed case-sensitive email comparison during login
+- Lowercase email input to match database storage format
+
+**How it was fixed:**
+
+```javascript
+// BEFORE: Case-sensitive email comparison
+const user = await User.findOne({
+  $or: [{ username: username }, { email: username }],
+});
+
+// AFTER: Case-insensitive email comparison
+const user = await User.findOne({
+  $or: [{ username: username }, { email: username.toLowerCase() }],
+});
+```
+
+**Why this was needed:**
+
+- Users entering "Email@Test.com" couldn't login when database had "email@test.com"
+- Email field is stored as lowercase during signup
+- Login needs to match this behavior
+
+**Impact:**
+
+- Email login now works regardless of capitalization
+- Consistent authentication behavior
+- Better user experience
+
+**Location in Codebase:**
+
+- `backend/config/passport.js` line 9
+
+---
+
+#### 7. **Comprehensive Username Validation in Signup**
+
+**Commit:** `bb01b37` | **Date:** Feb 25, 2026  
+**File:** `backend/server.js`
+
+**What was done:**
+
+- Added username trimming to remove leading/trailing whitespace
+- Enforced minimum 3 characters length
+- Enforced maximum 30 characters length
+- Prevented empty or whitespace-only usernames
+
+**How it was fixed:**
+
+```javascript
+// ADDED validation:
+const trimmedUsername = username.trim();
+if (trimmedUsername.length === 0) {
+  return res.status(400).json({
+    error: "Username cannot be empty or whitespace only",
+  });
+}
+if (trimmedUsername.length < 3) {
+  return res.status(400).json({
+    error: "Username must be at least 3 characters long",
+  });
+}
+if (trimmedUsername.length > 30) {
+  return res.status(400).json({
+    error: "Username must not exceed 30 characters",
+  });
+}
+```
+
+**Why this was needed:**
+
+- No validation existed for username length or whitespace
+- Users could register with " " as username
+- Database inconsistencies and potential bugs
+
+**Impact:**
+
+- Prevents invalid usernames in database
+- Better data quality and consistency
+- Clearer error messages for users
+
+**Location in Codebase:**
+
+- `backend/server.js` lines 255-264
+
+---
+
+#### 8. **Password Whitespace Validation**
+
+**Commit:** `f07f1ac` | **Date:** Feb 25, 2026  
+**File:** `backend/server.js`
+
+**What was done:**
+
+- Reject passwords with leading or trailing spaces
+- Prevent whitespace-only passwords
+- Enforce minimum 6 character length
+
+**How it was fixed:**
+
+```javascript
+// ADDED password validation:
+if (password !== password.trim()) {
+  return res.status(400).json({
+    error: "Password cannot have leading or trailing spaces",
+  });
+}
+if (password.trim().length === 0) {
+  return res.status(400).json({
+    error: "Password cannot be empty or whitespace only",
+  });
+}
+if (password.length < 6) {
+  return res.status(400).json({
+    error: "Password must be at least 6 characters long",
+  });
+}
+```
+
+**Why this was needed:**
+
+- Users copying passwords could include accidental whitespace
+- Leading/trailing spaces cause login failures
+- Difficult to debug for users
+
+**Impact:**
+
+- Prevents whitespace-related login issues
+- Better user experience during registration
+- Reduces support requests
+
+**Location in Codebase:**
+
+- `backend/server.js` lines 271-280
+
+---
+
+#### 9. **Signup Form Frontend Validation Improvements**
+
+**Commit:** `1d57940` | **Date:** Feb 25, 2026  
+**File:** `frontend/auth/login.js`
+
+**What was done:**
+
+- Trim name and email inputs before validation
+- Add minimum 3 character validation for name
+- Add password whitespace validation on frontend
+- Consistent validation with backend
+
+**How it was fixed:**
+
+```javascript
+// BEFORE:
+const name = document.getElementById("signup-name").value;
+if (!name) {
+  showError("signup-name", "Name is required");
+}
+
+// AFTER:
+const name = document.getElementById("signup-name").value.trim();
+if (!name || name.length === 0) {
+  showError("signup-name", "Name is required");
+  hasError = true;
+} else if (name.length < 3) {
+  showError("signup-name", "Name must be at least 3 characters");
+  hasError = true;
+}
+```
+
+**Why this was needed:**
+
+- Frontend validation didn't match backend
+- Users could bypass checks by adding spaces
+- Inconsistent error messages
+
+**Impact:**
+
+- Better UX with immediate feedback
+- Reduces unnecessary API calls
+- Consistent validation across stack
+
+**Location in Codebase:**
+
+- `frontend/auth/login.js` lines 343-377
+
+---
+
+#### 10. **Duplicate Rating Prevention in Marketplace**
+
+**Commit:** `9ddd74f` | **Date:** Feb 25, 2026  
+**Files:** `backend/models/MarketPlaceItem.js`, `backend/server.js`
+
+**What was done:**
+
+- Added `ratedBy` array to MarketPlaceItem model to track individual user ratings
+- Check if user already rated before adding/updating rating
+- Allow users to update their existing rating
+- Calculate accurate average rating from all `ratedBy` entries
+
+**How it was fixed:**
+
+```javascript
+// ADDED to model:
+ratedBy: [
+  {
+    userId: { type: Schema.Types.ObjectId, ref: "User" },
+    rating: { type: Number, min: 1, max: 5 },
+  },
+];
+
+// ADDED to rating endpoint:
+const existingRatingIndex = item.ratedBy.findIndex(
+  (r) => r.userId.toString() === userId.toString(),
+);
+
+if (existingRatingIndex !== -1) {
+  // Update existing rating
+  item.ratedBy[existingRatingIndex].rating = rating;
+} else {
+  // Add new rating
+  item.ratedBy.push({ userId, rating });
+  item.ratingCount = item.ratedBy.length;
+}
+
+// Recalculate average
+const totalRating = item.ratedBy.reduce((sum, r) => sum + r.rating, 0);
+item.rating = totalRating / item.ratedBy.length;
+```
+
+**Why this was needed:**
+
+- Users could rate the same item multiple times
+- Rating manipulation vulnerability
+- Inaccurate average ratings
+- No way to track individual user ratings
+
+**Impact:**
+
+- Fair and accurate rating system
+- One vote per user policy enforced
+- Users can update their rating
+- Prevents rating manipulation
+
+**Location in Codebase:**
+
+- `backend/models/MarketPlaceItem.js` lines 15-18
+- `backend/server.js` lines 208-247
 
 ---
 
@@ -689,16 +950,18 @@ Created seed script to populate default marketplace templates
 ✅ testCase/Test_Cases.html
 ```
 
-### Modified Files (Total: 6 files)
+### Modified Files (Total: 8 files)
 
 ```
-✅ frontend/auth/login.js (Multiple times)
+✅ frontend/auth/login.js (Multiple times - validation improvements)
 ✅ frontend/marketplace/market.js (Major rewrite)
 ✅ frontend/marketplace/upload_to_marketplace.html
 ✅ frontend/builder2/SaaticBuilder2/src/App.jsx
-✅ backend/routes/community.js
-✅ backend/sendMail.js
-✅ backend/server.js (Route registrations)
+✅ backend/routes/community.js (Whitespace validation)
+✅ backend/sendMail.js (Null check improvements)
+✅ backend/server.js (Multiple validation improvements)
+✅ backend/config/passport.js (Case-insensitive email login)
+✅ backend/models/MarketPlaceItem.js (Rating system fix)
 ```
 
 ---
@@ -707,16 +970,25 @@ Created seed script to populate default marketplace templates
 
 ### Lines of Code
 
-- **Added:** ~2,000 lines
-- **Modified:** ~800 lines
-- **Deleted:** ~200 lines
-- **Net Change:** +1,800 lines
+- **Added:** ~2,500 lines
+- **Modified:** ~1,000 lines
+- **Deleted:** ~250 lines
+- **Net Change:** +2,250 lines
 
 ### Commits
 
-- **Total commits:** 15+ commits
+- **Total commits:** 20+ commits
 - **Pull requests:** 2 PRs merged
 - **Branches worked on:** `lastUpdate`, `tamimBackend`, `hp-mongo2`
+
+### Bug Fixes
+
+- **Total bugs fixed:** 10 critical issues
+- **Authentication bugs:** 5 fixes
+- **Marketplace bugs:** 2 fixes
+- **Community bugs:** 1 fix
+- **Email service bugs:** 1 fix
+- **Download feature bugs:** 1 fix
 
 ### Test Coverage
 
@@ -733,8 +1005,9 @@ Created seed script to populate default marketplace templates
 1. ✅ Complete Marketplace System (Backend + Frontend)
 2. ✅ Builder-to-Marketplace Integration
 3. ✅ Comprehensive Test Documentation
-4. ✅ Critical Bug Fixes (5 issues)
+4. ✅ Critical Bug Fixes (10 issues total)
 5. ✅ Database Testing Utilities
+6. ✅ Input Validation & Security Improvements
 
 ### 🛡️ Security & Quality
 

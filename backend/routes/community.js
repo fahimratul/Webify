@@ -124,11 +124,21 @@ router.post("/questions", isAuthenticated, async (req, res) => {
       return res.status(400).json({ error: "Title and body are required" });
     }
 
+    // Validate and sanitize tags
+    let validatedTags = [];
+    if (tags && Array.isArray(tags)) {
+      validatedTags = tags
+        .map((tag) => (typeof tag === "string" ? tag.trim().toLowerCase() : ""))
+        .filter((tag) => tag.length > 0 && tag.length <= 20) // Remove empty and too long tags
+        .filter((tag, index, self) => self.indexOf(tag) === index) // Remove duplicates
+        .slice(0, 5); // Maximum 5 tags
+    }
+
     const newQuestion = new Question({
       title,
       body,
       author: req.user._id,
-      tags: tags || [],
+      tags: validatedTags,
     });
 
     await newQuestion.save();

@@ -91,10 +91,15 @@ function questionCard(q) {
     .join("");
 
   const timeAgo = getTimeAgo(new Date(q.createdAt));
-  const author = q.author ;
+  const author = q.author;
   const answerCount = q.answers ? q.answers.length : 0;
-  const votebyUser = state.currentUser._id;
-  const userVote = q.votedBy ? q.votedBy.find((v) => v.user.toString() === votebyUser) : null;
+
+  // Check if user is logged in before accessing user ID
+  const votebyUser = state.currentUser ? state.currentUser._id : null;
+  const userVote =
+    votebyUser && q.votedBy
+      ? q.votedBy.find((v) => v.user.toString() === votebyUser)
+      : null;
   let voteClass = "";
   if (userVote) {
     if (userVote.voteType === "up") {
@@ -103,7 +108,7 @@ function questionCard(q) {
       voteClass = "voted-down";
     }
   }
-      
+
   console.log("User vote on this question:", userVote);
   console.log("User vote on this question:", votebyUser);
   console.log("Question data:", q);
@@ -130,8 +135,8 @@ function questionCard(q) {
         <p class="excerpt">${q.body.substring(0, 200)}${q.body.length > 200 ? "..." : ""}</p>
         <div class="tags">${tags}</div>
         <div class="actions-row">
-          <span onclick="voteQuestion('${q._id}', 'up')" class="${voteClass === 'voted-up' ? 'voted-up' : ''}"><i class="fa-regular fa-thumbs-up"></i> Upvote</span>
-          <span onclick="voteQuestion('${q._id}', 'down')" class="${voteClass === 'voted-down' ? 'voted-down' : ''}"><i class="fa-regular fa-thumbs-down"></i> Downvote</span>
+          <span onclick="voteQuestion('${q._id}', 'up')" class="${voteClass === "voted-up" ? "voted-up" : ""}"><i class="fa-regular fa-thumbs-up"></i> Upvote</span>
+          <span onclick="voteQuestion('${q._id}', 'down')" class="${voteClass === "voted-down" ? "voted-down" : ""}"><i class="fa-regular fa-thumbs-down"></i> Downvote</span>
           <span onclick="viewQuestion('${q._id}')"><i class="fa-regular fa-comment"></i> Answer</span>
         </div>
       </div>
