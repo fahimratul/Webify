@@ -370,7 +370,10 @@ signupForm.addEventListener("submit", async (e) => {
     showError("signup-password", "Password is required");
     hasError = true;
   } else if (password !== password.trim()) {
-    showError("signup-password", "Password cannot have leading or trailing spaces");
+    showError(
+      "signup-password",
+      "Password cannot have leading or trailing spaces",
+    );
     hasError = true;
   } else if (password.trim().length === 0) {
     showError("signup-password", "Password cannot be empty");

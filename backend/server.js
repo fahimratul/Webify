@@ -14,10 +14,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(__dirname, ".env") });
 const app = express();
 
-console.log('🚀 Starting Webify server...');
-console.log('📁 __dirname:', __dirname);
-console.log('🔑 SESSION_SECRET exists:', !!process.env.SESSION_SECRET);
-console.log('🗄️ MONGODB_URI exists:', !!process.env.MONGODB_URI);
+console.log("🚀 Starting Webify server...");
+console.log("📁 __dirname:", __dirname);
+console.log("🔑 SESSION_SECRET exists:", !!process.env.SESSION_SECRET);
+console.log("🗄️ MONGODB_URI exists:", !!process.env.MONGODB_URI);
 
 // 1. Connect to MongoDB Atlas
 connectDB();
@@ -74,7 +74,9 @@ const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.status(401).json({ error: "You must be logged in to perform this action" });
+  res
+    .status(401)
+    .json({ error: "You must be logged in to perform this action" });
 };
 
 // Marketplace routes - GET is public, POST requires auth
@@ -82,19 +84,19 @@ import MarketplaceItem from "./models/MarketPlaceItem.js";
 
 // Public GET endpoint for viewing all marketplace items
 app.get("/api/marketplace/items", async (req, res) => {
-  console.log('📍 GET /api/marketplace/items endpoint called');
+  console.log("📍 GET /api/marketplace/items endpoint called");
   try {
-    console.log('🔍 Searching for published marketplace items...');
+    console.log("🔍 Searching for published marketplace items...");
     const items = await MarketplaceItem.find({ published: true })
-      .populate('owner', 'username profilePicture')
+      .populate("owner", "username profilePicture")
       .sort({ createdAt: -1 });
 
-    console.log('✅ Found', items.length, 'items');
+    console.log("✅ Found", items.length, "items");
 
-    const formattedItems = items.map(item => ({
+    const formattedItems = items.map((item) => ({
       id: item._id.toString(),
       title: item.title,
-      author: item.owner?.username || 'Unknown',
+      author: item.owner?.username || "Unknown",
       ownerId: item.owner?._id ? item.owner._id.toString() : null,
       rating: item.rating || 0,
       ratingCount: item.ratingCount || 0,
@@ -102,20 +104,21 @@ app.get("/api/marketplace/items", async (req, res) => {
       likes: item.likes || 0,
       likedBy: item.likedBy || [],
       tags: item.tags || [],
-      price: item.isPremium ? item.price.toString() : '0',
-      type: item.isPremium ? 'paid' : 'free',
-      category: item.category || 'webpage',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
-      html: item.html || '',
-      css: item.css || '',
-      description: item.description || '',
-      updatedAt: item.updatedAt
+      price: item.isPremium ? item.price.toString() : "0",
+      type: item.isPremium ? "paid" : "free",
+      category: item.category || "webpage",
+      image:
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop",
+      html: item.html || "",
+      css: item.css || "",
+      description: item.description || "",
+      updatedAt: item.updatedAt,
     }));
 
     res.json({ success: true, items: formattedItems });
   } catch (err) {
-    console.error('❌ Marketplace fetch error:', err);
-    res.status(500).json({ error: 'Failed to fetch items' });
+    console.error("❌ Marketplace fetch error:", err);
+    res.status(500).json({ error: "Failed to fetch items" });
   }
 });
 
@@ -123,8 +126,9 @@ app.get("/api/marketplace/items", async (req, res) => {
 app.post("/api/marketplace/items", isAuthenticated, async (req, res) => {
   try {
     const user = req.user;
-    const { title, description, category, isPremium, price, html, css, tags } = req.body;
-    if (!title) return res.status(400).json({ error: 'Title is required' });
+    const { title, description, category, isPremium, price, html, css, tags } =
+      req.body;
+    if (!title) return res.status(400).json({ error: "Title is required" });
 
     const item = new MarketplaceItem({
       title,
@@ -136,59 +140,63 @@ app.post("/api/marketplace/items", isAuthenticated, async (req, res) => {
       css,
       tags: Array.isArray(tags) ? tags : [],
       owner: user._id,
-      published: true
+      published: true,
     });
 
     await item.save();
     res.json({ success: true, item });
   } catch (err) {
-    console.error('Marketplace upload error:', err);
-    res.status(500).json({ error: 'Failed to save item' });
+    console.error("Marketplace upload error:", err);
+    res.status(500).json({ error: "Failed to save item" });
   }
 });
 
 // PUT /api/marketplace/items/:id/like - Toggle like on an item
-app.put("/api/marketplace/items/:id/like", isAuthenticated, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const userId = req.user._id;
+app.put(
+  "/api/marketplace/items/:id/like",
+  isAuthenticated,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const userId = req.user._id;
 
-    const item = await MarketplaceItem.findById(id);
-    if (!item) return res.status(404).json({ error: 'Item not found' });
+      const item = await MarketplaceItem.findById(id);
+      if (!item) return res.status(404).json({ error: "Item not found" });
 
-    // Check if user already liked this item
-    const alreadyLiked = item.likedBy.includes(userId);
+      // Check if user already liked this item
+      const alreadyLiked = item.likedBy.includes(userId);
 
-    if (alreadyLiked) {
-      // Unlike: remove user from likedBy array
-      item.likedBy = item.likedBy.filter(id => !id.equals(userId));
-      item.likes = Math.max(0, item.likes - 1);
-    } else {
-      // Like: add user to likedBy array
-      item.likedBy.push(userId);
-      item.likes += 1;
+      if (alreadyLiked) {
+        // Unlike: remove user from likedBy array
+        item.likedBy = item.likedBy.filter((id) => !id.equals(userId));
+        item.likes = Math.max(0, item.likes - 1);
+      } else {
+        // Like: add user to likedBy array
+        item.likedBy.push(userId);
+        item.likes += 1;
+      }
+
+      await item.save();
+      res.json({
+        success: true,
+        liked: !alreadyLiked,
+        likes: item.likes,
+        likedBy: item.likedBy.map((id) => id.toString()),
+        message: alreadyLiked ? "Removed like" : "Added like",
+      });
+    } catch (err) {
+      console.error("Like toggle error:", err);
+      res.status(500).json({ error: "Failed to toggle like" });
     }
-
-    await item.save();
-    res.json({
-      success: true,
-      liked: !alreadyLiked,
-      likes: item.likes,
-      likedBy: item.likedBy.map(id => id.toString()),
-      message: alreadyLiked ? 'Removed like' : 'Added like'
-    });
-  } catch (err) {
-    console.error('Like toggle error:', err);
-    res.status(500).json({ error: 'Failed to toggle like' });
-  }
-});
+  },
+);
 
 // PUT /api/marketplace/items/:id/download - Increment download count
 app.put("/api/marketplace/items/:id/download", async (req, res) => {
   try {
     const { id } = req.params;
     const item = await MarketplaceItem.findById(id);
-    if (!item) return res.status(404).json({ error: 'Item not found' });
+    if (!item) return res.status(404).json({ error: "Item not found" });
 
     item.downloads = (item.downloads || 0) + 1;
     await item.save();
@@ -196,63 +204,72 @@ app.put("/api/marketplace/items/:id/download", async (req, res) => {
     res.json({
       success: true,
       downloads: item.downloads,
-      message: 'Download count updated'
+      message: "Download count updated",
     });
   } catch (err) {
-    console.error('Download count error:', err);
-    res.status(500).json({ error: 'Failed to update download count' });
+    console.error("Download count error:", err);
+    res.status(500).json({ error: "Failed to update download count" });
   }
 });
 
 // PUT /api/marketplace/items/:id/rate - Add or update rating
-app.put("/api/marketplace/items/:id/rate", isAuthenticated, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { rating } = req.body;
-    const userId = req.user._id;
+app.put(
+  "/api/marketplace/items/:id/rate",
+  isAuthenticated,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { rating } = req.body;
+      const userId = req.user._id;
 
-    if (!rating || rating < 1 || rating > 5) {
-      return res.status(400).json({ error: 'Rating must be between 1 and 5' });
+      if (!rating || rating < 1 || rating > 5) {
+        return res
+          .status(400)
+          .json({ error: "Rating must be between 1 and 5" });
+      }
+
+      const item = await MarketplaceItem.findById(id);
+      if (!item) return res.status(404).json({ error: "Item not found" });
+
+      // Check if user has already rated this item
+      const existingRatingIndex = item.ratedBy.findIndex(
+        (r) => r.userId.toString() === userId.toString(),
+      );
+
+      if (existingRatingIndex !== -1) {
+        // User has already rated - update their rating
+        const oldRating = item.ratedBy[existingRatingIndex].rating;
+        item.ratedBy[existingRatingIndex].rating = rating;
+
+        // Recalculate average rating
+        const totalRating = item.ratedBy.reduce((sum, r) => sum + r.rating, 0);
+        item.rating = totalRating / item.ratedBy.length;
+      } else {
+        // New rating from this user
+        item.ratedBy.push({ userId, rating });
+        item.ratingCount = item.ratedBy.length;
+
+        // Recalculate average rating
+        const totalRating = item.ratedBy.reduce((sum, r) => sum + r.rating, 0);
+        item.rating = totalRating / item.ratedBy.length;
+      }
+
+      await item.save();
+      res.json({
+        success: true,
+        rating: item.rating.toFixed(1),
+        ratingCount: item.ratingCount,
+        message:
+          existingRatingIndex !== -1
+            ? "Rating updated successfully"
+            : "Rating added successfully",
+      });
+    } catch (err) {
+      console.error("Rating error:", err);
+      res.status(500).json({ error: "Failed to add rating" });
     }
-
-    const item = await MarketplaceItem.findById(id);
-    if (!item) return res.status(404).json({ error: 'Item not found' });
-
-    // Check if user has already rated this item
-    const existingRatingIndex = item.ratedBy.findIndex(
-      r => r.userId.toString() === userId.toString()
-    );
-
-    if (existingRatingIndex !== -1) {
-      // User has already rated - update their rating
-      const oldRating = item.ratedBy[existingRatingIndex].rating;
-      item.ratedBy[existingRatingIndex].rating = rating;
-
-      // Recalculate average rating
-      const totalRating = item.ratedBy.reduce((sum, r) => sum + r.rating, 0);
-      item.rating = totalRating / item.ratedBy.length;
-    } else {
-      // New rating from this user
-      item.ratedBy.push({ userId, rating });
-      item.ratingCount = item.ratedBy.length;
-
-      // Recalculate average rating
-      const totalRating = item.ratedBy.reduce((sum, r) => sum + r.rating, 0);
-      item.rating = totalRating / item.ratedBy.length;
-    }
-
-    await item.save();
-    res.json({
-      success: true,
-      rating: item.rating.toFixed(1),
-      ratingCount: item.ratingCount,
-      message: existingRatingIndex !== -1 ? 'Rating updated successfully' : 'Rating added successfully'
-    });
-  } catch (err) {
-    console.error('Rating error:', err);
-    res.status(500).json({ error: 'Failed to add rating' });
-  }
-});
+  },
+);
 
 // Use Community Routes
 app.use("/api", communityRoutes);
@@ -272,35 +289,49 @@ app.post("/api/signup", async (req, res) => {
     // Validate username: trim and check length
     const trimmedUsername = username.trim();
     if (trimmedUsername.length === 0) {
-      return res.status(400).json({ error: "Username cannot be empty or whitespace only" });
+      return res
+        .status(400)
+        .json({ error: "Username cannot be empty or whitespace only" });
     }
     if (trimmedUsername.length < 3) {
-      return res.status(400).json({ error: "Username must be at least 3 characters long" });
+      return res
+        .status(400)
+        .json({ error: "Username must be at least 3 characters long" });
     }
     if (trimmedUsername.length > 30) {
-      return res.status(400).json({ error: "Username must not exceed 30 characters" });
+      return res
+        .status(400)
+        .json({ error: "Username must not exceed 30 characters" });
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ error: "Please enter a valid email address" });
+      return res
+        .status(400)
+        .json({ error: "Please enter a valid email address" });
     }
 
     // Validate password: check for leading/trailing whitespace
     if (password !== password.trim()) {
-      return res.status(400).json({ error: "Password cannot have leading or trailing spaces" });
+      return res
+        .status(400)
+        .json({ error: "Password cannot have leading or trailing spaces" });
     }
     if (password.trim().length === 0) {
-      return res.status(400).json({ error: "Password cannot be empty or whitespace only" });
+      return res
+        .status(400)
+        .json({ error: "Password cannot be empty or whitespace only" });
     }
     if (password.length < 6) {
-      return res.status(400).json({ error: "Password must be at least 6 characters long" });
+      return res
+        .status(400)
+        .json({ error: "Password must be at least 6 characters long" });
     }
 
     // Check if user already exists (username or email)
     const existingUser = await User.findOne({
-      $or: [{ username: trimmedUsername }, { email: email.toLowerCase() }]
+      $or: [{ username: trimmedUsername }, { email: email.toLowerCase() }],
     });
     if (existingUser) {
       if (existingUser.username === trimmedUsername) {
@@ -315,7 +346,7 @@ app.post("/api/signup", async (req, res) => {
       username: trimmedUsername,
       email: email.toLowerCase(),
       password,
-      emailVerified: false
+      emailVerified: false,
     };
 
     const newUser = new User(userData);
@@ -331,8 +362,8 @@ app.post("/api/signup", async (req, res) => {
 
     const mailOptions = {
       to: newUser.email,
-      from: process.env.EMAIL_USER || 'noreply@webify.com',
-      subject: 'Verify Your Email - Welcome to Webify!',
+      from: process.env.EMAIL_USER || "noreply@webify.com",
+      subject: "Verify Your Email - Welcome to Webify!",
       text: `Welcome to Webify!\n\nPlease verify your email address by clicking the following link:\n\n${verificationURL}\n\nThis verification link will expire in 24 hours.\n\nIf you didn't create an account on Webify, please ignore this email.`,
       html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">Welcome to Webify!</h2>
@@ -346,12 +377,15 @@ app.post("/api/signup", async (req, res) => {
           <p style="color: #888;">This verification link will expire in 24 hours.</p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
           <p style="color: #888; font-size: 12px;">If you didn't create an account on Webify, please ignore this email.</p>
-        </div>`
+        </div>`,
     };
 
     try {
       const result = await transporter.sendMail(mailOptions);
-      console.log("📧 Email verification email sent successfully:", result.messageId);
+      console.log(
+        "📧 Email verification email sent successfully:",
+        result.messageId,
+      );
     } catch (emailError) {
       console.error("❌ Email sending failed:", emailError);
       console.error("Error code:", emailError.code);
@@ -361,12 +395,13 @@ app.post("/api/signup", async (req, res) => {
     // Return success without auto-login
     res.json({
       success: true,
-      message: "Account created successfully! Please check your email and click the verification link before logging in.",
+      message:
+        "Account created successfully! Please check your email and click the verification link before logging in.",
       user: {
         username: newUser.username,
         email: newUser.email,
-        emailVerified: false
-      }
+        emailVerified: false,
+      },
     });
   } catch (error) {
     console.error("Signup error:", error);
@@ -389,8 +424,9 @@ app.post("/api/login", (req, res, next) => {
     // Check if email is verified
     if (!user.emailVerified) {
       return res.status(403).json({
-        error: "Please verify your email address before logging in. Check your inbox for the verification link.",
-        emailVerificationRequired: true
+        error:
+          "Please verify your email address before logging in. Check your inbox for the verification link.",
+        emailVerificationRequired: true,
       });
     }
 
@@ -420,9 +456,13 @@ app.get("/api/check-auth", (req, res) => {
 
 // Email transporter configuration
 const createEmailTransporter = () => {
-  if (process.env.EMAIL_SERVICE && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+  if (
+    process.env.EMAIL_SERVICE &&
+    process.env.EMAIL_USER &&
+    process.env.EMAIL_PASS
+  ) {
     const config = {
-      host: 'smtp.gmail.com',
+      host: "smtp.gmail.com",
       port: 465,
       secure: true, // true for 465, false for other ports
       // requireTLS: true,
@@ -434,14 +474,16 @@ const createEmailTransporter = () => {
       debug: true,
     };
 
-    console.log('🔧 Email transporter configured for Gmail');
-    console.log('📧 Email user:', process.env.EMAIL_USER);
+    console.log("🔧 Email transporter configured for Gmail");
+    console.log("📧 Email user:", process.env.EMAIL_USER);
 
     return nodemailer.createTransport(config);
   }
 
   // Fallback to console logging if email not configured
-  console.warn('⚠️ Email not configured! EMAIL_SERVICE, EMAIL_USER, or EMAIL_PASS is missing.');
+  console.warn(
+    "⚠️ Email not configured! EMAIL_SERVICE, EMAIL_USER, or EMAIL_PASS is missing.",
+  );
   return {
     sendMail: (options) => {
       console.log("📧 Email would be sent with the following details:");
@@ -449,8 +491,8 @@ const createEmailTransporter = () => {
       console.log("Subject:", options.subject);
       console.log("Text:", options.text);
       console.log("HTML:", options.html);
-      return Promise.resolve({ messageId: 'console-log-id' });
-    }
+      return Promise.resolve({ messageId: "console-log-id" });
+    },
   };
 };
 
@@ -472,7 +514,8 @@ app.post("/api/forgot-password", async (req, res) => {
       // Don't reveal if user exists or not for security
       return res.json({
         success: true,
-        message: "If an account with that email exists, a password reset link has been sent."
+        message:
+          "If an account with that email exists, a password reset link has been sent.",
       });
     }
 
@@ -488,9 +531,10 @@ app.post("/api/forgot-password", async (req, res) => {
     // Email content
     const mailOptions = {
       to: user.email,
-      from: process.env.EMAIL_USER || 'noreply@webify.com',
-      subject: 'Password Reset Request - Webify',
-      text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
+      from: process.env.EMAIL_USER || "noreply@webify.com",
+      subject: "Password Reset Request - Webify",
+      text:
+        `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
         `Please click on the following link, or paste this into your browser to complete the process within 10 minutes:\n\n` +
         `${resetURL}\n\n` +
         `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
@@ -506,7 +550,7 @@ app.post("/api/forgot-password", async (req, res) => {
           <p>If you did not request this, please ignore this email.</p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;"> 
           <p style="color: #888; font-size: 12px;">This is an automated message from Webify.</p>
-        </div>`
+        </div>`,
     };
 
     try {
@@ -522,16 +566,18 @@ app.post("/api/forgot-password", async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "If an account with that email exists, a password reset link has been sent."
+      message:
+        "If an account with that email exists, a password reset link has been sent.",
     });
-
   } catch (error) {
     console.error("Forgot password error:", error);
 
     // Provide more specific error messages for debugging
-    if (error.code === 'EAUTH') {
-      console.error("❌ Gmail authentication failed. Check EMAIL_USER and EMAIL_PASS in .env file");
-    } else if (error.code === 'ESOCKET') {
+    if (error.code === "EAUTH") {
+      console.error(
+        "❌ Gmail authentication failed. Check EMAIL_USER and EMAIL_PASS in .env file",
+      );
+    } else if (error.code === "ESOCKET") {
       console.error("❌ Network error. Check internet connection");
     } else {
       console.error("❌ Unexpected error:", error.message);
@@ -551,14 +597,18 @@ app.post("/api/reset-password", async (req, res) => {
     }
 
     if (password.length < 6) {
-      return res.status(400).json({ error: "Password must be at least 6 characters long" });
+      return res
+        .status(400)
+        .json({ error: "Password must be at least 6 characters long" });
     }
 
     // Find user by valid reset token
     const user = await User.findByPasswordResetToken(token);
 
     if (!user) {
-      return res.status(400).json({ error: "Password reset token is invalid or has expired" });
+      return res
+        .status(400)
+        .json({ error: "Password reset token is invalid or has expired" });
     }
 
     // Set new password
@@ -570,9 +620,9 @@ app.post("/api/reset-password", async (req, res) => {
 
     res.json({
       success: true,
-      message: "Your password has been reset successfully! You can now login with your new password."
+      message:
+        "Your password has been reset successfully! You can now login with your new password.",
     });
-
   } catch (error) {
     console.error("Reset password error:", error);
     res.status(500).json({ error: "Failed to reset password" });
@@ -594,7 +644,9 @@ app.post("/api/verify-email", async (req, res) => {
     const user = await User.findByEmailVerificationToken(token);
 
     if (!user) {
-      return res.status(400).json({ error: "Email verification token is invalid or has expired" });
+      return res
+        .status(400)
+        .json({ error: "Email verification token is invalid or has expired" });
     }
 
     // Mark email as verified
@@ -606,9 +658,9 @@ app.post("/api/verify-email", async (req, res) => {
 
     res.json({
       success: true,
-      message: "Your email has been verified successfully! You can now login to your account."
+      message:
+        "Your email has been verified successfully! You can now login to your account.",
     });
-
   } catch (error) {
     console.error("Email verification error:", error);
     res.status(500).json({ error: "Failed to verify email" });
@@ -631,7 +683,8 @@ app.post("/api/resend-verification", async (req, res) => {
       // Don't reveal if user exists or not for security
       return res.json({
         success: true,
-        message: "If an account with that email exists and is unverified, a new verification email has been sent."
+        message:
+          "If an account with that email exists and is unverified, a new verification email has been sent.",
       });
     }
 
@@ -650,8 +703,8 @@ app.post("/api/resend-verification", async (req, res) => {
 
     const mailOptions = {
       to: user.email,
-      from: process.env.EMAIL_USER || 'noreply@webify.com',
-      subject: 'Verify Your Email - Webify',
+      from: process.env.EMAIL_USER || "noreply@webify.com",
+      subject: "Verify Your Email - Webify",
       text: `Please verify your email address by clicking the following link:\n\n${verificationURL}\n\nThis verification link will expire in 24 hours.`,
       html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">Email Verification</h2>
@@ -662,12 +715,15 @@ app.post("/api/resend-verification", async (req, res) => {
           <p>Or copy and paste this link into your browser:</p>
           <p style="word-break: break-all; color: #666;">${verificationURL}</p>
           <p style="color: #888;">This verification link will expire in 24 hours.</p>
-        </div>`
+        </div>`,
     };
 
     try {
       const result = await transporter.sendMail(mailOptions);
-      console.log("📧 Email verification resent successfully:", result.messageId);
+      console.log(
+        "📧 Email verification resent successfully:",
+        result.messageId,
+      );
     } catch (emailError) {
       console.error("❌ Verification email resend failed:", emailError);
       console.error("Error code:", emailError.code);
@@ -677,9 +733,9 @@ app.post("/api/resend-verification", async (req, res) => {
 
     res.json({
       success: true,
-      message: "If an account with that email exists and is unverified, a new verification email has been sent."
+      message:
+        "If an account with that email exists and is unverified, a new verification email has been sent.",
     });
-
   } catch (error) {
     console.error("Resend verification error:", error);
     res.status(500).json({ error: "Failed to resend verification email" });
@@ -698,14 +754,14 @@ app.put("/api/profile", isAuthenticated, async (req, res) => {
     if (email !== undefined) updateData.email = email;
     if (bio !== undefined) updateData.bio = bio;
     if (phone !== undefined) updateData.phoneNumber = phone;
-    if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
+    if (profilePicture !== undefined)
+      updateData.profilePicture = profilePicture;
 
     // Update user in database
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      updateData,
-      { new: true, runValidators: true }
-    ).select('-password');
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true,
+    }).select("-password");
 
     if (!updatedUser) {
       return res.status(404).json({ error: "User not found" });
@@ -714,7 +770,7 @@ app.put("/api/profile", isAuthenticated, async (req, res) => {
     res.json({
       success: true,
       message: "Profile updated successfully",
-      user: updatedUser
+      user: updatedUser,
     });
   } catch (error) {
     console.error("Profile update error:", error);
@@ -725,7 +781,7 @@ app.put("/api/profile", isAuthenticated, async (req, res) => {
 // Get current user profile
 app.get("/api/profile", isAuthenticated, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).select('-password');
+    const user = await User.findById(req.user._id).select("-password");
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -741,7 +797,7 @@ app.get("/api/test", (req, res) => {
   res.json({
     message: "Server is running updated code!",
     timestamp: new Date().toISOString(),
-    version: "v2.0"
+    version: "v2.0",
   });
 });
 
@@ -759,5 +815,5 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`✅ Server running on: http://localhost:${PORT}`);
-  console.log('🌐 Ready to accept connections!');
+  console.log("🌐 Ready to accept connections!");
 });
