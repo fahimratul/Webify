@@ -77,7 +77,6 @@ function renderQuestion() {
   document.getElementById("loadingState").style.display = "none";
   document.getElementById("questionContent").style.display = "block";
 
-
   // Question body
   document.getElementById("questionTitle").textContent = q.title;
   document.getElementById("questionVotes").textContent = formatNumber(
@@ -94,23 +93,28 @@ function renderQuestion() {
   document.getElementById("questionTags").innerHTML = tagsHtml;
 
   // Author info
-  
-  const author = q.author ;
+
+  const author = q.author;
   // Check if user is logged in before accessing user ID
   const votebyUser = state.currentUser ? state.currentUser._id : null;
-  const userVote = votebyUser && q.votedBy ? q.votedBy.find((v) => v.user.toString() === votebyUser) : null;
+  const userVote =
+    votebyUser && q.votedBy
+      ? q.votedBy.find((v) => v.user.toString() === votebyUser)
+      : null;
   if (userVote) {
-      document.getElementById("questionVoteUp").classList.remove('voted-up');
-      document.getElementById("questionVoteDown").classList.remove('voted-down');
+    document.getElementById("questionVoteUp").classList.remove("voted-up");
+    document.getElementById("questionVoteDown").classList.remove("voted-down");
     if (userVote.voteType === "up") {
       document.getElementById("questionVoteUp").classList.add("voted-up");
     } else if (userVote.voteType === "down") {
       document.getElementById("questionVoteDown").classList.add("voted-down");
     }
   }
-  
-  document.getElementById("authorAvatar").innerHTML = `<img src="${author.profilePicture}" alt="User Avatar">`;
-  document.getElementById("authorName").textContent = author.username || "Anonymous";
+
+  document.getElementById("authorAvatar").innerHTML =
+    `<img src="${author.profilePicture}" alt="User Avatar">`;
+  document.getElementById("authorName").textContent =
+    author.username || "Anonymous";
   document.getElementById("authorTime").textContent =
     `asked ${getTimeAgo(new Date(q.createdAt))}`;
 
@@ -136,11 +140,14 @@ function renderQuestion() {
 
 // Render single answer
 function renderAnswer(answer) {
-  console.log("Rendering answer:", answer); 
+  console.log("Rendering answer:", answer);
   const author = answer.author;
   // Check if user is logged in before accessing user ID
   const votebyUser = state.currentUser ? state.currentUser._id : null;
-  const userVote = votebyUser && answer.votedBy ? answer.votedBy.find((v) => v.user.toString() === votebyUser) : null;
+  const userVote =
+    votebyUser && answer.votedBy
+      ? answer.votedBy.find((v) => v.user.toString() === votebyUser)
+      : null;
   let voteClass = "";
   if (userVote) {
     if (userVote.voteType === "up") {
@@ -160,8 +167,8 @@ function renderAnswer(answer) {
           ${answer.votes || 0} votes
         </div>
         <div class="actions-row" style="position:static;">
-          <span onclick="voteAnswer('${answer._id}', 'up')" class="${voteClass === 'voted-up' ? 'voted-up' : ''}"><i class="fa-regular fa-thumbs-up"></i> Upvote</span>
-          <span onclick="voteAnswer('${answer._id}', 'down')" class="${voteClass === 'voted-down' ? 'voted-down' : ''}"><i class="fa-regular fa-thumbs-down"></i> Downvote</span>
+          <span onclick="voteAnswer('${answer._id}', 'up')" class="${voteClass === "voted-up" ? "voted-up" : ""}"><i class="fa-regular fa-thumbs-up"></i> Upvote</span>
+          <span onclick="voteAnswer('${answer._id}', 'down')" class="${voteClass === "voted-down" ? "voted-down" : ""}"><i class="fa-regular fa-thumbs-down"></i> Downvote</span>
         </div>
         <div class="answer-footer">    
         <div class="user">
@@ -458,7 +465,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   await fetchQuestion();
 });
 
-
-function answerQuestion(){
-  document.getElementById("answerFormSection").scrollIntoView({ behavior: "smooth" });
+function answerQuestion() {
+  document
+    .getElementById("answerFormSection")
+    .scrollIntoView({ behavior: "smooth" });
 }

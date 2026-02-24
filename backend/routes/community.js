@@ -128,8 +128,8 @@ router.post("/questions", isAuthenticated, async (req, res) => {
     let validatedTags = [];
     if (tags && Array.isArray(tags)) {
       validatedTags = tags
-        .map(tag => typeof tag === 'string' ? tag.trim().toLowerCase() : '')
-        .filter(tag => tag.length > 0 && tag.length <= 20) // Remove empty and too long tags
+        .map((tag) => (typeof tag === "string" ? tag.trim().toLowerCase() : ""))
+        .filter((tag) => tag.length > 0 && tag.length <= 20) // Remove empty and too long tags
         .filter((tag, index, self) => self.indexOf(tag) === index) // Remove duplicates
         .slice(0, 5); // Maximum 5 tags
     }
