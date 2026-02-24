@@ -9,7 +9,7 @@ import connectDB from "./db.js";
 import "./config/passport.js";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
-
+import { mailSender } from "./sendMail.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(__dirname, ".env") });
 const app = express();
@@ -170,9 +170,9 @@ app.put("/api/marketplace/items/:id/like", isAuthenticated, async (req, res) => 
     }
 
     await item.save();
-    res.json({ 
-      success: true, 
-      liked: !alreadyLiked, 
+    res.json({
+      success: true,
+      liked: !alreadyLiked,
       likes: item.likes,
       likedBy: item.likedBy.map(id => id.toString()),
       message: alreadyLiked ? 'Removed like' : 'Added like'
@@ -193,8 +193,8 @@ app.put("/api/marketplace/items/:id/download", async (req, res) => {
     item.downloads = (item.downloads || 0) + 1;
     await item.save();
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       downloads: item.downloads,
       message: 'Download count updated'
     });
@@ -225,8 +225,8 @@ app.put("/api/marketplace/items/:id/rate", isAuthenticated, async (req, res) => 
     item.rating = newTotal / item.ratingCount;
 
     await item.save();
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       rating: item.rating.toFixed(1),
       ratingCount: item.ratingCount,
       message: 'Rating updated successfully'
@@ -470,8 +470,9 @@ app.post("/api/forgot-password", async (req, res) => {
     };
 
     try {
-      const result = await transporter.sendMail(mailOptions);
-      console.log("📧 Password reset email sent successfully:", result.messageId);
+      // const result = await transporter.sendMail(mailOptions);
+      // console.log("📧 Password reset email sent successfully:", result.messageId);
+      await mailSender(mailOptions);
     } catch (emailError) {
       console.error("❌ Password reset email failed:", emailError);
       console.error("Error code:", emailError.code);

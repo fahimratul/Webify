@@ -19,6 +19,7 @@
     "start": "node backend/server.js"
   },
   "dependencies": {
+    "@azure/communication-email": "^1.1.0",
     "bcrypt": "^6.0.0",
     "connect-mongo": "^6.0.0",
     "dotenv": "^17.2.3",
