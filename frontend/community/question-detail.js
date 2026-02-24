@@ -96,8 +96,9 @@ function renderQuestion() {
   // Author info
   
   const author = q.author ;
-  const votebyUser = state.currentUser._id;
-  const userVote = q.votedBy ? q.votedBy.find((v) => v.user.toString() === votebyUser) : null;
+  // Check if user is logged in before accessing user ID
+  const votebyUser = state.currentUser ? state.currentUser._id : null;
+  const userVote = votebyUser && q.votedBy ? q.votedBy.find((v) => v.user.toString() === votebyUser) : null;
   if (userVote) {
       document.getElementById("questionVoteUp").classList.remove('voted-up');
       document.getElementById("questionVoteDown").classList.remove('voted-down');
@@ -137,8 +138,9 @@ function renderQuestion() {
 function renderAnswer(answer) {
   console.log("Rendering answer:", answer); 
   const author = answer.author;
-  const votebyUser = state.currentUser._id;
-  const userVote = answer.votedBy ? answer.votedBy.find((v) => v.user.toString() === votebyUser) : null;
+  // Check if user is logged in before accessing user ID
+  const votebyUser = state.currentUser ? state.currentUser._id : null;
+  const userVote = votebyUser && answer.votedBy ? answer.votedBy.find((v) => v.user.toString() === votebyUser) : null;
   let voteClass = "";
   if (userVote) {
     if (userVote.voteType === "up") {
