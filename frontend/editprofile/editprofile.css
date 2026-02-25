@@ -1,9 +1,15 @@
+/* minor update - profile edit section styling */
 
 :root{
   --neon-text-color: #f40;
-    --dark-background-color: #0B1432;
-    --foreground-color: #414040;
+  --dark-background-color: #0B1432;
+  --foreground-color: #414040;
 }
+
+body{
+    overflow-y: hidden;
+}
+
 .main-content{
     height: fit-content;
 }
@@ -13,6 +19,7 @@
     visibility: visible;
     transform: translateY(0);
 }
+
 .profile_pic{
     position: relative;
     height: 50vh;
@@ -22,6 +29,7 @@
     align-items: center;
     padding-top: 100px;
 }
+
 .profile_pic img{
     border-radius: 20px;
     height: 50vh;
@@ -83,7 +91,6 @@
     border-radius: 8px;
     cursor: pointer;
     font-size: 1.25rem;
-    text-shadow: 0px 0px 5px rgb(255, 255, 255);
     text-shadow:
             -0.2rem -0.2rem 1rem #fff,
             0.2rem 0.2rem 1rem #fff,
@@ -103,7 +110,6 @@
 .profile_pic:hover img{
     transition: filter 0.3s ease;    
     box-shadow:  0 0 20px 6px #f5f5f5 , 0 0 30px 12px #ffffff ;
-
 }
 
 .editprofile_title{
@@ -113,7 +119,6 @@
     align-self: center;
     text-align: center;
 }
-
 
 .save_changes_btn{
     position: absolute;
@@ -126,13 +131,14 @@
     height: fit-content;
     width: fit-content;
     background-color: #66D989 ;
-
 }
+
 .save_changes_btn:hover{
     background-color: #54c4f8 ;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+
 .edit-info{
     margin:0;
     padding:0;
@@ -141,18 +147,22 @@
     height: 100vh;
     overflow-y: auto;
 }
+
 .edit-info::-webkit-scrollbar {
     width: 6px;
 }
+
 .edit-info::-webkit-scrollbar-track {
     background: transparent;
     box-shadow: inset 0 0 3px grey;
     border-radius: 10px;
 }
+
 .edit-info::-webkit-scrollbar-thumb {
     background-color: rgb(25, 200, 206);
     border-radius: 10px;
 }
+
 .edit-info::-webkit-scrollbar-thumb:hover {
     background-color: #ffffff;
 }
@@ -190,6 +200,7 @@
 .form-group textarea::placeholder {
     color: var(--dark-background-color);
 }
+
 .form-group textarea {
     resize: vertical;
     min-height: 100px;
@@ -208,8 +219,8 @@
 
 }
 
-
 /* Responsive */
+
 @media (max-width: 768px) {
     .profile-container {
         padding: 1rem;

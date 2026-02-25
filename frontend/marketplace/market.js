@@ -73,228 +73,97 @@ function isUserLoggedIn() {
 isUserLoggedIn();
 
 // State
-let currentCategory = "all";
-let currentType = "all";
-let searchQuery = "";
-let currentFilteredProducts = []; // Store the filtered products for easy access
+let currentCategory = 'all';
+let currentType = 'all';
+let searchQuery = ''; // ADDED: New state variable for search
 
 // Render products function
 function renderProducts() {
-  const grid = document.getElementById("productsGrid");
-
-  const filteredProducts = products.filter(function (product) {
-    const categoryMatch =
-      currentCategory === "all" ||
-      (currentCategory === "free" && product.type === "free") ||
-      (currentCategory === "premium" && product.type === "paid");
-
-    const typeMatch = currentType === "all" || product.category === currentType;
-
-    const searchMatch =
-      !searchQuery ||
-      product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchQuery.toLowerCase());
-
-    return categoryMatch && typeMatch && searchMatch;
-  });
-
-  // Store filtered products for use in modal functions
-  currentFilteredProducts = filteredProducts;
-
-  grid.innerHTML = filteredProducts
-    .map(function (product, idx) {
-      return (
-        '<div class="product-card" data-product-id="' +
-        product.id +
-        '">' +
-        '<div class="product-image" id="preview-' +
-        idx +
-        '">' +
-        '<iframe id="iframe-' +
-        idx +
-        '" class="product-preview-iframe" frameborder="0" scrolling="no"></iframe>' +
-        '<div class="product-tag ' +
-        product.type +
-        '">' +
-        (product.type === "free" ? "Free" : "Tk " + product.price) +
-        "</div>" +
-        '<div class="product-overlay">' +
-        '<button class="overlay-btn preview" onclick="openPreviewModal(' +
-        idx +
-        ')">' +
-        '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>' +
-        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>' +
-        "</svg>" +
-        "Preview" +
-        "</button>" +
-        (product.type === "paid"
-          ? '<button class="overlay-btn buy" onclick="openPaymentModal(currentFilteredProducts[' +
-            idx +
-            '])">Buy</button>'
-          : "") +
-        "</div>" +
-        "</div>" +
-        '<div class="product-info">' +
-        '<div class="product-header">' +
-        "<div>" +
-        '<div class="product-title">' +
-        product.title +
-        "</div>" +
-        '<div class="product-author">by ' +
-        product.author +
-        "</div>" +
-        "</div>" +
-        '<button class="heart-btn" data-product-idx="' +
-        idx +
-        '">' +
-        '<svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>' +
-        "</svg>" +
-        "</button>" +
-        "</div>" +
-        (product.tags && product.tags.length > 0
-          ? '<div class="product-tags">' +
-            product.tags
-              .slice(0, 3)
-              .map(function (tag) {
-                return '<span class="tag">' + tag + "</span>";
-              })
-              .join("") +
-            "</div>"
-          : "") +
-        '<div class="product-stats">' +
-        '<div class="stat">' +
-        '<svg class="icon star-icon" fill="currentColor" viewBox="0 0 20 20">' +
-        '<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>' +
-        "</svg>" +
-        "<span>" +
-        product.rating.toFixed(1) +
-        " <small>(" +
-        (product.ratingCount || 0) +
-        ")</small></span>" +
-        "</div>" +
-        '<div class="stat">' +
-        '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>' +
-        "</svg>" +
-        "<span>" +
-        product.downloads.toLocaleString() +
-        "</span>" +
-        "</div>" +
-        '<div class="stat">' +
-        '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>' +
-        "</svg>" +
-        '<span class="likes-count" data-product-idx="' +
-        idx +
-        '">' +
-        product.likes +
-        "</span>" +
-        "</div>" +
-        "</div>" +
-        "</div>" +
-        "</div>"
-      );
-    })
-    .join("");
-
-  // Populate each iframe with product preview
-  filteredProducts.forEach(function (product, idx) {
-    const iframe = document.getElementById("iframe-" + idx);
-    if (iframe) {
-      const iframeContent = `
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>${product.title}</title>
-                    <style>
-                        ${product.css}
-                        body { margin: 0; padding: 0; overflow: hidden; }
-                    </style>
-                </head>
-                <body>${product.html}</body>
-                </html>
-            `;
-      iframe.srcdoc = iframeContent;
-    }
-  });
-
-  document.querySelectorAll(".heart-btn").forEach(function (btn, index) {
-    const product = currentFilteredProducts[index];
-    const productIdx = btn.getAttribute("data-product-idx");
-
-    // Check if user already liked this product
-    if (isLoggedIn && userData && userData._id) {
-      const userLiked =
-        product.likedBy &&
-        product.likedBy.some((likedUserId) => {
-          // Compare as strings - both should be string ObjectIds from API
-          return String(likedUserId) === String(userData._id);
-        });
-      if (userLiked) {
-        btn.classList.add("liked");
-      }
-    }
-
-    btn.addEventListener("click", async function (e) {
-      e.preventDefault();
-
-      if (!isLoggedIn) {
-        showNotification("Please log in to like products", "error");
-        location.href = "../auth/login.html";
-        return;
-      }
-
-      try {
-        const response = await fetch(
-          "/api/marketplace/items/" + product.id + "/like",
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-          },
-        );
-
-        if (!response.ok) throw new Error("Failed to toggle like");
-
-        const data = await response.json();
-        this.classList.toggle("liked");
-
-        // Update the product object with data from server response
-        const productIndex = products.findIndex((p) => p.id === product.id);
-        if (productIndex !== -1) {
-          products[productIndex].likes = data.likes;
-          products[productIndex].likedBy = data.likedBy || [];
-
-          // Also update in filtered products if different array
-          const filteredIndex = currentFilteredProducts.findIndex(
-            (p) => p.id === product.id,
-          );
-          if (filteredIndex !== -1) {
-            currentFilteredProducts[filteredIndex].likes = data.likes;
-            currentFilteredProducts[filteredIndex].likedBy = data.likedBy || [];
-          }
-        }
-
-        // Update the displayed likes count
-        const likesCountElement = document.querySelector(
-          '.likes-count[data-product-idx="' + productIdx + '"]',
-        );
-        if (likesCountElement) {
-          likesCountElement.textContent = data.likes;
-        }
-
-        showNotification(data.message, "success");
-      } catch (error) {
-        console.error("❌ Error toggling like:", error);
-        showNotification("Failed to update like", "error");
-      }
+    const grid = document.getElementById('productsGrid');
+    
+    const filteredProducts = products.filter(function(product) {
+        const categoryMatch = currentCategory === 'all' || 
+            (currentCategory === 'free' && product.type === 'free') ||
+            (currentCategory === 'premium' && product.type === 'paid');
+        
+        const typeMatch = currentType === 'all' || product.category === currentType;
+        
+        // ADDED: Search filter logic
+        const searchMatch = searchQuery === '' || 
+            product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            product.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            product.category.toLowerCase().includes(searchQuery.toLowerCase());
+        
+        return categoryMatch && typeMatch && searchMatch; // CHANGED: Added searchMatch
     });
-  });
+
+    // ADDED: Show "no results" message if nothing found
+    if (filteredProducts.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #6b7280; font-size: 1.25rem;">No products found matching your criteria</div>';
+        return;
+    }
+
+    grid.innerHTML = filteredProducts.map(function(product) {
+        return '<div class="product-card">' +
+            '<div class="product-image">' +
+                '<img src="' + product.image + '" alt="' + product.title + '">' +
+                '<div class="product-tag ' + product.type + '">' +
+                    (product.type === 'free' ? 'Free' : product.price) +
+                '</div>' +
+                '<div class="product-overlay">' +
+                    '<button class="overlay-btn preview">' +
+                        '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+                            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>' +
+                            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>' +
+                        '</svg>' +
+                        'Preview' +
+                    '</button>' +
+                    (product.type === 'paid' ? '<button class="overlay-btn buy">Buy</button>' : '') +
+                '</div>' +
+            '</div>' +
+            '<div class="product-info">' +
+                '<div class="product-header">' +
+                    '<div>' +
+                        '<div class="product-title">' + product.title + '</div>' +
+                        '<div class="product-author">by ' + product.author + '</div>' +
+                    '</div>' +
+                    '<button class="heart-btn">' +
+                        '<svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+                            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>' +
+                        '</svg>' +
+                    '</button>' +
+                '</div>' +
+                '<div class="product-stats">' +
+                    '<div class="stat">' +
+                        '<svg class="icon star-icon" fill="currentColor" viewBox="0 0 20 20">' +
+                            '<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>' +
+                        '</svg>' +
+                        '<span>' + product.rating + '</span>' +
+                    '</div>' +
+                    '<div class="stat">' +
+                        '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+                            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>' +
+                        '</svg>' +
+                        '<span>' + product.downloads.toLocaleString() + '</span>' +
+                    '</div>' +
+                    '<div class="stat">' +
+                        '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+                            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>' +
+                        '</svg>' +
+                        '<span>' + product.likes + '</span>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+    }).join('');
 }
+
+// ADDED: Search functionality - listens for input in search bar
+const searchInput = document.querySelector('.search-input');
+searchInput.addEventListener('input', function(e) {
+    searchQuery = e.target.value;
+    renderProducts();
+});
 
 // Category filter event listeners
 document.querySelectorAll(".filter-btn").forEach(function (btn) {

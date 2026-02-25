@@ -37,15 +37,10 @@ body {
 
 /* ── Header ─────────────────────────────────────── */
 header {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(186, 230, 253, 0.7);
-    padding: 0.9rem 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 500;
-    box-shadow: 0 1px 12px rgba(3, 105, 161, 0.08);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(111, 126, 142, 0.5);
+    padding: 1rem 2rem;
 }
 
 .header-container {
