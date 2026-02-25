@@ -6,7 +6,7 @@ document.getElementById('profileForm').addEventListener('submit', function(e) {
 });
 
 function changeProfilePic() {
-    document.getElementById('picInput').click();
+    document.getElementById('picInput').click(); // Trigger file input click
 }
 
 document.getElementById('picInput').addEventListener('change', function(e) {
@@ -17,7 +17,7 @@ document.getElementById('picInput').addEventListener('change', function(e) {
             document.getElementById('profilePic').src = e.target.result;
             showToast('Profile picture updated!', 'success');
         };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(file); // Convert file to base64 string
     }
 });
 
@@ -26,7 +26,8 @@ function saveProfile() {
         fullName: document.getElementById('fullName').value,
         email: document.getElementById('email').value,
         bio: document.getElementById('bio').value,
-        phone: document.getElementById('phone').value
+        phone: document.getElementById('phone').value // Add phone number to form data
+
     };
 
     setTimeout(() => {
