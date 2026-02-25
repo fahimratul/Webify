@@ -1,0 +1,205 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webify - Builder</title>
+    <link rel="icon" type="image/png" href="../images/logo.png">
+    <link rel="stylesheet" href="builder.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+
+    <!-- Header -->
+    <div id="header" class="header">
+        <div class="header-left">
+            <a href="../profile/profile.html">
+                <img src="../images/logo.png" alt="Logo">
+            </a>
+            <i data-lucide="plus" class="plus show" onclick="showComponentSidebar()" id="ShowComponentSidebarIcon"></i>
+            <i data-lucide="x" class="plus hide hidden" onclick="hideComponentSidebar()" id="HideComponentSidebarIcon"></i>
+            <i data-lucide="undo" class="undo"></i>
+            <i data-lucide="redo" class="redo"></i>
+            <i data-lucide="layers" class="layers"></i>
+        </div>
+        <div class="herightader-">
+                <div class="canvas-toolbar">
+                    <input type="text" id="portfolioTitle" value="My Portfolio" placeholder="Portfolio Title" class="portfolio-title-input">
+                    <div class="toolbar-actions">
+                        <i data-lucide="settings" onclick="openSettings()"></i>
+                        <i data-lucide="monitor-smartphone" onclick="openDeviceSelector()"></i>
+                        <button onclick="savefile()" class="btn-save">Save</button>
+                        <i data-lucide="rocket" onclick="publishfile()"></i>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+    <div id="builderView" class="view">
+        <div class="canvas-builder-container">
+            <div class="component-sidebar hidden" id="componentSidebar">
+                <h3>Components</h3>
+                <div id="componentList" class="component-list">
+                    <!-- Components will be dynamically added here -->
+                </div>
+            </div>
+            
+            <!-- Canvas Area -->
+            <div class="canvas-wrapper">
+                <div id="canvas" class="white-canvas">
+                    <!-- Dropped components will appear here -->
+                    <div class="canvas-empty-state">
+                        <p>Drag components here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="settingsModal hidden">
+        <div class="modal-content noshadow">
+            <div class="modal-header">
+                <h3>⚙️ Canvas Settings</h3>
+                <button onclick="closeSettings()" class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="customization-section">
+                    <label>Canvas Width (px):</label>
+                    <input type="number" id="canvasWidth" min="300" max="3000" value="1200" class="number-input">
+                </div>
+                <div class="customization-section">
+                    <label>Canvas Height (px):</label>
+                    <input type="number" id="canvasHeight" min="300" max="3000" value="800" class="number-input">
+                </div>
+                <div class="customization-section">
+                    <label>Layout Mode:</label>
+                    <div class="layout-mode-toggle">
+                        <button onclick="setLayoutMode('flow')" id="flowModeBtn" class="mode-btn active">📄 Flow</button>
+                        <button onclick="setLayoutMode('free')" id="freeModeBtn" class="mode-btn">🎨 Free</button>
+                    </div>
+                </div>
+                
+                        <button onclick="clearCanvas()" class="btn-clear"> Clear Canvas</button>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeSettings()" class="btn-cancel">Cancel</button>
+                <button onclick="applyCanvasSettings()" class="btn-apply">Apply Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <div id ="publishModal" class ="settingsModal hidden">
+        <div class="modal-content noshadow">
+            <div class="modal-header">
+                <h3>Download File</h3>
+                <button onclick="closePublishModal()" class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Your File is ready to be published!</p>
+                <br>
+                <button onclick="switchView('preview')" class="btn-preview">Preview</button>
+                <button onclick="downloadPortfolio()" class="btn-download">Download</button>
+            </div>
+        </div>
+    </div>
+    <!-- Device Selector Modal -->
+    <div id="deviceSelectorModal" class="settingsModal hidden">
+        <div class="modal-content noshadow">
+            <div class="modal-header">
+                <h3>📱 Device Preview</h3>
+                <button onclick="closeDeviceSelector()" class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="device-selector-grid">
+                    <button onclick="setCanvasDevice('desktop')" class="device-btn" data-device="desktop">
+                        <i data-lucide="monitor"></i>
+                        <span>Desktop</span>
+                        <small>1920 × 1080</small>
+                    </button>
+                    <button onclick="setCanvasDevice('laptop')" class="device-btn" data-device="laptop">
+                        <i data-lucide="laptop"></i>
+                        <span>Laptop</span>
+                        <small>1366 × 768</small>
+                    </button>
+                    <button onclick="setCanvasDevice('tablet')" class="device-btn" data-device="tablet">
+                        <i data-lucide="tablet"></i>
+                        <span>Tablet</span>
+                        <small>768 × 1024</small>
+                    </button>
+                    <button onclick="setCanvasDevice('mobile')" class="device-btn" data-device="mobile">
+                        <i data-lucide="smartphone"></i>
+                        <span>Mobile</span>
+                        <small>375 × 667</small>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeDeviceSelector()" class="btn-cancel">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Customization Modal -->
+    <div id="customizationModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Customize Component</h3>
+                <button onclick="closeCustomizationModal()" class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="htmlEditorSection" class="customization-section hidden">
+                    <label>HTML Content:</label>
+                    <textarea id="customHtml" class="html-textarea" rows="4" placeholder="Edit HTML content..."></textarea>
+                </div>
+                <div class="customization-section">
+                    <label>Background Color:</label>
+                    <input type="color" id="customBgColor" class="color-picker">
+                </div>
+                <div class="customization-section">
+                    <label>Text Color:</label>
+                    <input type="color" id="customTextColor" class="color-picker">
+                </div>
+                <div class="customization-section">
+                    <label>Font Size:</label>
+                    <input type="range" id="customFontSize" min="10" max="72" value="16" class="slider">
+                    <span id="fontSizeValue">16px</span>
+                </div>
+                <div class="customization-section">
+                    <label>Width (px):</label>
+                    <input type="number" id="customWidth" min="100" max="1200" value="300" class="number-input">
+                </div>
+                <div class="customization-section">
+                    <label>Height (px):</label>
+                    <input type="number" id="customHeight" min="50" max="800" value="200" class="number-input">
+                </div>
+                <div class="customization-section">
+                    <label>Border Radius (px):</label>
+                    <input type="range" id="customBorderRadius" min="0" max="50" value="0" class="slider">
+                    <span id="borderRadiusValue">0px</span>
+                </div>
+                <div class="customization-section">
+                    <label>Opacity:</label>
+                    <input type="range" id="customOpacity" min="0" max="100" value="100" class="slider">
+                    <span id="opacityValue">100%</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeCustomizationModal()" class="btn-cancel">Cancel</button>
+                <button onclick="applyCustomization()" class="btn-apply">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Preview View -->
+    <div id="previewView" class="view hidden">
+        <div class="preview-back-button">
+            <button onclick="switchView('builder')" class="btn-back">← Back to Builder</button>
+        </div>
+        <iframe id="portfolioPreviewFrame" class="portfolio-preview-iframe" sandbox="allow-same-origin"></iframe>
+    </div>
+
+    <script src="script.js"></script>
+
+
+</body></html>

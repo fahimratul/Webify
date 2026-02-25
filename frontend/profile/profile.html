@@ -11,6 +11,24 @@
 </head>
 
 <body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-container">
+            <div class="loading-logo">
+                <h1 class="loading-title">WEBIFY</h1>
+            </div>
+            <div class="loading-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+            </div>
+            <p class="loading-text">Loading your profile...</p>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Notification Toast -->
     <div id="notification-toast" class="notification-toast"></div>
 
@@ -23,39 +41,24 @@
 
         <!-- Navigation Items -->
         <nav class="sidebar-nav">
-            <button class="nav-item active" data-nav="create">
+            <button class="nav-item active" data-nav="create" onclick="openBuilder()">
                 <div class="nav-icon">
                     <i data-lucide="plus"></i>
                 </div>
                 <span class="nav-label">Create</span>
             </button>
 
-            <button class="nav-item" data-nav="market">
+            <button class="nav-item" data-nav="market" onclick="openMarketplace()">
                 <div class="nav-icon">
                     <i data-lucide="store"></i>
                 </div>
                 <span class="nav-label">Market</span>
             </button>
-
-            <button class="nav-item" data-nav="notification">
-                <div class="nav-icon">
-                    <i data-lucide="bell"></i>
-                </div>
-                <span class="nav-label">Notification</span>
-            </button>
-
-            <button class="nav-item" data-nav="template">
+            <button class="nav-item" data-nav="template" onclick="showtemplate()">
                 <div class="nav-icon">
                     <i data-lucide="layers"></i>
                 </div>
                 <span class="nav-label">Template</span>
-            </button>
-
-            <button class="nav-item" data-nav="project">
-                <div class="nav-icon">
-                    <i data-lucide="folder-kanban"></i>
-                </div>
-                <span class="nav-label">Project</span>
             </button>
         </nav>
 
@@ -114,11 +117,11 @@
 
                 <!-- Tabs -->
                 <div class="tabs">
-                    <button class="tab-button active" data-tab="design">
+                    <button class="tab-button active" data-tab="design"  id="designTab" onclick="showdesign()">
                         <i data-lucide="layout-grid"></i>
                         <span>Your Design</span>
                     </button>
-                    <button class="tab-button" data-tab="template">
+                    <button class="tab-button" data-tab="template" id="templateTab" onclick="showtemplate()">
                         <i data-lucide="package"></i>
                         <span>Template</span>
                     </button>
@@ -126,36 +129,22 @@
 
                 <!-- Search Bar -->
                 <div class="search-container">
-                    <div class="search-bar">
-                        <i data-lucide="search" class="search-icon"></i>
-                        <input type="text" id="searchInput" placeholder="Search millions of templates"
-                            class="search-input">
-                        <button class="filter-button">
-                            <i data-lucide="sliders-horizontal"></i>
-                        </button>
+                    <div class="library-search-container">
+                        <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <input type="text" id="librarySearch" class="library-search-input" placeholder="Search components...">
+                    </div>
+
                     </div>
                 </div>
             </header>
 
             <!-- Last Saved Section -->
-            <section class="section">
+            <section class="section" id="lastSavedSection">
                 <h2 class="section-title">Last Saved</h2>
-                <div class="grid">
-                    <!-- Untitled Project -->
-                    <div class="project-card" onclick="openProject('untitled')">
-                        <div class="card-thumbnail">
-                            <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80"
-                                alt="Untitled Project">
-                            <button class="more-button">
-                                <i data-lucide="more-vertical"></i>
-                            </button>
-                        </div>
-                        <div class="card-content">
-                            <h3>Untitled</h3>
-                        </div>
-                    </div>
-
-                    <!-- Create New Project -->
+                <div class="grid" id="projectsGrid">
+                    <!-- Create New Project — FIRST -->
                     <div class="create-card" onclick="createNewProject()">
                         <div class="create-content">
                             <div class="create-icon">
@@ -165,74 +154,29 @@
                         </div>
                     </div>
 
-                    <!-- Upload Files -->
-                    <div class="upload-card" onclick="uploadFiles()">
-                        <div class="upload-content">
-                            <div class="upload-icon">
-                                <i data-lucide="file-up"></i>
-                            </div>
-                            <button class="choose-files-button">Choose Files</button>
-                            <p class="upload-hint">or drop files here</p>
-                        </div>
-                    </div>
+                    <!-- User projects will be loaded here -->
                 </div>
             </section>
 
             <!-- Discover Webify Section -->
-            <section class="section">
-                <h2 class="section-title">Discover Webify</h2>
-                <div class="grid">
-                    <!-- Template 1 -->
-                    <div class="template-card" onclick="viewTemplate(1)">
-                        <div class="template-thumbnail">
-                            <div class="template-placeholder">
-                                <p>getAnimations() demo</p>
-                                <div class="placeholder-shape"></div>
-                            </div>
-                            <div class="template-overlay">
-                                <h3>Scrolling Effect</h3>
-                            </div>
-                        </div>
-                    </div>
+            <section class="section" id="template" style="display: none;"> 
 
-                    <!-- Template 2 -->
-                    <div class="template-card" onclick="viewTemplate(2)">
-                        <div class="template-thumbnail">
-                            <div class="template-placeholder">
-                                <p>getAnimations() demo</p>
-                                <div class="placeholder-shape"></div>
-                            </div>
-                            <div class="template-overlay">
-                                <h3>Scrolling Effect</h3>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Filters -->
+                <div class="library-filters">
+                    <button class="library-filter-btn active" data-category="all">All Components</button>
+                    <button class="library-filter-btn" data-category="navbar">Navbar</button>
+                    <button class="library-filter-btn" data-category="hero">Hero</button>
+                    <button class="library-filter-btn" data-category="about">About</button>
+                    <button class="library-filter-btn" data-category="projects">Projects</button>
+                    <button class="library-filter-btn" data-category="footer">Footer</button>
+                </div>
 
-                    <!-- Template 3 -->
-                    <div class="template-card" onclick="viewTemplate(3)">
-                        <div class="template-thumbnail">
-                            <div class="template-placeholder">
-                                <p>getAnimations() demo</p>
-                                <div class="placeholder-shape"></div>
-                            </div>
-                            <div class="template-overlay">
-                                <h3>Scrolling Effect</h3>
-                            </div>
-                        </div>
-                    </div>
+                <div id="componentGrid" class="component-grid">
+                <!-- Components will be inserted here -->
                 </div>
             </section>
         </div>
-
-        <!-- Notifications Section (Hidden by default) -->
-        <section class="notifications-section" id="notificationsSection" style="display: none;">
-            <h1 class="notifications-title">Notifications</h1>
-            <div class="notifications-list" id="notificationsList">
-                <!-- Notification items will be dynamically inserted here -->
-            </div>
-        </section>
     </main>
-
     <script src="profile.js"></script>
 </body>
 

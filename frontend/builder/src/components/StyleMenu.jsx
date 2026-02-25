@@ -5,6 +5,8 @@ import background_icon from "../assets/icons/background_icon.svg";
 import color_icon from "../assets/icons/color_icon.svg";
 
 export function StyleMenu(props) {
+    
+
     return (
         <div class={styles.style_menu_container}>
             <div class={styles.top}>

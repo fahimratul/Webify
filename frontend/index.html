@@ -13,7 +13,7 @@
 <body>
     <div class="navbar">
         <a href="#home">Home</a>
-        <a href="login2/index.html">Store</a>
+        <a href="auth/login.html">Store</a>
         <a href="community/questions.html">Community</a>
         <a href="auth/login.html" class="nav-login">Login</a>
     </div>
@@ -108,42 +108,39 @@
             </div>
             <div class="people">
                 <div class="people-card topcard">
-                    <img src="images/people1.jpg" alt="">
+                    <img src="#" id="img1" alt="">
                     <div class="people-info">
                         <div>
-                            <h2>MS Abraca Debra</h2>
+                            <h2 id="username1">MS Abraca Debra</h2>
                             <p>Pro</p>
                         </div>
                         <div>
-                            <h3>170 Contributions</h3>
-                            <p style="background-color: #0EDB56;">connect</p>
+                            <h3 id="bio1">170 Contributions</h3>
                         </div>
                     </div>
                 </div>
                 <div class="people-card middlecard">
-                    <img src="images/people2.jpg" alt="">
+                    <img src="#" id="img2" alt="">
                     <div class="people-info">
                         <div>
-                            <h2>Fahim Morshed Ratul</h2>
-                            <p>Pro</p>
+                            <h2 id="username2">Fahim Morshed Ratul</h2>
+                            <p >Pro</p>
                         </div>
                         <div>
-                            <h3>170 Contributions</h3>
-                            <p style="background-color: #0EDB56;">connect</p>
+                            <h3 id="bio2"></h3>
                         </div>
                     </div>
                 </div>
 
                 <div class="people-card lastcard">
-                    <img src="images/people3.jpg" alt="">
+                    <img src="#" id="img3" alt="">
                     <div class="people-info">
                         <div>
-                            <h2>Xorina Begum</h2>
+                            <h2 id="username3"></h2>
                             <p>Pro</p>
                         </div>
                         <div>
-                            <h3>170 Contributions</h3>
-                            <p style="background-color: #0EDB56;">connect</p>
+                            <h3 id="bio3">170 Contributions</h3>
                         </div>
                     </div>
                 </div>
@@ -235,6 +232,7 @@
 
 </body>
 <script src="js/typinganimation.js"></script>
+<script src="js/user_load.js"></script>
 <script>
     function load_learnmore(Number) {
         const link = "learnmore" + Number + ".html";

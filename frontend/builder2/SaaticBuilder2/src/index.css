@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+
+/* Ensure the body and root take up the full screen */
+html,
+body,
+#root,
+.app-container {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+:global(.gjs-pn-panels) {
+    background-color: red !important;
+}
+
+/* Target the actual bars, not just the container */
+:global(.gjs-pn-panels),
+:global(.gjs-pn-commands),
+:global(.gjs-pn-options),
+:global(.gjs-pn-views),
+:global(.gjs-pn-views-container) {
+    background-color: red !important;
+}

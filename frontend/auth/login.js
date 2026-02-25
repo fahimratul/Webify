@@ -1,10 +1,4 @@
-/**
- * Notification Toast System
- * Displays beautiful toast notifications with different types
- * @param {string} message - The message to display
- * @param {string} type - Type of notification: 'success', 'error', or 'warning'
- * @param {string} title - Optional title for the notification
- */
+// Show toast notifications - auto-hides after 5 seconds
 function showNotification(message, type = "success", title = "") {
   const toast = document.getElementById("notification-toast");
 
@@ -178,8 +172,47 @@ function validateEmail(email) {
   return re.test(email);
 }
 
+// Resend verification email function
+async function resendVerificationEmail(email) {
+  try {
+    showNotification("Sending verification email...", "info", "Please wait");
+
+    const response = await fetch("/api/resend-verification", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      showNotification(
+        data.message ||
+          "Verification email has been sent! Please check your inbox.",
+        "success",
+        "Email Sent! 📧",
+      );
+    } else {
+      showNotification(
+        data.error || "Failed to send verification email. Please try again.",
+        "error",
+        "Send Failed",
+      );
+    }
+  } catch (error) {
+    console.error("Resend verification error:", error);
+    showNotification(
+      "Unable to send email. Please try again later.",
+      "error",
+      "Network Error",
+    );
+  }
+}
+
 // Login Form Submission
-loginForm.addEventListener("submit", (e) => {
+loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = document.getElementById("login-email").value;
@@ -188,53 +221,140 @@ loginForm.addEventListener("submit", (e) => {
   let hasError = false;
 
   if (!email) {
-    showError("login-email", "Email is required");
-    hasError = true;
-  } else if (!validateEmail(email)) {
-    showError("login-email", "Email is invalid");
+    showError("login-email", "Username or email is required");
     hasError = true;
   }
 
   if (!password) {
     showError("login-password", "Password is required");
     hasError = true;
-  } else if (password.length < 6) {
-    showError("login-password", "Password must be at least 6 characters");
-    hasError = true;
   }
 
   if (!hasError) {
-    // Store email in sessionStorage for use across pages
-    sessionStorage.setItem("userEmail", email);
+    // Show loading state
+    const submitBtn = loginForm.querySelector(".submit-btn");
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = "<span>Logging in...</span>";
+    submitBtn.disabled = true;
 
-    showNotification(
-      "Welcome back! You have successfully signed in.",
-      "success"
-    );
-    // Redirect to profile page after short delay
-    setTimeout(() => {
-      window.location.href = "../profile/profile.html";
-    }, 1500);
-    console.log("Login with:", { email, password });
+    try {
+      // Call backend API
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          username: email, // Backend uses 'username' field
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store user data in localStorage for profile page
+        // Add default values for fields that profile.js expects
+        const userData = {
+          name: data.user.username,
+          email: data.user.email || `${data.user.username}@webify.com`,
+          profilePicture:
+            data.user.profilePicture ||
+            "https://api.dicebear.com/9.x/thumbs/svg?seed=Default",
+          bio:
+            data.user.bio || "Welcome to Webify! Update your bio in settings.",
+          projects: 0,
+          templates: 0,
+          followers: 0,
+          ...data.user, // Include any additional fields from backend
+        };
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("currentUser", JSON.stringify(userData));
+
+        // Save email for "Remember Me" if checked
+        const rememberMe = document.getElementById("remember-me").checked;
+        if (rememberMe) {
+          localStorage.setItem("rememberMe", "true");
+          localStorage.setItem("rememberedEmail", email);
+        } else {
+          localStorage.removeItem("rememberMe");
+          localStorage.removeItem("rememberedEmail");
+        }
+
+        showNotification(
+          "Welcome back! You have successfully signed in.",
+          "success",
+        );
+        // Redirect to profile page after short delay
+        setTimeout(() => {
+          window.location.href = "../profile/profile.html";
+        }, 1500);
+      } else {
+        // Handle different error types
+        if (response.status === 403 && data.emailVerificationRequired) {
+          // Email verification required
+          showNotification(
+            `${data.error}\n\nWould you like us to resend the verification email?`,
+            "warning",
+            "Email Verification Required",
+          );
+
+          // Show resend verification option
+          setTimeout(() => {
+            const confirmModal = document.getElementById("confirm-modal");
+            confirmModal.classList.remove("hidden");
+            document.getElementById("confirm-yes").onclick = () => {
+              resendVerificationEmail(email);
+              confirmModal.classList.add("hidden");
+            };
+            document.getElementById("confirm-no").onclick = () => {
+              confirmModal.classList.add("hidden");
+            };
+          }, 1000);
+        } else {
+          // Show regular login error
+          showNotification(
+            data.error || "Invalid credentials. Please try again.",
+            "error",
+            "Login Failed",
+          );
+        }
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      showNotification(
+        "Unable to connect to server. Please try again later.",
+        "error",
+        "Connection Error",
+      );
+      submitBtn.innerHTML = originalText;
+      submitBtn.disabled = false;
+    }
   }
 });
 
 // Signup Form Submission
-signupForm.addEventListener("submit", (e) => {
+signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const name = document.getElementById("signup-name").value;
-  const email = document.getElementById("signup-email").value;
+  const name = document.getElementById("signup-name").value.trim();
+  const email = document.getElementById("signup-email").value.trim();
   const password = document.getElementById("signup-password").value;
   const confirmPassword = document.getElementById(
-    "signup-confirm-password"
+    "signup-confirm-password",
   ).value;
   const agreeToTerms = document.getElementById("terms-agree").checked;
 
   let hasError = false;
 
-  if (!name) {
+  if (!name || name.length === 0) {
     showError("signup-name", "Name is required");
+    hasError = true;
+  } else if (name.length < 3) {
+    showError("signup-name", "Name must be at least 3 characters");
     hasError = true;
   }
 
@@ -248,6 +368,15 @@ signupForm.addEventListener("submit", (e) => {
 
   if (!password) {
     showError("signup-password", "Password is required");
+    hasError = true;
+  } else if (password !== password.trim()) {
+    showError(
+      "signup-password",
+      "Password cannot have leading or trailing spaces",
+    );
+    hasError = true;
+  } else if (password.trim().length === 0) {
+    showError("signup-password", "Password cannot be empty");
     hasError = true;
   } else if (password.length < 6) {
     showError("signup-password", "Password must be at least 6 characters");
@@ -266,26 +395,73 @@ signupForm.addEventListener("submit", (e) => {
     showNotification(
       "Please agree to the Terms and Conditions",
       "warning",
-      "Action Required"
+      "Action Required",
     );
     hasError = true;
   }
 
   if (!hasError) {
-    // Store email and name in sessionStorage for use across pages
-    sessionStorage.setItem("userEmail", email);
-    sessionStorage.setItem("userName", name);
+    // Show loading state
+    const submitBtn = signupForm.querySelector(".submit-btn");
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = "<span>Creating account...</span>";
+    submitBtn.disabled = true;
 
-    showNotification(
-      "A new journey begins! Welcome to the community.",
-      "success",
-      "Welcome! 🎉"
-    );
-    // Redirect to profile page after short delay
-    setTimeout(() => {
-      window.location.href = "../profile/profile.html";
-    }, 1500);
-    console.log("Signup with:", { name, email, password });
+    try {
+      // Call backend API
+      const response = await fetch("/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          username: name, // Using name as username
+          email: email,
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        showNotification(
+          data.message ||
+            "Account created successfully! Please check your email and click the verification link before logging in.",
+          "success",
+          "Check Your Email! 📧",
+        );
+        // Reset form and switch to login tab
+        signupForm.reset();
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+
+        // Switch to login tab after short delay
+        setTimeout(() => {
+          loginTab.click();
+          // Pre-fill email in login form
+          document.getElementById("login-email").value = email;
+        }, 2000);
+      } else {
+        // Show error from backend
+        showNotification(
+          data.error || "Unable to create account. Please try again.",
+          "error",
+          "Signup Failed",
+        );
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      showNotification(
+        "Unable to connect to server. Please try again later.",
+        "error",
+        "Connection Error",
+      );
+      submitBtn.innerHTML = originalText;
+      submitBtn.disabled = false;
+    }
   }
 });
 
@@ -383,6 +559,17 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Authentication System - Developed by Tamim
-console.log("WEBIFY Login/Signup page loaded successfully! 🚀");
-console.log("Authentication System v1.0 - Ready to authenticate users! ✨");
+console.log("WEBIFY Login/Signup page loaded successfully");
+
+// On page load, check if "Remember Me" was previously set
+window.addEventListener("load", function () {
+  const rememberMe = localStorage.getItem("rememberMe");
+  if (rememberMe === "true") {
+    document.getElementById("remember-me").checked = true;
+  }
+
+  const rememberedEmail = localStorage.getItem("rememberedEmail");
+  if (rememberedEmail) {
+    document.getElementById("login-email").value = rememberedEmail;
+  }
+});

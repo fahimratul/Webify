@@ -79,10 +79,11 @@ function validateEmail(email) {
 // Forgot Password Form Submission
 const forgotPasswordForm = document.getElementById("forgotPasswordForm");
 
-forgotPasswordForm.addEventListener("submit", (e) => {
+forgotPasswordForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = document.getElementById("forgot-email").value;
+  const submitBtn = document.querySelector(".submit-btn");
 
   let hasError = false;
 
@@ -95,18 +96,65 @@ forgotPasswordForm.addEventListener("submit", (e) => {
   }
 
   if (!hasError) {
-    showNotification(
-      "Password reset link has been sent to your email. Please check your inbox.",
-      "success",
-      "Email Sent! ✉️"
-    );
-    // Here you would typically send the data to your server
-    console.log("Password reset requested for:", email);
+    // Add loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `
+      <span>Sending...</span>
+      <svg class="arrow-icon spinning" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12a9 9 0 11-6.219-8.56"/>
+      </svg>
+    `;
 
-    // Optionally redirect after a delay
-    setTimeout(() => {
-      // window.location.href = 'index.html';
-    }, 3000);
+    try {
+      const response = await fetch('/api/forgot-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        showNotification(
+          data.message || "Password reset link has been sent to your email. Please check your inbox.",
+          "success",
+          "Email Sent! ✉️"
+        );
+        
+        // Clear form
+        document.getElementById("forgot-email").value = '';
+        
+        // Optionally redirect after a delay
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 3000);
+      } else {
+        showNotification(
+          data.error || "Failed to send password reset email. Please try again.",
+          "error",
+          "Error"
+        );
+      }
+    } catch (error) {
+      console.error("Password reset request error:", error);
+      showNotification(
+        "Network error. Please check your connection and try again.",
+        "error",
+        "Network Error"
+      );
+    } finally {
+      // Reset button state
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `
+        <span>Send Reset Link</span>
+        <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      `;
+    }
   }
 });
 
@@ -138,6 +186,17 @@ style.textContent = `
     .keyboard-nav *:focus {
         outline: 2px solid #22d3ee !important;
         outline-offset: 2px !important;
+    }
+    .spinning {
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    .submit-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
     }
 `;
 document.head.appendChild(style);

@@ -12,13 +12,23 @@
   },
   "license": "ISC",
   "author": "",
-  "type": "commonjs",
+  "type": "module",
   "main": "backend/server.js",
   "scripts": {
     "test": "echo \\\"No test specified !\\\" && exit 1",
     "start": "node backend/server.js"
   },
   "dependencies": {
-    "express": "^5.2.1"
+    "@azure/communication-email": "^1.1.0",
+    "bcrypt": "^6.0.0",
+    "connect-mongo": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-session": "^1.18.2",
+    "grapesjs-preset-webpage": "^1.0.3",
+    "mongoose": "^9.1.5",
+    "nodemailer": "^8.0.1",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
   }
 }

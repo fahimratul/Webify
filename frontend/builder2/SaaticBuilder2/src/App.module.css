@@ -1,0 +1,193 @@
+:root {
+    /* Main UI backgrounds (Light WordPress style) */
+    --gjs-main-color: #2c3338;
+    --gjs-primary-color: #ffffff;
+    --gjs-secondary-color: #f0f0f1;
+    --gjs-tertiary-color: #f6f7f7;
+    --gjs-quaternary-color: #2271b1;
+    /* WP Blue */
+
+    /* Text Colors */
+    --gjs-font-color: #3c434a;
+    --gjs-font-color-active: #2271b1;
+
+    /* Transparency layers */
+    --gjs-main-dark-color: rgba(0, 0, 0, 0.05);
+    --gjs-secondary-dark-color: rgba(0, 0, 0, 0.02);
+    --gjs-main-light-color: rgba(255, 255, 255, 0.5);
+    --gjs-secondary-light-color: rgba(255, 255, 255, 1);
+
+    /* Accents */
+    --gjs-color-blue: #2271b1;
+    --gjs-color-highlight: #3582c4;
+    --gjs-light-border: rgba(0, 0, 0, 0.1);
+    --gjs-arrow-color: rgba(0, 0, 0, 0.5);
+
+    /* Layout */
+    --gjs-main-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --gjs-font-size: 1px;
+}
+
+
+
+/* Forcing all GrapesJS labels/texts to be dark */
+:global(.gjs-four-color),
+:global(.gjs-label),
+:global(.gjs-block-label),
+:global(.gjs-sm-title),
+:global(.gjs-layers-title),
+:global(.gjs-cm-label),
+:global(.gjs-fields) {
+    color: var(--gjs-font-color) !important;
+    text-shadow: none !important;
+    font-size: 14px;
+}
+
+/* the Icons (GrapesJS uses SVG icons that might be white) */
+:global(.gjs-pn-btn),
+:global(.gjs-icon) {
+    color: black;
+    fill: black;
+}
+
+/* making the Blocks so they are visible */
+:global(.gjs-block) {
+    background-color: var(--gjs-primary-color);
+    border: 1px solid #dcdcde;
+    color: var(--gjs-font-color);
+    box-shadow: none;
+}
+
+:global(.gjs-block:hover) {
+    border-color: var(--gjs-color-blue);
+    color: var(--gjs-color-blue);
+}
+
+/* fixingg Category Headers */
+:global(.gjs-title),
+:global(.gjs-category-title),
+:global(.gjs-sm-sector-title) {
+    background-color: var(--gjs-primary-color) !important;
+    color: var(--gjs-main-color) !important;
+    border-bottom: 1px solid #dcdcde !important;
+}
+
+/*Fixing  the Canvas Handle (The blue outline when licked an element) */
+:global(.gjs-cv-canvas) {
+    outline: 1px solid #dcdcde;
+}
+
+:global(.editor-shell) {
+    display: flex;
+    height: 100vh;
+    background-color: #f0f0f1;
+    color: #3c434a;
+    overflow: hidden;
+}
+
+:global(.sidebar-left),
+:global(.sidebar-right) {
+    width: 280px;
+    background-color: #ffffff;
+    border: 1px solid #dcdcde;
+    display: flex;
+    flex-direction: column;
+}
+
+:global(.editor-main) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+:global(.editor-topbar) {
+    height: 50px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #dcdcde;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+:global(.canvas-wrapper) {
+    flex: 1;
+    padding: 40px;
+    background-color: #f0f0f1;
+    overflow: hidden;
+}
+
+:global(.panel-header) {
+    padding: 15px;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #dcdcde;
+    color: #1d2327;
+}
+
+:global(.gjs-editor) {
+    background: transparent !important;
+}
+
+:global(.gjs-editor) {
+    background: transparent !important;
+}
+
+
+
+
+/* I am tired of selecting each element and fixing the style */
+/* Big hammer, Don't care anymore */
+
+/* I think "!important" is not required but not taking chance */
+
+/* Reseting the entire editor container to be light */
+:global(.gjs-editor-wrapper) {
+    background-color: #ffffff !important;
+    color: #3c434a !important;
+}
+
+/* uninversal text fix*/
+:global(.gjs-editor-wrapper *) {
+    text-shadow: none !important;
+}
+
+/* forceing all inputs, fields, and dropdowns to be visible */
+:global(.gjs-field),
+:global(.gjs-fields),
+:global(.gjs-select),
+:global(.gjs-input) {
+    background-color: #f6f7f7 !important;
+    color: #3c434a !important;
+    border: 1px solid #dcdcde !important;
+}
+
+/* Modalss (the add picture" / asset manager window) */
+:global(.gjs-mdl-container),
+:global(.gjs-mdl-content) {
+    background-color: #ffffff !important;
+    color: #3c434a !important;
+}
+
+:global(.gjs-mdl-header) {
+    border-bottom: 1px solid #dcdcde !important;
+}
+
+/* Style Manafer issues */
+:global(.gjs-sm-sector),
+:global(.gjs-sm-property) {
+    border-color: #dcdcde !important;
+}
+
+:global(.gjs-sm-label) {
+    color: #3c434a !important;
+}
+
+/* 6. ICONS: Ensure all SVGs are dark */
+:global(.gjs-editor-wrapper svg) {
+    fill: #50575e !important;
+}
+
+

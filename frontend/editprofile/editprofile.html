@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WEBIFY - Edit Profile</title>
     <link rel="stylesheet" href="../profile/profile.css">
-    <link rel="icon" type="image/png" href="../images/logo.png"/>
+    <link rel="icon" type="image/png" href="../images/logo.png" />
     <link rel="stylesheet" href="editprofile.css">
-    
+
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
@@ -25,7 +25,7 @@
 
         <!-- Navigation Items -->
         <nav class="sidebar-nav">
-            <button class="nav-item active" data-nav="create">
+            <button class="nav-item active" data-nav="create" onclick="openBuilder()">
                 <div class="nav-icon">
                     <i data-lucide="plus"></i>
                 </div>
@@ -38,26 +38,11 @@
                 </div>
                 <span class="nav-label">Market</span>
             </button>
-
-            <button class="nav-item" data-nav="notification">
-                <div class="nav-icon">
-                    <i data-lucide="bell"></i>
-                </div>
-                <span class="nav-label">Notification</span>
-            </button>
-
-            <button class="nav-item" data-nav="template">
+            <button class="nav-item" data-nav="template" onclick="showtemplate()">
                 <div class="nav-icon">
                     <i data-lucide="layers"></i>
                 </div>
                 <span class="nav-label">Template</span>
-            </button>
-
-            <button class="nav-item" data-nav="project">
-                <div class="nav-icon">
-                    <i data-lucide="folder-kanban"></i>
-                </div>
-                <span class="nav-label">Project</span>
             </button>
         </nav>
 
@@ -76,9 +61,9 @@
         <!-- User Info -->
         <div class="dropdown-user-info">
             <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" alt="User">
-            <div class="user-details">
-                <h4>Tanvir Jakaria</h4>
-                <p>tanvirjakaria@gmail.com</p>
+            <div class="user-details" id="userdetails">
+                <h4>Loading...</h4>
+                <p>Loading...</p>
             </div>
         </div>
 
@@ -111,25 +96,29 @@
     <!-- Main Content -->
     <main class="main-content">
         <h1 class="editprofile_title">Edit Profile Page</h1>
+        
+        <button type="submit" form="profileForm" class="save_changes_btn">Save</button>
+        <div class="divider">
+            
         <div class="profile_pic">
-            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" alt="User" id="profilePic">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" alt="User"
+                id="profilePic">
             <button class="change_pic_btn" onclick="changeProfilePic()">Change Profile Picture</button>
             <input type="file" id="picInput" style="display:none" accept="image/*">
         </div>
-        <button type="submit" form="profileForm" class="save_changes_btn">Save</button>
         <div class="edit-info">
             <form id="profileForm" class="profile-form">
                 <div class="form-group">
                     <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" value="Tanvir Jakariah" required>
+                    <input type="text" id="fullName" placeholder="Enter your full name" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" value="tanvirjakaria@gmail.com" required>
+                    <input type="email" id="email" placeholder="Enter your email" required>
                 </div>
                 <div class="form-group">
                     <label for="bio">Bio</label>
-                    <textarea id="bio" rows="4" placeholder="Tell us about yourself...">Web Developer passionate about modern web technologies.</textarea>
+                    <textarea id="bio" rows="4" placeholder="Tell us about yourself..."></textarea>
                 </div>
                 <div class="form-group">
                     <label for="password">New Password</label>
@@ -137,17 +126,28 @@
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" value="+880 1234 567890">
+                    <input type="tel" id="phone" placeholder="Enter phone number (optional)">
                 </div>
             </form>
         </div>
         <div>
 
         </div>
+    
     </main>
+    
+    <div class="change-picture-modal" id="changePictureModal">
+        <div class="modal-content">
+            <h2>Change Profile Picture</h2>
+            <div class ="avater-section" id="avatarsetion">
+            </div>
+            <button class="close-btn" onclick="closeChangePictureModal()">Close</button>
+        </div>
+    </div>  
 
-    <script src="../profile/profile.js"></script>
+
     <script src="editprofile.js"></script>
+    <script src="avatarload.js"></script>
 </body>
 
 </html>

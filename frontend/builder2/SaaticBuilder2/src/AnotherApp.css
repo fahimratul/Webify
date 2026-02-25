@@ -1,0 +1,493 @@
+/* 1. Force all GrapesJS inputs, selects, and number fields to use your variables */
+.gjs-field,
+.gjs-field input,
+.gjs-field select,
+.gjs-field textarea,
+.gjs-clm-select,
+.gjs-sm-input,
+.gjs-sm-unit {
+    background-color: var(--button-hover) !important;
+    color: var(--app-text) !important;
+    border: 1px solid var(--panel-border) !important;
+}
+
+/* 2. Fix the specific dropdown menus (Select options) */
+.gjs-field select option,
+.gjs-clm-select option {
+    background-color: var(--panel-bg);
+    /* Use panel bg so it stands out */
+    color: var(--app-text);
+}
+
+/* 3. Fix the 'Class' tags and dropdowns in the Selector Manager */
+.gjs-clm-tag,
+.gjs-clm-tag-label {
+    color: white !important;
+    /* Usually better as white on the blue tag */
+}
+
+/* 4. Fix labels (like 'Border Radius', 'Width', etc.) */
+.gjs-sm-label,
+.gjs-sm-header,
+.gjs-clm-header {
+    color: var(--app-text) !important;
+}
+
+/* 5. Fix icons inside the style manager */
+.gjs-sm-icon,
+.gjs-clm-icon {
+    fill: var(--icon-color) !important;
+}
+
+
+/* --- 1. GLOBAL VARIABLES (Default = Light Theme) --- */
+:root {
+    /* Font & Dimensions */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --sidebar-width: 280px;
+    --icon-bar-width: 60px;
+    --topbar-height: 50px;
+
+    /* --- The Light Theme Colors (From your snippet) --- */
+    --app-bg: #f4f4f4;
+    --app-text: #181818;
+    --panel-bg: #ffffff;
+    --panel-border: #e0e0e0;
+    --icon-color: #888;
+    --icon-active: #3b97e3;
+    --icon-bg-active: rgba(59, 151, 227, 0.1);
+    --button-hover: #f0f0f0;
+
+    /* GrapesJS Internal Overrides (Light) */
+    --gjs-main-color: #444;
+    --gjs-primary-color: #444;
+    --gjs-secondary-color: #ddd;
+    --gjs-main-dark-color: rgba(0, 0, 0, 0.2);
+    --gjs-font-color: #444;
+    /* Dark text for light bg */
+}
+
+/* --- 2. DARK THEME OVERRIDES --- */
+[data-theme="dark"] {
+    /* App Colors */
+    --app-bg: #121212;
+    --app-text: #e0e0e0;
+    --panel-bg: #1e1e1e;
+    --panel-border: #333;
+    --icon-color: #a0a0a0;
+    --icon-active: #3b97e3;
+    --icon-bg-active: rgba(59, 151, 227, 0.2);
+    --button-hover: #2a2a2a;
+
+    /* GrapesJS Internal Overrides (Dark) */
+    --gjs-main-color: #ddd;
+    --gjs-primary-color: #ddd;
+    --gjs-secondary-color: #555;
+    --gjs-main-dark-color: rgba(255, 255, 255, 0.2);
+    --gjs-font-color: #ddd;
+    /* Light text for dark bg */
+
+    /* Force inputs to look dark */
+    --gjs-bg-color: #242424;
+    --gjs-input-bg: #333;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.editor-shell {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--app-bg);
+    color: var(--app-text);
+    font-family: var(--font-family);
+    font-size: 14px;
+    overflow: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* --- ICON BAR --- */
+.icon-bar {
+    width: var(--icon-bar-width);
+    background-color: var(--panel-bg);
+    border-right: 1px solid var(--panel-border);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.icon-bar button {
+    background: none;
+    border: none;
+    color: var(--icon-color);
+    width: 100%;
+    height: 60px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+.icon-bar button:hover {
+    color: var(--app-text);
+    background-color: var(--button-hover);
+}
+
+.icon-bar button.active {
+    color: var(--icon-active);
+    background-color: var(--icon-bg-active);
+    border-left: 3px solid var(--icon-active);
+}
+
+/* --- SIDEBARS --- */
+.sidebar-left,
+.sidebar-right {
+    width: var(--sidebar-width);
+    background-color: var(--panel-bg);
+    border-right: 1px solid var(--panel-border);
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease;
+    flex-shrink: 0;
+}
+
+.sidebar-right {
+    border-right: none;
+    border-left: 1px solid var(--panel-border);
+}
+
+.sidebar-collapsed {
+    width: 0 !important;
+    border: none;
+    overflow: hidden;
+}
+
+.panel-header {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--panel-border);
+    background-color: var(--panel-bg);
+    color: var(--app-text);
+}
+
+#blocks-container,
+#layers-container,
+#styles-container {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 20px;
+}
+
+#traits-container {
+    padding-bottom: 20px;
+}
+
+/* --- MAIN AREA & TOPBAR --- */
+.editor-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-width: 0;
+}
+
+.editor-topbar {
+    height: var(--topbar-height);
+    background-color: var(--panel-bg);
+    border-bottom: 1px solid var(--panel-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.device-toggles {
+    display: flex;
+    gap: 5px;
+    background: var(--button-hover);
+    padding: 3px;
+    border-radius: 6px;
+}
+
+.device-toggles button {
+    background: transparent;
+    border: none;
+    color: var(--icon-color);
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.device-toggles button:hover,
+.device-toggles button.active {
+    background-color: var(--panel-bg);
+    color: var(--app-text);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    background-color: #3b97e3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-toggle {
+    background: none;
+    border: 1px solid var(--panel-border);
+    color: var(--app-text);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* --- CANVAS --- */
+.canvas-wrapper {
+    flex: 1;
+    /* Use a checkerboard pattern for transparent canvas areas */
+    background-color: #e5e5e5;
+    background-image:
+        linear-gradient(45deg, #d4d4d4 25%, transparent 25%),
+        linear-gradient(-45deg, #d4d4d4 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #d4d4d4 75%),
+        linear-gradient(-45deg, transparent 75%, #d4d4d4 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dark theme canvas background adjustment */
+[data-theme="dark"] .canvas-wrapper {
+    background-color: #121212;
+    background-image: none;
+}
+
+/* --- GRAPESJS OVERRIDES --- */
+.gjs-editor,
+.gjs-cv-canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Hide default panels */
+.gjs-pn-panels,
+.gjs-pn-views-container {
+    display: none !important;
+}
+
+/* Apply variables to GrapesJS Classes to force theme match */
+.gjs-one-bg {
+    background-color: var(--panel-bg);
+}
+
+.gjs-two-color {
+    color: var(--app-text);
+}
+
+.gjs-three-bg {
+    background-color: var(--icon-active);
+    color: white;
+}
+
+.gjs-field {
+    background-color: var(--button-hover);
+    color: var(--app-text);
+    border: 1px solid var(--panel-border);
+}
+
+
+/* code for top bar */
+.editor-topbar {
+    height: var(--topbar-height);
+    background-color: var(--panel-bg);
+    border-bottom: 1px solid var(--panel-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Pushes Left and Right apart */
+    padding: 0 15px;
+}
+
+.topbar-left,
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.divider-vertical {
+    width: 1px;
+    height: 20px;
+    background-color: var(--panel-border);
+    margin: 0 5px;
+}
+
+/* Button styles */
+.btn-icon {
+    background: none;
+    border: none;
+    color: var(--icon-color);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.btn-icon:hover,
+.btn-icon.active {
+    background-color: var(--button-hover);
+    color: var(--app-text);
+}
+
+.btn-ghost {
+    background: none;
+    border: 1px solid transparent;
+    color: var(--icon-color);
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.btn-ghost:hover {
+    border-color: var(--panel-border);
+    color: var(--app-text);
+}
+
+/* Modal Style */
+.modal-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 20px;
+}
+
+.modal-body textarea {
+    width: 100%;
+    height: 100%;
+    background: #1e1e1e;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    padding: 15px;
+    border: 1px solid var(--panel-border);
+    border-radius: 4px;
+}
+
+
+/* Exit Preview Button */
+.exit-preview-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    padding: 10px 20px;
+    background: #3b97e3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Ensure Sidebars don't show ghost text */
+#styles-container:empty::before {
+    content: "Select an element to edit styles";
+    display: block;
+    padding: 20px;
+    color: var(--icon-color);
+    font-size: 12px;
+    text-align: center;
+}
+
+
+/* code editor style */
+.btn-primary-modal:hover {
+    background-color: var(--button-hover);
+}
+
+#gjs-cm-title {
+    color: white !important;
+}
+
+
+/* import code style */
+/* AnotherApp.css */
+
+.import-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    background-color: #322931;
+    /* Your requested background */
+}
+
+.import-textarea {
+    width: 100%;
+    height: 450px;
+    background: #322931 !important;
+    /* Match container */
+    color: #e6db74 !important;
+    /* Soft yellow for a "Monokai" feel */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-left: 4px solid var(--icon-active) !important;
+    /* Gutter accent */
+    border-radius: 4px;
+    padding: 20px;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    outline: none;
+    resize: none;
+    white-space: pre;
+    /* Essential for keeping the beautified layout */
+    overflow-x: auto;
+}
+
+/* Make the button pop against the dark background */
+.btn-primary-modal {
+    background-color: var(--icon-active);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: filter 0.2s;
+}
+
+.btn-primary-modal:hover {
+    filter: brightness(1.1);
+    color: black;
+}
+
+/* Force the modal header to match the new dark style */
+.gjs-mdl-header,
+.gjs-mdl-content {
+    background-color: #322931 !important;
+    color: white !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}

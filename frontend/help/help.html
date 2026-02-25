@@ -16,42 +16,26 @@
         <div class="sidebar-logo">
             <h1>WEBIFY</h1>
         </div>
-
-        <!-- Navigation Items -->
+      <!-- Navigation Items -->
         <nav class="sidebar-nav">
-            <button class="nav-item active" data-nav="create">
+            <button class="nav-item active" data-nav="create" onclick="openBuilder()">
                 <div class="nav-icon">
                     <i data-lucide="plus"></i>
                 </div>
                 <span class="nav-label">Create</span>
             </button>
 
-            <button class="nav-item" data-nav="market">
+            <button class="nav-item" data-nav="market" onclick="openMarketplace()">
                 <div class="nav-icon">
                     <i data-lucide="store"></i>
                 </div>
                 <span class="nav-label">Market</span>
             </button>
-
-            <button class="nav-item" data-nav="notification">
-                <div class="nav-icon">
-                    <i data-lucide="bell"></i>
-                </div>
-                <span class="nav-label">Notification</span>
-            </button>
-
-            <button class="nav-item" data-nav="template">
+            <button class="nav-item" data-nav="template" onclick="showtemplate()">
                 <div class="nav-icon">
                     <i data-lucide="layers"></i>
                 </div>
                 <span class="nav-label">Template</span>
-            </button>
-
-            <button class="nav-item" data-nav="project">
-                <div class="nav-icon">
-                    <i data-lucide="folder-kanban"></i>
-                </div>
-                <span class="nav-label">Project</span>
             </button>
         </nav>
 
@@ -234,7 +218,7 @@
       </section>
     </main>
   </div>
-  <script src="../profile/profile.js"></script>
+  <script src="help.js"></script>
   <script>
     lucide.createIcons();
 

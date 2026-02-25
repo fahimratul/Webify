@@ -113,7 +113,10 @@ body {
     align-items: center;
     justify-content: center;
     padding: 2rem;
-    background: linear-gradient(135deg, #1e1b4b 0%, #581c87 50%, #9f1239 100%);
+    background-image: url('back.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     overflow: hidden;
 }
 
@@ -196,8 +199,8 @@ body {
     background-image: url('https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=800&fit=crop');
     background-size: cover;
     background-position: center;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 80px rgba(34, 211, 238, 0.2);
     animation: slideInFromLeft 0.7s ease-out;
     position: relative;
     z-index: 2;
@@ -230,11 +233,11 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(30, 27, 75, 0.85) 0%, rgba(88, 28, 135, 0.85) 50%, rgba(159, 18, 57, 0.75) 100%);
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 80px rgba(236, 72, 153, 0.2);
     animation: slideInFromRight 0.7s ease-out 0.15s both;
     z-index: 1;
 }

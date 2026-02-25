@@ -11,6 +11,7 @@
     position: absolute;
     top: 70px;
     right: 5px;
+    z-index: 1001;
 }
 
 .style_menu_container button {

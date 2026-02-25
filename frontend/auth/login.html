@@ -25,6 +25,16 @@
             <div class="geometric-shape shape-3"></div>
         </div>
 
+        <div class="confirm-modal hidden" id="confirm-modal">
+            <div class="modal-content">
+                <h2>Email Verification Required</h2>
+                <p>Would you like to resend the email verification link?</p>
+                <div class="modal-buttons">
+                    <button id="confirm-yes" class="confirm-btn">Yes</button>
+                    <button id="confirm-no" class="cancel-btn">No</button>
+                </div>
+            </div>
+        </div>
         <!-- Noise Texture Overlay -->
         <div class="noise-overlay"></div>
 
@@ -35,14 +45,14 @@
                 <div class="branding-section">
                     <div class="branding-content">
                         <!-- Logo -->
-                         <a href="../index.html" class="logo-link">
+                        <a href="../index.html" class="logo-link">
                             <div class="logo-container">
                                 <div class="logo-icon">
-                                        <img src="../images/logo.png" alt="WEBIFY Logo">
+                                    <img src="../images/logo.png" alt="WEBIFY Logo">
                                 </div>
                                 <h1 class="logo-text">WEBIFY</h1>
                             </div>
-                         </a>
+                        </a>
 
                         <!-- Title -->
                         <div class="branding-title">
@@ -110,9 +120,9 @@
                                 <p class="form-subtitle">Enter your credentials to access your account</p>
                             </div>
 
-                            <!-- Email Field -->
+                            <!-- Username or Email Field -->
                             <div class="form-group">
-                                <label for="login-email" class="form-label">Email Address</label>
+                                <label for="login-email" class="form-label">Username or Email</label>
                                 <div class="input-wrapper">
                                     <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2">
@@ -121,8 +131,8 @@
                                         </path>
                                         <polyline points="22,6 12,13 2,6"></polyline>
                                     </svg>
-                                    <input type="email" id="login-email" class="form-input"
-                                        placeholder="your.email@example.com" required>
+                                    <input type="text" id="login-email" class="form-input"
+                                        placeholder="username or email" required>
                                 </div>
                                 <span class="error-message" id="login-email-error"></span>
                             </div>

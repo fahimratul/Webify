@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WEBIFY • Question Detail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-7hF5mZ5E2K1bGf7wBfYQyqZVDfQ7u3o4q2Oa2Jp7gHcTQFQh0P5ZVq8bX9iLQmKfZgC2NwzR6YhTzN3jvM1Q9A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="question-detail.css" />
+    <link rel="stylesheet" href="questions.css" />
+    <link rel="icon" type="image/png" href="../images/logo.png" />
+    <link rel="stylesheet" href="../css/notificationtoast.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+    <div id="notification-toast" class="notification-toast"></div>
+    <header class="topbar">
+        <div class="brand">
+            <span class="logo">WEBIFY</span>
+        </div>
+        <nav class="primary-nav">
+            <a href="../index.html">Home</a>
+            <a href="#">Store</a>
+        </nav>
+        <div class="search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search" />
+        </div>
+        <div class="actions">
+            <a class="nav-login" href="../auth/login.html" id="loginLink">LOGIN</a>
+            <button onclick="window.location.href='questions.html'" class="btn btn-primary">Back to Questions</button>
+            <div id="userName" onclick="openprofile()" style="display: none;"></div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="loadingState" class="loading">
+            <i class="fa-solid fa-spinner fa-spin"></i> Loading question...
+        </div>
+        <div id="questionContent" style="display: none;">
+                    
+            <article class="question-card" data-id="${q._id}">
+            <div class="stats">
+                <div class="stat">
+                    <div class="value" id="questionVotes"></div>
+                    <div class="label">votes</div>
+                </div>
+                <div class="stat">
+                    <div class="value" id="answerCount2"></div>
+                    <div class="label">answers</div>
+                </div>
+                <div class="stat">
+                    <div class="value" id="questionViews"></div>
+                    <div class="label">views</div>
+                </div>
+            </div>
+            <div class="content">
+                <h2 class="title" id="questionTitle"></h2>
+                <p class="excerpt" id="questionBody"></p>
+                <div class="tags" id="questionTags"></div>
+                <div class="actions-row">
+                <span onclick="voteQuestion('up')" id="questionVoteUp" ><i class="fa-regular fa-thumbs-up"></i> Upvote</span>
+                <span onclick="voteQuestion('down')" id="questionVoteDown"><i class="fa-regular fa-thumbs-down"></i> Downvote</span>
+                <span onclick="answerQuestion()"><i class="fa-regular fa-comment"></i> Answer</span>
+                <button class="btn-text" id="deleteBtn" style="display: none;" onclick="deleteQuestion()">
+                                        <i class="fa-solid fa-trash"></i> Delete
+                                    </button>
+                </div>
+            </div>
+            <div class="user">
+                <div class="avatar" id ="authorAvatar"></div>
+                <div>
+                <div class="name" id="authorName"></div>
+                <div class="time" id ="authorTime"></div>
+                </div>
+            </div>
+            </article>
+            
+            
+            <!-- Answers Section -->
+            <section class="answers-section">
+                <h2><span id="answerCount">0</span> Answers</h2>
+                <div id="answersList"></div>
+            </section>
+
+            <!-- Answer Form -->
+            <section class="answer-form" id="answerFormSection">
+                <h3>Your Answer</h3>
+                <textarea id="answerInput" placeholder="Write your answer here..." rows="8"></textarea>
+                <button class="btn btn-primary" onclick="submitAnswer()">Post Answer</button>
+            </section>
+
+            <div id="loginPrompt" class="login-prompt" style="display: none;">
+                <p>Please <a href="../auth/login.html">login</a> to submit an answer.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="question-detail.js"></script>
+</body>
+
+</html>
