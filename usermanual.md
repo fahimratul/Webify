@@ -157,32 +157,60 @@ Figures:
 
 ## 2. Community
 
-### 2.1 Community Question List
+### 2.1 Community Access from Home Page
 
-Purpose: Browse community questions, find solutions, and learn from other users.
+Purpose: Enter the Community module directly from the Home page.
 
 How to Use:
 
-1. Click **Community** from the main navigation menu
-2. Browse the list of community questions displayed on the home page
-3. Use the **search bar** to find questions by keyword (e.g., "CSS Grid", "Responsive Design")
-4. Use **sort controls** to sort by "Most Recent", "Most Helpful", "Most Answered", or "Trending"
-5. Click on a question title to open the full details and answer thread
+1. Open the Webify Home page
+2. Locate the top navigation menu
+3. Click **Community**
+4. If you are not logged in, complete login/sign-up and click **Community** again
+5. The Community page opens with the question feed
+
+Input and Output:
+
+- **Input:** Click action on **Community** button
+- **Output:** User is redirected to the Community page
+
+Figure:
+
+- **Figure 6:** Home Page - Click Community
+  _Shows the Community button in top navigation from the Home page._
+  ![Home Page - Click Community](community-home-navigation.png.png)
+
+---
+
+### 2.2 Community Question List
+
+Purpose: Browse community questions and use the page to ask new questions and answer existing ones.
+
+How to Use:
+
+1. After opening Community, browse the list of posted questions
+2. Use the **search bar** to find questions by keyword (e.g., "CSS Grid", "Responsive Design")
+3. Use the quick category tabs to filter questions: **Newest**, **Unanswered**, **Trending**, and **Last Year**
+4. Open **Filter** to use additional options like **Tag** and **Sort**
+5. In the **Sort** dropdown, select ordering such as **Newest**, **Top votes**, or **Top views**
+6. Click **Ask Question** (top-right) to create a new question
+7. Click on a question title to open the full details and answer thread
+8. Use the **Answer** action on a question to contribute your response
 
 Input and Output:
 
 - **Input:** Search/sort selection and question/thread click
-- **Output:** Filtered question list and detailed question page with answers
+- **Output:** Filtered question list, new question creation flow, and question detail page where users can answer
 
 Figure:
 
-- **Figure 6:** Community Question List
-  _Shows the community home page with question list, search bar, and sort options._
-  _Insert image: community-list.png_
+- **Figure 7:** Community Question List
+  _Shows the community page with question list, search bar, Ask Question button, and answer actions._
+  ![Community Question List](community-list.png.png)
 
 ---
 
-### 2.2 Ask a Question
+### 2.3 Ask a Question
 
 Purpose: Submit a new question to the community for help and knowledge-sharing.
 
@@ -206,9 +234,9 @@ Input and Output:
 
 Figure:
 
-- **Figure 7:** Ask Question Form
+- **Figure 8:** Ask Question Form
   _Shows the question submission form with title, description, and tag fields._
-  _Insert image: community-ask-question.png_
+  ![Ask Question Form](community-ask-question.png.png)
 
 **Best Practices:**
 
@@ -219,7 +247,7 @@ Figure:
 
 ---
 
-### 2.3 Question Details and Interaction
+### 2.4 Question Details and Interaction
 
 Purpose: Read answers to questions, interact with community members, and help others.
 
@@ -243,9 +271,9 @@ Input and Output:
 
 Figure:
 
-- **Figure 8:** Community Question Details
+- **Figure 9:** Community Question Details
   _Shows a question detail page with the original question, existing answers, voting buttons, and answer submission area._
-  _Insert image: community-question-details.png_
+  ![Community Question Details](community-question-details.png.png)
 
 **Community Etiquette:**
 
@@ -278,9 +306,10 @@ This section lists all images referenced in this manual. Ensure all images are p
 
 ### Community Images:
 
-- [ ] community-list.png (Figure 6 - Community Question List)
-- [ ] community-ask-question.png (Figure 7 - Ask Question Form)
-- [ ] community-question-details.png (Figure 8 - Question Details)
+- [x] community-home-navigation.png.png (Figure 6 - Home Page Community Access)
+- [x] community-list.png.png (Figure 7 - Community Question List)
+- [x] community-ask-question.png.png (Figure 8 - Ask Question Form)
+- [x] community-question-details.png.png (Figure 9 - Question Details)
 
 **Legend:**
 
