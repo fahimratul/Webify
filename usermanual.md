@@ -1,15 +1,8 @@
-# Webify User Manual (Store and Community)
-
-## Document Info
-
-- Project: Webify
-- Module Scope: Store (Marketplace) and Community
-- Author: [Your Name]
-- Date: March 31, 2026
+# Webify User Manual - Store and Community
 
 ---
 
-## 1 Store (Marketplace)
+## 1. Store (Marketplace)
 
 ### 1.1 Store Access
 
@@ -18,14 +11,15 @@ Purpose: Enter the Marketplace from Home and handle authentication when required
 How to Use:
 
 1. Open the Webify Home page.
-2. Click Store from the top navigation.
-3. If already logged in, Marketplace opens directly.
-4. If not logged in, complete Sign In or Sign Up.
-5. After successful authentication, open Store again.
+2. Click **Store** from the top navigation menu.
+3. If already logged in, the Marketplace opens directly.
+4. If not logged in, complete **Sign In** or **Sign Up**.
+5. After successful authentication, open **Store** again to access the full Marketplace.
 
 Expected Result:
 
-- User reaches the Marketplace page with active browsing controls.
+- User reaches the Marketplace page with active browsing controls
+- Template cards, filters, and search functionality are fully accessible
 
 Figures:
 
@@ -35,92 +29,112 @@ Figures:
 - **Figure 2:** Authentication Window (Shown Only If User Is Not Logged In)
   ![Store Access Authentication Window](store-auth-login.png.png)
 
+---
+
 ### 1.2 Browse, Search, and Filter Templates
 
-Purpose: Find the right template quickly using multiple filters.
+Purpose: Find the right template quickly using multiple filters and search capabilities.
 
 How to Use:
 
-1. Use the search bar to find templates/components by keyword.
-2. Use category filters: All Designs, Free, Premium.
-3. Use type filters such as All, Dashboard, Portfolio, Webpage.
-4. Use component-name filters (for example: Login, Hero, Navbar, Footer).
-5. Review card-level metrics: likes, average rating, and downloads.
-6. Click a template to continue to preview/details.
+1. Use the **search bar** to find templates or components by keyword (e.g., "Dashboard", "Login Form").
+2. Use **category filters:** All Designs, Free, Premium.
+3. Use **type filters:** All, Dashboard, Portfolio, Webpage (or similar).
+4. Use **component-name filters:** Login, Hero, Navbar, Footer, Contact Form (filters are extensible).
+5. Review **card-level metrics:** number of likes, average rating, and download count.
+6. Click a template card to continue to preview or details view.
 
-Note: Component-name filter options are extensible; new component categories can be added later.
+Note: Component-name filter options are extensible; new component categories can be added as the library grows.
 
 Input and Output:
 
-- Input: Search term, selected category filter, selected type filter, selected component filter, and template selection.
-- Output: Filtered template list and selected template view.
+- **Input:** Search term, selected category filter, selected type filter, selected component filter, and template selection
+- **Output:** Filtered template list with matching templates and detailed template view when selected
 
 Figures:
 
 - **Figure 3:** Store Home / Marketplace Listing
-  _Shows search bar, category/type filters, and template cards._
+  _Shows search bar, category/type filters, and template cards with engagement metrics._
   ![Webify Marketplace Listing Page](store-listing-page.png.png)
 
 - **Figure 3(a):** Free Category View
-  _Shows only templates listed under the Free category filter._
+  _Shows only templates marked as Free._
   ![Free Category Filter View](store-free-view.png.png)
 
 - **Figure 3(b):** Premium Category View
-  _Shows only templates listed under the Premium category filter._
+  _Shows only templates marked as Premium (available for purchase)._
   ![Premium Category Filter View](store-premium-view.png.png)
 
 - **Figure 3(c):** Component Name Filter View
-  _Shows templates filtered by selected component names (for example: Login, Hero, Navbar, Footer)._
+  _Shows templates filtered by selected component names (e.g., Login, Hero, Navbar, Footer)._
   ![Component Name Filter View](store-component-filter-view.png.png)
+
+---
 
 ### 1.3 Template Details and Engagement
 
-Purpose: Review full template information and interact with engagement features.
+Purpose: Review full template information and interact with engagement features (likes and reviews).
 
 How to Use:
 
-1. Open a template details/preview view.
-2. Check description, author, likes, rating, and download count.
-3. Add Like (if not already liked).
-4. Submit review/rating when prompted.
+1. Open a template details or preview view
+2. Check the template **description, author, likes, rating, and download count**
+3. Click **Add Like** (if not already liked)
+4. Click on the **rating/review button** to submit your star rating
+5. Write a brief **review comment** (optional) and submit
 
 Input and Output:
 
-- Input: Template selection, like action, review/rating submission.
-- Output: Updated engagement metrics and saved user feedback.
+- **Input:** Template selection, like action, review/rating submission (1-5 stars and optional text)
+- **Output:** Updated engagement metrics (new like count, new rating count) and confirmation of saved feedback
 
 Figure:
 
 - **Figure 4:** Marketplace Item Details
+  _Shows template details including engagement metrics (likes, ratings, downloads) and interactive elements._
   _Insert image: store-item-details.png_
+
+---
 
 ### 1.4 Preview, Download, Payment, and Post-Download Review
 
-Purpose: Execute the complete access flow for free and premium templates.
+Purpose: Execute the complete workflow for accessing free and premium templates with review submission.
 
 How to Use:
 
-1. Click Preview on a template card.
-2. Review template content in modal preview.
-3. For Free templates:
-   - Click Download.
-   - Download package includes HTML and CSS files.
-   - Submit star rating/review when the review popup appears.
-4. For Premium templates:
-   - Click Buy Now.
-   - Complete checkout/payment form.
-   - After payment success, click Download Template.
-   - Submit star rating/review when review popup appears.
+**For Free Templates:**
+
+1. Click **Preview** on a template card
+2. Review the template content in the modal preview window
+3. Click **Download**
+4. The download package includes **HTML and CSS files**
+5. A **star rating/review popup** appears automatically after download
+6. Enter your rating (1-5 stars) and optional review comment
+7. Click **Submit Review**
+
+**For Premium Templates:**
+
+1. Click **Preview** on a template card
+2. Review the template content in the modal preview window
+3. Click **Buy Now**
+4. Complete the **checkout form** with payment details
+5. Review the total price and terms
+6. Click **Proceed to Payment** or **Pay Now**
+7. After payment success, click **Download Template**
+8. The premium template package is downloaded
+9. A **star rating/review popup** appears automatically
+10. Enter your rating (1-5 stars) and optional review comment
+11. Click **Submit Review**
 
 Input and Output:
 
-- Input: Preview action, pricing-based action (Download/Buy Now), payment details (premium only), and post-download review submission.
-- Output: Preview modal, downloaded template files, premium payment confirmation (if applicable), and stored review feedback.
+- **Input:** Preview action, pricing-based action (Download for free / Buy Now for premium), payment details (premium only), and post-download review submission (1-5 stars + optional text)
+- **Output:** Preview modal, downloaded template files (HTML/CSS), premium payment confirmation (if applicable), and stored review feedback
 
 Figures:
 
 - **Figure 5(a):** Free Template Preview (Download Option)
-  _Shows free template preview, Download action, and post-download rating popup._
+  _Shows free template preview, Download button, and post-download rating popup._
   ![Free Template Preview and Download](store-preview-free.png.png)
 
 - **Figure 5(b):** Premium Template Preview (Buy Now Option)
@@ -128,7 +142,7 @@ Figures:
   ![Premium Template Preview and Buy Now](store-preview-premium.png.png)
 
 - **Figure 5(c):** Give Review Popup (Post-Download)
-  _Shows the star-rating popup where the user submits review after download._
+  _Shows the star-rating popup where the user submits a review after downloading a template._
   ![Give Review Popup](review.png.png)
 
 - **Figure 5(d):** Premium Template Checkout (Payment Form)
@@ -141,88 +155,138 @@ Figures:
 
 ---
 
-## 2 Community
+## 2. Community
 
 ### 2.1 Community Question List
 
-Purpose: Browse support questions and known solutions.
+Purpose: Browse community questions, find solutions, and learn from other users.
 
 How to Use:
 
-1. Navigate to Community.
-2. Browse thread list.
-3. Use search/sort controls.
-4. Open a thread for full details.
+1. Click **Community** from the main navigation menu
+2. Browse the list of community questions displayed on the home page
+3. Use the **search bar** to find questions by keyword (e.g., "CSS Grid", "Responsive Design")
+4. Use **sort controls** to sort by "Most Recent", "Most Helpful", "Most Answered", or "Trending"
+5. Click on a question title to open the full details and answer thread
 
 Input and Output:
 
-- Input: Search/sort selection and thread click.
-- Output: Filtered list and selected thread page.
+- **Input:** Search/sort selection and question/thread click
+- **Output:** Filtered question list and detailed question page with answers
 
 Figure:
 
 - **Figure 6:** Community Question List
+  _Shows the community home page with question list, search bar, and sort options._
   _Insert image: community-list.png_
+
+---
 
 ### 2.2 Ask a Question
 
-Purpose: Submit a new question to community.
+Purpose: Submit a new question to the community for help and knowledge-sharing.
 
 How to Use:
 
-1. Click Ask Question.
-2. Enter title and detailed description.
-3. Submit the form.
+1. Click **Ask Question** button (usually at the top of the Community section)
+2. Enter a **clear and descriptive title** for your question (e.g., "How to center a div using CSS Flexbox?")
+3. Enter a **detailed description** with:
+   - What you're trying to do
+   - What you've already tried
+   - Any error messages you received
+   - Relevant code snippets (if applicable)
+4. Add optional **tags** (e.g., "CSS", "HTML", "JavaScript") to categorize your question
+5. Click **Submit** or **Post Question**
+6. Your question will appear in the Community feed and community members can provide answers
 
 Input and Output:
 
-- Input: Question title and body.
-- Output: New thread entry in community.
+- **Input:** Question title, detailed description, optional tags
+- **Output:** New thread entry created in the community question list
 
 Figure:
 
 - **Figure 7:** Ask Question Form
+  _Shows the question submission form with title, description, and tag fields._
   _Insert image: community-ask-question.png_
+
+**Best Practices:**
+
+- Write clear, specific titles
+- Provide context and code examples
+- Use appropriate tags for better visibility
+- Be respectful and courteous to community members
+
+---
 
 ### 2.3 Question Details and Interaction
 
-Purpose: Read and interact with answers on a question.
+Purpose: Read answers to questions, interact with community members, and help others.
 
 How to Use:
 
-1. Open a question detail page.
-2. Review existing answers.
-3. Add answer/reply (if enabled).
-4. Use vote/interaction controls (if enabled).
+1. Open a question details page by clicking on a question from the Community list
+2. Read the **question title and original description**
+3. Browse **existing answers** posted by community members
+4. Review **helpful votes and ratings** on answers to identify most useful responses
+5. Click **Add Answer** to contribute your own solution or knowledge
+6. Write your answer in the **answer submission box**
+7. Click **Submit Answer**
+8. Vote on helpful answers by clicking the **upvote/like button** on any answer
+9. Mark an answer as **accepted solution** (if you posted the original question)
+10. Reply to specific answers using the **reply function** (if enabled)
 
 Input and Output:
 
-- Input: Answer text and interaction actions.
-- Output: Updated thread state (new answer/votes).
+- **Input:** Answer text, interaction actions (voting, marking as solution, replying)
+- **Output:** Updated thread state with new answer, updated vote count, and marked solution status
 
 Figure:
 
 - **Figure 8:** Community Question Details
+  _Shows a question detail page with the original question, existing answers, voting buttons, and answer submission area._
   _Insert image: community-question-details.png_
+
+**Community Etiquette:**
+
+- Be respectful and helpful
+- Provide complete, well-explained answers
+- Use proper formatting and code blocks for code
+- Search for existing answers before posting duplicates
+- Thank helpful community members
 
 ---
 
-## 3 Image Checklist
+## 3. Image Checklist
 
-Add these images when available:
+This section lists all images referenced in this manual. Ensure all images are present and correctly named:
 
-- store-home.png.png
-- store-auth-login.png.png
-- store-listing-page.png.png
-- store-free-view.png.png
-- store-premium-view.png.png
-- store-component-filter-view.png.png
-- store-item-details.png
-- store-preview-free.png.png
-- store-preview-premium.png.png
-- review.png.png
-- store-premium-checkout.png.png
-- store-premium-payment-success.png.png
-- community-list.png
-- community-ask-question.png
-- community-question-details.png
+### Store (Marketplace) Images:
+
+- [x] store-home.png.png (Figure 1 - Home Page Navigation)
+- [x] store-auth-login.png.png (Figure 2 - Authentication Window)
+- [x] store-listing-page.png.png (Figure 3 - Marketplace Listing)
+- [x] store-free-view.png.png (Figure 3a - Free Category View)
+- [x] store-premium-view.png.png (Figure 3b - Premium Category View)
+- [x] store-component-filter-view.png.png (Figure 3c - Component Filter View)
+- [ ] store-item-details.png (Figure 4 - Template Details)
+- [x] store-preview-free.png.png (Figure 5a - Free Template Preview)
+- [x] store-preview-premium.png.png (Figure 5b - Premium Template Preview)
+- [x] review.png.png (Figure 5c - Review Popup)
+- [x] store-premium-checkout.png.png (Figure 5d - Premium Checkout)
+- [x] store-premium-payment-success.png.png (Figure 5e - Payment Success)
+
+### Community Images:
+
+- [ ] community-list.png (Figure 6 - Community Question List)
+- [ ] community-ask-question.png (Figure 7 - Ask Question Form)
+- [ ] community-question-details.png (Figure 8 - Question Details)
+
+**Legend:**
+
+- [x] Image file exists and is embedded
+- [ ] Image file needed (placeholder currently in document)
+
+---
+
+**End of User Manual - Store and Community**
